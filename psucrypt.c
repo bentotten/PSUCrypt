@@ -6,9 +6,11 @@
 
 #include "psucrypt.h"
 
-int main()
+int main(int argc, char* argv[])
 {
 	printf("Hello World\n");
 
-  return 0;
+	openPlaintext();
+
+  return (0);
 }

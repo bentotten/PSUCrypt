@@ -5,3 +5,11 @@
 // Last Modified: 2-9-2021
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
+
+#include "filehandling.h"
+
+
+
