@@ -10,7 +10,11 @@ int main(int argc, char* argv[])
 {
 	printf("Hello World\n");
 
-	openPlaintext();
+	if (openPlaintext() == 1)
+	{
+		printf("Error opening file. Does not Exist.");
+		return (1);
+	}
 
   return (0);
 }

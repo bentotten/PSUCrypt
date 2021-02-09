@@ -11,7 +11,10 @@ int openPlaintext()
 	FILE * fp;
 	FILE* fopen(char* name, char* mode);
 
-	fp = fopen("plaintext.txt", "a");
+	fp = fopen("plaintextt.txt", "r");
+
+	if (!fp)
+		return (1);
 
 	return (0);
 }
