@@ -4,9 +4,11 @@
 // CS585
 // Last Modified: 2-9-2021
 
-#include psucrypt.c
+#include "psucrypt.h"
 
-main()
+int main()
 {
-	printf('Hello World');
+	printf("Hello World\n");
+
+  return 0;
 }

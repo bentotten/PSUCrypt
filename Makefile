@@ -1,6 +1,6 @@
 FLAGS = -ansi -pedantic -O0 -Wall
 DFLAGS = -g
-PROGS = psucrypt
+PROGS = psucrypt a.out
 
 all: psucrypt
 
@@ -8,7 +8,7 @@ psucrypt: psucrypt.c
 	gcc psucrypt.c $(CFLAGS) $(DFLAGS) -o psucrypt
 
 clean:
-	rm -f $(PROGS) *.o psucrypt
+	rm -f $(PROGS) *.o
 
 zip:
 	zip rename_me.zip Makefile psucrypt.c typescript
