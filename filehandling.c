@@ -8,13 +8,45 @@
 
 int openPlaintext()
 {
-	FILE * fp;
-	FILE* fopen(char* name, char* mode);
+	FILE * fp = NULL;
+	char c;
+	errno_t err;
 
-	fp = fopen("plaintextt.txt", "r");
+	err = fopen_s(&fp, "plaintext.txt", "r");
+	
+	if(err)
+		return 1;
 
-	if (!fp)
-		return (1);
+	printFile(fp);
 
-	return (0);
+	while (!err && fp != NULL)
+	{
+		c = fgetc(fp);
+		if (feof(fp))
+			break;
+		else
+			printf("%c\n", c);
+	} 
+	
+	if (!err && fp != NULL)
+		fclose(fp);
+
+	return 0;
+}
+
+
+void printFile(FILE * fp)
+{
+	char c;
+
+	do {
+		c = fgetc(fp);
+
+		if (feof(fp))
+			return;
+		else
+			printf("%c\n", c);
+	} while (c != EOF);
+
+	return;
 }
