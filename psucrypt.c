@@ -8,6 +8,7 @@
 
 int main(int argc, char* argv[])
 {
+	char* plaintext;
 	printf("Hello World\n");
 
 	if (openPlaintext() != 0)
