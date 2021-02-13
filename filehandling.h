@@ -3,5 +3,8 @@
 //
 // CS585
 
-int openPlaintext();
+int getPlaintext();
+int getKey();
+FILE * openPlaintext();
+FILE* openKey();
 void printFile(FILE *);

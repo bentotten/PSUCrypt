@@ -9,13 +9,14 @@
 int main(int argc, char* argv[])
 {
 	char* plaintext;
-	printf("Hello World\n");
+	errno_t err;
 
-	if (openPlaintext() != 0)
-	{
-		printf("Error handling file.");
-		return (1);
-	}
+	printf("Hello World\n");	//TODO DELETE ME
+
+	err = getKey();
+	
+	if (err)
+		return err;
 
   return (0);
 }
