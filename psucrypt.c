@@ -13,7 +13,7 @@ int main(int argc, char* argv[])
 
 	if (openPlaintext() != 0)
 	{
-		printf("Error opening file. Does not Exist.");
+		printf("Error handling file.");
 		return (1);
 	}
 
