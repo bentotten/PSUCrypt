@@ -9,7 +9,7 @@
 int getKey()
 {
 	FILE* fp = NULL;
-	unsigned long int key;
+	unsigned long long int key;
 	int err;
 
 	// Open File
@@ -20,7 +20,7 @@ int getKey()
 	printf("Successfully Opened Document. \n");	//TODO DELETE ME
 
 	// Read key in
-	if (fscanf(fp, "%lx\n", &key) != 1)
+	if (fscanf(fp, "%llx\n", &key) != 1)
 		return 1;
 
 	printf("KEY FROM READKEY: %lx\n", key);
