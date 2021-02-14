@@ -8,13 +8,11 @@
 int getKey()
 {
 	FILE* fp = NULL;
-	/* unsigned long long int key; */
 	unsigned long int key;
 	int size;
 
 	/* Open File */
-	/* fp = fopen("key.txt", "r");	*/
-	 fp = fopen("gradkey.txt", "r");	
+	fp = fopen("key.txt", "r");	
 	if (!fp || fp == 0)
 		return 1;
 
@@ -22,17 +20,14 @@ int getKey()
 	size = getFileSize(fp, "k");
 	printf("SIZE: %d\n", size);
 	fclose(fp);
-	/* fp = fopen("key.txt", "r"); */
-	fp = fopen("gradkey.txt", "r");	
+	fp = fopen("key.txt", "r"); 
 
 	printf("\nSuccessfully Opened File. \n");	/* TODO DELETE ME */
 
 	/* Read key in */
-	/* if (fscanf(fp, "%llx\n", &key) != 1) */
 	if (fscanf(fp, "%lx\n", &key) != 1)
 		return 1;
 
-	/* printf("KEY FROM READKEY: %llx\n", key); */
 	printf("KEY FROM READKEY: %lx\n", key);
 
 	fclose(fp);
