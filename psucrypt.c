@@ -14,7 +14,7 @@ int main(int argc, char* argv[])
 	printf("Hello World\n");	/* TODO DELETE ME */
 
 	key = getKey();
-	printf("KEY FROM READKEY: %lx\n", key);
+	printf("KEY FROM GETKEY: %lx\n", key);	/*TODO DELETE ME*/
 	if (key == 1)
 		return key;
 
