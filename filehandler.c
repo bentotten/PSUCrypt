@@ -8,7 +8,8 @@
 int getKey()
 {
 	FILE* fp = NULL;
-	unsigned long long int key;
+	//unsigned long long int key;
+	unsigned long int key;
 	int size;
 
 	// Open File
