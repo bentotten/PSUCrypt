@@ -28,10 +28,12 @@ int getKey()
 	printf("Successfully Opened File. \n");	//TODO DELETE ME
 
 	// Read key in
-	if (fscanf(fp, "%llx\n", &key) != 1)
+	//if (fscanf(fp, "%llx\n", &key) != 1)
+	if (fscanf(fp, "%lx\n", &key) != 1)
 		return 1;
 
-	printf("KEY FROM READKEY: %llx\n", key);
+	//printf("KEY FROM READKEY: %llx\n", key);
+	printf("KEY FROM READKEY: %lx\n", key);
 
 	fclose(fp);
 
