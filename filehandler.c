@@ -13,8 +13,8 @@ int getKey()
 	int size;
 
 	/* Open File */
-	fp = fopen("key.txt", "r");	
-	/* fp = fopen("gradkey.txt", "r");	*/
+	/* fp = fopen("key.txt", "r");	*/
+	 fp = fopen("gradkey.txt", "r");	
 	if (!fp || fp == 0)
 		return 1;
 
@@ -25,7 +25,7 @@ int getKey()
 	/* fp = fopen("key.txt", "r"); */
 	fp = fopen("gradkey.txt", "r");	
 
-	printf("Successfully Opened File. \n");	/* TODO DELETE ME */
+	printf("\nSuccessfully Opened File. \n");	/* TODO DELETE ME */
 
 	/* Read key in */
 	/* if (fscanf(fp, "%llx\n", &key) != 1) */
@@ -61,7 +61,7 @@ void printFile(FILE* fp)
 
 int getFileSize(FILE * fp, char * flag)
 {
-	int i;
+	int i = 0;
 	char c;
 
 	/* Check if for hex key or not*/
@@ -70,8 +70,6 @@ int getFileSize(FILE * fp, char * flag)
 		printf("\nI'm a key\n");
 		i = -2;	/* Compensated for the 0x at the beginning of the file */
 	}
-	else
-		i = 0;
 
 	if (!fp || fp == 0)
 		return 1;
