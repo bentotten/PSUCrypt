@@ -112,8 +112,10 @@ int getFileSize(FILE* fp, char* flag)
 	while (fp != NULL)
 	{
 		if(fgetc(fp))
+		{
 			if (feof(fp))
 				break;
+		}
 		else
 			++i;
 	}
