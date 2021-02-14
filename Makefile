@@ -1,4 +1,4 @@
-FLAGS = -ansi -pedantic -O0 -Wall
+CFLAGS = -ansi -pedantic -O0 -Wall
 DFLAGS = -g
 PROGS = psucrypt a.out
 
