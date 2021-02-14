@@ -5,12 +5,10 @@
 
 #include "psucrypt.h"
 
-int getKey(char key[])
+int getKey(unsigned char key[])
 {
 	FILE* fp = NULL;
-	//unsigned long int key = 1;
 	int size;
-	int byte_size = 1;
 
 	/* Open File */
 	fp = fopen("gradkey.txt", "r");	
@@ -23,26 +21,23 @@ int getKey(char key[])
 	fseek(fp, 0, SEEK_SET);	/* Return to beginning of file */
 	printf("\nSuccessfully Opened File. \n");	/* TODO DELETE ME */
 
-	/* Read key in */
-	/*if (fscanf(fp, "%lx\n", &key) != 1)
-		return 1;
-	*/
-
+	/* Read in key */
 	readKey(fp, key);
 
 	printf("\nKEY FROM READKEY: %s\n", key); /*TODO DELETE ME*/
 
 	fclose(fp);
 
-	return key;
+	return 0;
 }
 
 
-void readKey(FILE* fp, char key[])
+void readKey(FILE* fp, unsigned char key[])
 {
 	char c;
+	int i;
 
-	for (int i = 0; i < 22 && (fp != NULL); ++i)
+	for (i = 0; i < 22 && (fp != NULL); ++i)
 	{
 		c = fgetc(fp);
 		if (feof(fp))
