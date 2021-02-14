@@ -85,16 +85,16 @@ int readPlaintext(FILE * fp, unsigned char * plaintext)
 
 	while(fp)
 	{
-		if (c < 7)
+		if (c < 8)
 		{
 			if (feof(fp))
 			{
 				/* Apply padding */
-				if (c == 7)
+				if (c == 8)
 					return 2;	/* Needs a full block of padding */
 				else
 				{
-					while (c < 7)
+					while (c < 8)
 					{
 						plaintext[c] = (unsigned char)"0";
 						++c;
