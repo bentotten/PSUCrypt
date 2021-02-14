@@ -23,7 +23,7 @@ int getKey()
 	if (fscanf(fp, "%llx\n", &key) != 1)
 		return 1;
 
-	printf("KEY FROM READKEY: %lx\n", key);
+	printf("KEY FROM READKEY: %llx\n", key);
 
 	fclose(fp);
 
