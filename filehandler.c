@@ -68,7 +68,6 @@ int getFileSize(FILE * fp, char * flag)
 	if (!strcmp(flag, "k"))
 	{
 		printf("\nI'm a key\n");
-		i = -2;	/* Compensated for the 0x at the beginning of the file */
 	}
 
 	if (!fp || fp == 0)
