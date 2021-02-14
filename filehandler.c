@@ -95,9 +95,9 @@ int readPlaintext(FILE * fp, unsigned char * plaintext)
 					return 2;	/* Needs a full block of padding */
 				else
 				{
-					for (c; c < 9; ++c)
+					for (int i = c; i < 9; ++i)
 					{
-						plaintext[c] = (unsigned char)"0";
+						plaintext[i] = (unsigned char)"0";
 					}
 					return 0;
 				}
