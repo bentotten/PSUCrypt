@@ -16,9 +16,9 @@ int main(int argc, char* argv[])
 	printf("Running...\n");	/* TODO DELETE ME */
 
 	if (getKey(key, &keysize) != 0)
-		return (1);
+		printf("Key fetch error: %s", key);
 	if (getPlaintext(plaintext, &textsize) != 0)
-		return (1);
+		printf("plaintext fetch error: %s", plaintext);
 
 	printf("Keysize: %d\nTextsize: %d\n", keysize, textsize);
 
