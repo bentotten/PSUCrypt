@@ -29,6 +29,7 @@ int getKey()
 		return 1;
 
 	printf("KEY FROM READKEY: %lx\n", key);
+	printf("SIZE: %d", sizeof(key));
 
 	fclose(fp);
 
@@ -63,6 +64,7 @@ int getFileSize(FILE * fp, char * flag)
 	if (!strcmp(flag, "k"))
 	{
 		printf("\nI'm a key\n");
+		int i = -3;
 	}
 
 	if (!fp || fp == 0)
@@ -79,6 +81,11 @@ int getFileSize(FILE * fp, char * flag)
 			++i;
 		}
 	}
+
+	if (i > 19)
+		printf("\nI'm the 80 bit key\n");
+	else
+		printf("\nI'm the 64 bit key\n");
 
 	return i;
 }
