@@ -7,14 +7,17 @@
 
 int main(int argc, char* argv[])
 {
-	/* char * plaintext; */
+	unsigned char * plaintext = NULL;
 	unsigned char key[21] = "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0";	/*80 bit key; Extra element for terminating character*/
 	int keysize = 0;
+	int textsize = 0;
 
 
 	printf("Running...\n");	/* TODO DELETE ME */
 
 	if (getKey(key, &keysize) != 0)
+		return (1);
+	if (getPlaintext(plaintext, &textsize) != 0)
 		return (1);
 
   return (0);

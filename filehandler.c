@@ -49,6 +49,39 @@ void readKey(FILE* fp, unsigned char * key)
 }
 
 
+
+int getPlaintext(unsigned char* plaintext, int* textsize)
+{
+	FILE* fp = NULL;
+
+	/* Open File */
+	fp = fopen("plaintext.txt", "r");
+	if (!fp || fp == 0)
+		return 1;
+
+	/* Check if 64 bit key or 80 bit key and send back to main by reference */
+	*textsize = getFileSize(fp, "p");
+	fseek(fp, 0, SEEK_SET);	/* Return to beginning of file */
+
+	/* Read in key */
+	readPlaintext(fp, plaintext);
+
+	fclose(fp);
+
+	return 0;
+}
+
+
+void readPlaintext(FILE * fp, char* plaintext)
+{
+	char temp[100];
+	char tempblock[65];
+
+	printf("\nREADPLAINTEXT\n");
+	return;
+}
+
+
 void printFile(FILE* fp)
 {
 	char c;
@@ -67,7 +100,7 @@ void printFile(FILE* fp)
 	return;
 }
 
-int getFileSize(FILE * fp, char * flag)
+int getFileSize(FILE* fp, char* flag)
 {
 	int i = 1;
 	char c;

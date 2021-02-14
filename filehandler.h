@@ -9,9 +9,14 @@ TODO:
 - Get key in hex to read in correctly
 */
 
-int getPlaintext();
+/* Keys */
 int getKey(unsigned char *, int *);
-void printFile(FILE*);
-int getFileSize(FILE*, char *);
-void readKey(FILE*, unsigned char *);
+void readKey(FILE*, unsigned char*);
 
+/* Plaintext */
+int getPlaintext(unsigned char*, int*);
+void readPlaintext(FILE*, char*);
+
+/* Utility */
+void printFile(FILE*);
+int getFileSize(FILE*, char*);
