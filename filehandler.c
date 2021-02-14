@@ -13,8 +13,7 @@ int getKey()
 	int err;
 
 	// Open File
-	err = fopen_s(&fp, "key.txt", "r");
-	fp = fopen("test.txt", "r");	//TODO Delete me
+	fp = fopen("key.txt", "r");	//TODO Delete me
 	if (!fp || fp == 0)
 		return 1;
 
