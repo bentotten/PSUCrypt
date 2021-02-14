@@ -9,7 +9,7 @@
 #include <ctype.h>
 #include <string.h>
 
-#include "filehandling.h"
+#include "filehandler.h"
 
 int main(int argc, char* argv[]);
 

@@ -10,10 +10,6 @@ TODO:
 */
 
 int getPlaintext();
-FILE * openPlaintext();
-
 int getKey();
-FILE* openKey();
-int readKey(FILE*);
-
 void printFile(FILE*);
+
