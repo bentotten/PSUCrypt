@@ -7,7 +7,7 @@
 
 int main(int argc, char* argv[])
 {
-	unsigned char plaintextBlock[9]; // 64 bits (+ delimiter)
+	unsigned char plaintextBlock[9]; /* 64 bits (+ delimiter) */
 	unsigned char key[21] = "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0";	
 	int keysize = 0;
 	int textsize = 0;
