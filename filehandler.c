@@ -14,14 +14,14 @@ int getKey()
 
 	// Open File
 	//err = fopen_s(&fp, "key.txt", "r");
-	err = fopen_s(&fp, "test.txt", "r");	//TODO Delete me
-	if (err || !fp || fp == 0)
+	fp = fopen("test.txt", "r");	//TODO Delete me
+	if (!fp || fp == 0)
 		return 1;
 
 	printf("Successfully Opened Document. \n");	//TODO DELETE ME
 
 	// Read key in
-	if (fscanf_s(fp, "%lx\n", &key, 16) != 1)
+	if (fscanf(fp, "%lx\n", &key) != 1)
 		return 1;
 
 	printf("KEY FROM READKEY: %lx\n", key);
