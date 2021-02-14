@@ -8,15 +8,14 @@
 int main(int argc, char* argv[])
 {
 	char* plaintext;
-	long unsigned int key;
+	unsigned char key[21] = "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0";	/*80 bit key; Extra element for terminating character*/
 	int err;
 
 	printf("Hello World\n");	/* TODO DELETE ME */
 
-	key = getKey();
-	printf("KEY FROM GETKEY: %lx\n", key);	/*TODO DELETE ME*/
-	if (key == 1)
-		return key;
+	err = getKey(&key);
+	printf("\nKEY FROM GETKEY: %s\n", key); /*TODO DELETE ME*/
+
 
   return (0);
 }

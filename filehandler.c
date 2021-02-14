@@ -5,34 +5,57 @@
 
 #include "psucrypt.h"
 
-int getKey()
+int getKey(char key[])
 {
 	FILE* fp = NULL;
-	unsigned long int key;
+	//unsigned long int key = 1;
 	int size;
+	int byte_size = 1;
 
 	/* Open File */
-	fp = fopen("key.txt", "r");	
+	fp = fopen("gradkey.txt", "r");	
 	if (!fp || fp == 0)
 		return 1;
 
 	/* Check if 64 bit key or 80 bit key */
 	size = getFileSize(fp, "k");
 	printf("SIZE: %d\n", size);
-	fclose(fp);
-	fp = fopen("key.txt", "r"); 
-
+	fseek(fp, 0, SEEK_SET);	/* Return to beginning of file */
 	printf("\nSuccessfully Opened File. \n");	/* TODO DELETE ME */
 
 	/* Read key in */
-	if (fscanf(fp, "%lx\n", &key) != 1)
+	/*if (fscanf(fp, "%lx\n", &key) != 1)
 		return 1;
+	*/
 
-	printf("KEY FROM READKEY: %lx\n", key); /*TODO DELETE ME*/
+	readKey(fp, key);
+
+	printf("\nKEY FROM READKEY: %s\n", key); /*TODO DELETE ME*/
 
 	fclose(fp);
 
 	return key;
+}
+
+
+void readKey(FILE* fp, char key[])
+{
+	char c;
+
+	for (int i = 0; i < 22 && (fp != NULL); ++i)
+	{
+		c = fgetc(fp);
+		if (feof(fp))
+			return;
+		else
+			if (i != 0 && i != 1)
+			{
+				printf("%c", c);
+				key[i-2] = c;
+			}
+	}
+
+	return;
 }
 
 
@@ -56,15 +79,12 @@ void printFile(FILE* fp)
 
 int getFileSize(FILE * fp, char * flag)
 {
-	int i = 0;
+	int i = 1;
 	char c;
 
 	/* Check if for hex key or not*/
 	if (!strcmp(flag, "k"))
-	{
 		printf("\nI'm a key\n");
-		i = -3;
-	}
 
 	if (!fp || fp == 0)
 		return 1;
@@ -81,7 +101,7 @@ int getFileSize(FILE * fp, char * flag)
 		}
 	}
 
-	if (i > 19)
+	if (i >= 20)
 		printf("\nI'm the 80 bit key\n");
 	else
 		printf("\nI'm the 64 bit key\n");
