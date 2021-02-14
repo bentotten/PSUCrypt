@@ -13,8 +13,8 @@ int getKey()
 	int size;
 
 	// Open File
-	fp = fopen("key.txt", "r");	
-	//fp = fopen("gradkey.txt", "r");	
+	//fp = fopen("key.txt", "r");	
+	fp = fopen("gradkey.txt", "r");	
 	if (!fp || fp == 0)
 		return 1;
 
@@ -22,8 +22,8 @@ int getKey()
 	size = getFileSize(fp, "k");
 	printf("SIZE: %d\n", size);
 	fclose(fp);
-	fp = fopen("key.txt", "r");
-	//fp = fopen("gradkey.txt", "r");	
+	//fp = fopen("key.txt", "r");
+	fp = fopen("gradkey.txt", "r");	
 
 	printf("Successfully Opened File. \n");	//TODO DELETE ME
 
