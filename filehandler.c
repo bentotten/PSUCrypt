@@ -10,7 +10,7 @@ int getKey()
 {
 	FILE* fp = NULL;
 	unsigned long int key;
-	errno_t err;
+	int err;
 
 	// Open File
 	//err = fopen_s(&fp, "key.txt", "r");
