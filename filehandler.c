@@ -5,7 +5,7 @@
 
 #include "psucrypt.h"
 
-int getKey(unsigned char key[])
+int getKey(unsigned char * key)
 {
 	FILE* fp = NULL;
 	int size;
