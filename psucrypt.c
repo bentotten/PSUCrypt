@@ -20,7 +20,8 @@ int main(int argc, char* argv[])
 	if (getPlaintext(plaintext, &textsize) != 0)
 		printf("plaintext fetch error: %s", plaintext);
 
-	printf("Keysize: %d\nTextsize: %d\n", keysize, textsize);
+	printf("\nKeysize: %d", keysize);
+	printf("\nTextsize:% d\n", textsize);
 
   return (0);
 }
