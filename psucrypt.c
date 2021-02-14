@@ -7,7 +7,7 @@
 
 int main(int argc, char* argv[])
 {
-	char * plaintext;
+	/* char * plaintext; */
 	unsigned char key[21] = "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0";	/*80 bit key; Extra element for terminating character*/
 
 
