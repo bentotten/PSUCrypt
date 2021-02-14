@@ -12,4 +12,5 @@ TODO:
 int getPlaintext();
 int getKey();
 void printFile(FILE*);
+int getFileSize(FILE*, char *);
 
