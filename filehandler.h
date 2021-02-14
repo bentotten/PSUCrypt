@@ -10,7 +10,7 @@ TODO:
 */
 
 int getPlaintext();
-int getKey(unsigned char *);
+int getKey(unsigned char *, int *);
 void printFile(FILE*);
 int getFileSize(FILE*, char *);
 void readKey(FILE*, unsigned char *);

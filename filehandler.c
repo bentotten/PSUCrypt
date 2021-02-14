@@ -5,10 +5,9 @@
 
 #include "psucrypt.h"
 
-int getKey(unsigned char * key)
+int getKey(unsigned char * key, int * keysize)
 {
 	FILE* fp = NULL;
-	int size;
 
 	/* Open File */
 	fp = fopen("gradkey.txt", "r");	
@@ -16,15 +15,13 @@ int getKey(unsigned char * key)
 		return 1;
 
 	/* Check if 64 bit key or 80 bit key */
-	size = getFileSize(fp, "k");
-	printf("SIZE: %d\n", size);
+	*keysize = getFileSize(fp, "k");
+	printf("SIZE: %d\n", *keysize);
 	fseek(fp, 0, SEEK_SET);	/* Return to beginning of file */
-	printf("\nSuccessfully Opened File. \n");	/* TODO DELETE ME */
 
 	/* Read in key */
 	readKey(fp, key);
 
-	printf("\nKEY FROM READKEY: %s\n", key); /*TODO DELETE ME*/
 
 	fclose(fp);
 
