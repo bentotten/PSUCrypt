@@ -13,7 +13,7 @@ int main(int argc, char* argv[])
 
 	printf("Hello World\n");	/* TODO DELETE ME */
 
-	if (getKey(&key) != 0)
+	if (getKey(key) != 0)
 		return (1);
 
 	printf("\nKEY FROM  GETKEY: %s\n", key); /*TODO DELETE ME*/
