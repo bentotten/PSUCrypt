@@ -32,7 +32,7 @@ int getKey(unsigned char * key)
 }
 
 
-void readKey(FILE* fp, unsigned char key[])
+void readKey(FILE* fp, unsigned char * key)
 {
 	char c;
 	int i;

@@ -10,8 +10,8 @@ TODO:
 */
 
 int getPlaintext();
-int getKey(unsigned char []);
+int getKey(unsigned char *);
 void printFile(FILE*);
 int getFileSize(FILE*, char *);
-void readKey(FILE*, unsigned char []);
+void readKey(FILE*, unsigned char *);
 
