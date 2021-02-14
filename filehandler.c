@@ -81,8 +81,6 @@ int readPlaintext(FILE * fp, unsigned char * plaintext)
 
 	fseek(fp, 0, SEEK_SET);	/* Return to beginning of file */
 
-	plaintext[8] = (unsigned char)"\0";
-
 	while(fp)
 	{
 		if (c < 8)
