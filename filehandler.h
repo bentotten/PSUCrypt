@@ -14,8 +14,9 @@ int getKey(unsigned char *, int *);
 void readKey(FILE*, unsigned char*);
 
 /* Plaintext */
-int getPlaintext(unsigned char*, int*);
-void readPlaintext(FILE*, unsigned char*);
+int getPlaintext(unsigned char*);
+int readPlaintext(FILE*, unsigned char*);
+int getTextSize();
 
 /* Utility */
 void printFile(FILE*);

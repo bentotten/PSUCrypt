@@ -33,6 +33,8 @@ void readKey(FILE* fp, unsigned char * key)
 	char c;
 	int i;
 
+	fseek(fp, 0, SEEK_SET);	/* Return to beginning of file */
+
 	for (i = 0; i < 22 && (fp != NULL); ++i)
 	{
 		c = fgetc(fp);
@@ -50,7 +52,7 @@ void readKey(FILE* fp, unsigned char * key)
 
 
 
-int getPlaintext(unsigned char* plaintext, int* textsize)
+int getPlaintext(unsigned char* plaintext)
 {
 	FILE* fp = NULL;
 
@@ -59,8 +61,6 @@ int getPlaintext(unsigned char* plaintext, int* textsize)
 	if (!fp || fp == 0)
 		return 1;
 
-	/* Check if 64 bit key or 80 bit key and send back to main by reference */
-	*textsize = getFileSize(fp, "p");
 	fseek(fp, 0, SEEK_SET);	/* Return to beginning of file */
 
 	/* Read in key */
@@ -72,15 +72,67 @@ int getPlaintext(unsigned char* plaintext, int* textsize)
 }
 
 
-void readPlaintext(FILE * fp, unsigned char* plaintext)
+/* Reads in plaintext 64 bits at a time to be encrypted */
+int readPlaintext(FILE * fp, unsigned char * plaintext)
 {
-	/*
-	char temp[100];
-	char tempblock[65];
-	*/
+	int c = 0;
 
-	printf("\nREADPLAINTEXT\n");
-	return;
+	fseek(fp, 0, SEEK_SET);	/* Return to beginning of file */
+
+	while(fp)
+	{
+		if (c < 8)
+		{
+			plaintext[c] = fgetc(fp);
+			++c;
+
+			if (feof(fp))
+			{
+				/* Apply padding */
+				if (c == 9)
+				{
+					plaintext[c] = "\0";
+					return 2;	/* Needs a full block of padding */
+				}
+				else
+				{
+					for (c; c < 9; ++c)
+					{
+						plaintext[c] = "0";
+					}
+					plaintext[c] = "\0";
+					return 0;
+				}
+
+			}
+		}
+		else
+		{
+			plaintext[c] = "\0";
+			return 0;
+		}
+
+	}
+
+	return 1;
+}
+
+
+int getTextSize()
+{
+	FILE* fp = NULL;
+	int size;
+
+	fp = fopen("plaintext.txt", "r");
+	if (!fp || fp == 0)
+		return -1;
+
+	/* Check if 64 bit key or 80 bit key and send back to main by reference */
+	size = getFileSize(fp, "p");
+
+	fclose(fp);
+
+	return size;
 }
 
 
