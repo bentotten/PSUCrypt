@@ -13,9 +13,10 @@ int main(int argc, char* argv[])
 
 	printf("Hello World\n");	/* TODO DELETE ME */
 
-	err = getKey();
-	if (err)
-		return err;
+	key = getKey();
+	printf("KEY FROM READKEY: %lx\n", key);
+	if (key == 1)
+		return key;
 
   return (0);
 }

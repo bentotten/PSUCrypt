@@ -28,12 +28,11 @@ int getKey()
 	if (fscanf(fp, "%lx\n", &key) != 1)
 		return 1;
 
-	printf("KEY FROM READKEY: %lx\n", key);
-	printf("SIZE: %d", sizeof(key));
+	printf("KEY FROM READKEY: %lx\n", key); /*TODO DELETE ME*/
 
 	fclose(fp);
 
-	return 0;
+	return key;
 }
 
 
