@@ -9,12 +9,12 @@
 int main(int argc, char* argv[])
 {
 	char* plaintext;
+	long unsigned int key;
 	errno_t err;
 
 	printf("Hello World\n");	//TODO DELETE ME
 
 	err = getKey();
-	
 	if (err)
 		return err;
 
