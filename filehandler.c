@@ -77,6 +77,7 @@ int readPlaintext(FILE * fp, unsigned char * plaintext)
 {
 	int c = 0;
 
+
 	fseek(fp, 0, SEEK_SET);	/* Return to beginning of file */
 
 	plaintext[9] = (unsigned char)"\0";
@@ -95,9 +96,10 @@ int readPlaintext(FILE * fp, unsigned char * plaintext)
 					return 2;	/* Needs a full block of padding */
 				else
 				{
-					for (int i = c; i < 9; ++i)
+					while(c<9)
 					{
-						plaintext[i] = (unsigned char)"0";
+						plaintext[c] = (unsigned char)"0";
+						++c;
 					}
 					return 0;
 				}
