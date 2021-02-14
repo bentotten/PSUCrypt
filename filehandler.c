@@ -21,7 +21,7 @@ int getKey(unsigned char * key, int * keysize)
 	/* Read in key */
 	readKey(fp, key);
 
-
+	clearerr(fp);
 	fclose(fp);
 
 	return 0;
@@ -61,11 +61,12 @@ int getPlaintext(unsigned char* plaintext)
 	if (!fp || fp == 0)
 		return 1;
 
-	fseek(fp, 0, SEEK_SET);	/* Return to beginning of file */
+	fseek(fp, 0, SEEK_SET);	/* Return to beginning of file  TODO DELETE ME*/  
 
 	/* Read in key */
 	readPlaintext(fp, plaintext);
 
+	clearerr(fp);
 	fclose(fp);
 
 	return 0;
@@ -80,23 +81,20 @@ int readPlaintext(FILE * fp, unsigned char * plaintext)
 
 	fseek(fp, 0, SEEK_SET);	/* Return to beginning of file */
 
-	plaintext[9] = (unsigned char)"\0";
+	plaintext[8] = (unsigned char)"\0";
 
 	while(fp)
 	{
-		if (c < 8)
+		if (c < 7)
 		{
-			plaintext[c] = fgetc(fp);
-			++c;
-
 			if (feof(fp))
 			{
 				/* Apply padding */
-				if (c == 9)
+				if (c == 7)
 					return 2;	/* Needs a full block of padding */
 				else
 				{
-					while(c<9)
+					while (c < 7)
 					{
 						plaintext[c] = (unsigned char)"0";
 						++c;
@@ -104,6 +102,9 @@ int readPlaintext(FILE * fp, unsigned char * plaintext)
 					return 0;
 				}
 			}
+
+			plaintext[c] = fgetc(fp);
+			++c;
 		}
 		else
 			return 0;
