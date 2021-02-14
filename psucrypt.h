@@ -1,8 +1,7 @@
-// PSU CRYPT
-// Written by Ben Totten
-//
-// CS585
-// Last Modified: 2-9-2021
+/*	PSU CRYPT
+	Written by Ben Totten
+	CS585
+*/
 
 #include <stdio.h>
 #include <stdlib.h>

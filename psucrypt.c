@@ -1,8 +1,7 @@
-// PSU CRYPT
-// Written by Ben Totten
-//
-// CS585
-// Last Modified: 2-9-2021
+/*	PSU CRYPT
+	Written by Ben Totten
+	CS585
+*/
 
 #include "psucrypt.h"
 
@@ -12,7 +11,7 @@ int main(int argc, char* argv[])
 	long unsigned int key;
 	int err;
 
-	printf("Hello World\n");	//TODO DELETE ME
+	printf("Hello World\n");	/* TODO DELETE ME */
 
 	err = getKey();
 	if (err)

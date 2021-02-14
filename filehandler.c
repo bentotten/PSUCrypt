@@ -1,38 +1,38 @@
-// PSU CRYPT
-// Written by Ben Totten
-//
-// CS585
+/*	PSU CRYPT
+	Written by Ben Totten
+	CS585
+*/
 
 #include "psucrypt.h"
 
 int getKey()
 {
 	FILE* fp = NULL;
-	//unsigned long long int key;
+	/* unsigned long long int key; */
 	unsigned long int key;
 	int size;
 
-	// Open File
-	//fp = fopen("key.txt", "r");	
-	fp = fopen("gradkey.txt", "r");	
+	/* Open File */
+	fp = fopen("key.txt", "r");	
+	/* fp = fopen("gradkey.txt", "r");	*/
 	if (!fp || fp == 0)
 		return 1;
 
-	// Check if 64 bit key or 80 bit key
+	/* Check if 64 bit key or 80 bit key */
 	size = getFileSize(fp, "k");
 	printf("SIZE: %d\n", size);
 	fclose(fp);
-	//fp = fopen("key.txt", "r");
+	/* fp = fopen("key.txt", "r"); */
 	fp = fopen("gradkey.txt", "r");	
 
-	printf("Successfully Opened File. \n");	//TODO DELETE ME
+	printf("Successfully Opened File. \n");	/* TODO DELETE ME */
 
-	// Read key in
-	//if (fscanf(fp, "%llx\n", &key) != 1)
+	/* Read key in */
+	/* if (fscanf(fp, "%llx\n", &key) != 1) */
 	if (fscanf(fp, "%lx\n", &key) != 1)
 		return 1;
 
-	//printf("KEY FROM READKEY: %llx\n", key);
+	/* printf("KEY FROM READKEY: %llx\n", key); */
 	printf("KEY FROM READKEY: %lx\n", key);
 
 	fclose(fp);
@@ -59,10 +59,19 @@ void printFile(FILE* fp)
 	return;
 }
 
-int getFileSize(FILE * fp, char * flag )
+int getFileSize(FILE * fp, char * flag)
 {
-	int i = 0;
+	int i;
 	char c;
+
+	/* Check if for hex key or not*/
+	if (!strcmp(flag, "k"))
+	{
+		printf("\nI'm a key\n");
+		i = -2;	/* Compensated for the 0x at the beginning of the file */
+	}
+	else
+		i = 0;
 
 	if (!fp || fp == 0)
 		return 1;
@@ -77,12 +86,6 @@ int getFileSize(FILE * fp, char * flag )
 			printf("%c", c);
 			++i;
 		}
-	}
-
-	if (!strcmp(flag, "k"))
-	{
-		printf("\nI'm a key\n");
-		i -= 2;	// Compensated for the 0x at the beginning of the file
 	}
 
 	return i;

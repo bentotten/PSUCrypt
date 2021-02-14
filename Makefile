@@ -6,7 +6,7 @@ PROGS = psucrypt a.out
 all: psucrypt
 
 psucrypt: psucrypt.c
-	gcc *.c $(CFLAGS) $(DFLAGS) -o psucrypt
+	gcc *.c $(CFLAGS_ISO90) $(DFLAGS) -o psucrypt
 
 clean:
 	rm -f $(PROGS) *.o
