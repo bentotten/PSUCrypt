@@ -72,10 +72,12 @@ int getPlaintext(unsigned char* plaintext, int* textsize)
 }
 
 
-void readPlaintext(FILE * fp, char* plaintext)
+void readPlaintext(FILE * fp, unsigned char* plaintext)
 {
+	/*
 	char temp[100];
 	char tempblock[65];
+	*/
 
 	printf("\nREADPLAINTEXT\n");
 	return;
@@ -103,16 +105,15 @@ void printFile(FILE* fp)
 int getFileSize(FILE* fp, char* flag)
 {
 	int i = 1;
-	char c;
 
 	if (!fp || fp == 0)
 		return 1;
 
 	while (fp != NULL)
 	{
-		c = fgetc(fp);
-		if (feof(fp))
-			break;
+		if(fgetc(fp))
+			if (feof(fp))
+				break;
 		else
 			++i;
 	}

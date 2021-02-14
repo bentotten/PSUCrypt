@@ -20,5 +20,7 @@ int main(int argc, char* argv[])
 	if (getPlaintext(plaintext, &textsize) != 0)
 		return (1);
 
+	printf("Keysize: %d\nTextsize: %d\n", keysize, textsize);
+
   return (0);
 }
