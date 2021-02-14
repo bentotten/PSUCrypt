@@ -12,14 +12,10 @@ int main(int argc, char* argv[])
 	int keysize = 0;
 
 
-	printf("Hello World\n");	/* TODO DELETE ME */
+	printf("Running...\n");	/* TODO DELETE ME */
 
 	if (getKey(key, &keysize) != 0)
 		return (1);
-	printf("\nSIZE: %d\n", keysize);
-
-	printf("\nKEY FROM  GETKEY: %s\n", key); /*TODO DELETE ME*/
-
 
   return (0);
 }

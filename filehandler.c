@@ -14,9 +14,8 @@ int getKey(unsigned char * key, int * keysize)
 	if (!fp || fp == 0)
 		return 1;
 
-	/* Check if 64 bit key or 80 bit key */
+	/* Check if 64 bit key or 80 bit key and send back to main by reference */
 	*keysize = getFileSize(fp, "k");
-	printf("SIZE: %d\n", *keysize);
 	fseek(fp, 0, SEEK_SET);	/* Return to beginning of file */
 
 	/* Read in key */
@@ -42,7 +41,6 @@ void readKey(FILE* fp, unsigned char * key)
 		else
 			if (i != 0 && i != 1)
 			{
-				printf("%c", c);
 				key[i-2] = c;
 			}
 	}
@@ -74,10 +72,6 @@ int getFileSize(FILE * fp, char * flag)
 	int i = 1;
 	char c;
 
-	/* Check if for hex key or not*/
-	if (!strcmp(flag, "k"))
-		printf("\nI'm a key\n");
-
 	if (!fp || fp == 0)
 		return 1;
 
@@ -87,16 +81,8 @@ int getFileSize(FILE * fp, char * flag)
 		if (feof(fp))
 			break;
 		else
-		{
-			printf("%c", c);
 			++i;
-		}
 	}
-
-	if (i >= 20)
-		printf("\nI'm the 80 bit key\n");
-	else
-		printf("\nI'm the 64 bit key\n");
 
 	return i;
 }
