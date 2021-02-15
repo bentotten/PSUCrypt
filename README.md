@@ -13,15 +13,37 @@ A 64 bit key can also be used.
 6. Continues for 20 rounds
 7. Whiten again by XORing with the key to get the ciphertext.
 
+## Key Generation
+The key is fed into a k sheduler to account for four calls in G() and two calls in F() each round. Because all offsets and round numbers are constant, the subkeys are generated en-masse at the program start.
 
-## Key Scheduler K(x)
-* X is the round number
+One Round:
+
+k0 = K(4* R# + 0) [from the 1st call to the G function]
+k2 = K(4* R# +1)
+k3 = K(4* R#+2)
+k4 = K(4* R#+3)
+k5 = K(4* R#) [from the 2st call to the G function]
+k6 = K(4* R# + 1)
+k7 = K(4* R# + 2)
+k8 = K(4* R# + 3)
+k9 = K(4* R# + 0) [from the F function]
+k10 = K(4* R# + 1)
+k11 = K(4* R# + 2)
+k12 = K(4* R# + 3)
+
+This is done for 20 rounds (16 for a 64 bit key) in order to completely rotate the key three times.
+
+## Key Scheduler K(x) for Encryption
+* x is the round number *4 + an offset. Because this is an 80 bit key, we will never use k_9 or k_10
 1. There will be 12 subkeys in each row.
 2. Label the key (K) by bytes (8 bytes for 64 bit and 10 bytes for 80 bit). Label 0-10 with highest bit as k0.
 3. To encrypt, left rotate the subkey by 1 bit and store new value as K`
-4. Take the round number (x) and mod it by 10 (or 8 if a 64 bit key). 
-5. Take that output as the byte of K` to swap with K.
-*/
+4. Take the round number (x) and mod it by 8 (even with the 80 bit key). 
+5. Take that output as the labeled byte of K`. So if x mod 8 = 1, take K_1`.
+6. Return that sub K` value.
+
+## Key Scheduler K(x) for Decryption
+The key scheduler, but with bits rotated right instead. For this program, because this is a feistel cipher, the subkey table is generated like normal and the rows are just run in reverse.
 
 ## F Box
 1. Construct four values (T_0, T_1, F_0, and F_1) and return the last two.
@@ -41,7 +63,8 @@ A 64 bit key can also be used.
 6. g6 is the same, but with g5 and k3 and then g4.
 7. concatenate g5 and g6 (for 16 bits) and return the value
 
-## S-Box
+## S-Box / F-table
+Dr Mocas prescribes the SKIPJACK F-table in hexadecimal. The high order 4 bits of input index the row and the low order 4 bits index the column.
 		   
 
 ## PADDING 
