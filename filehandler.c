@@ -35,14 +35,12 @@ void readKey(FILE* fp, unsigned char * key)
 
 	fseek(fp, 0, SEEK_SET);	/* Return to beginning of file */
 
-	for (i = 0; i < 22 && (fp != NULL); ++i)
-	{
+	for (i = 0; i < 22 && (fp != NULL); ++i) {
 		c = fgetc(fp);
 		if (feof(fp))
 			return;
 		else
-			if (i != 0 && i != 1)
-			{
+			if (i != 0 && i != 1) {
 				key[i-2] = c;
 			}
 	}
@@ -81,26 +79,20 @@ int readPlaintext(FILE * fp, unsigned char * plaintext)
 
 	fseek(fp, 0, SEEK_SET);	/* Return to beginning of file */
 
-	while(fp)
-	{
-		if (c < 8)
-		{
-			if (feof(fp))
-			{
+	while(fp) {
+		if (c < 8) {
+			if (feof(fp)) {
 				/* Apply padding */
 				if (c == 8)
 					return 2;	/* Needs a full block of padding */
-				else
-				{
-					while (c < 8)
-					{
+				else {
+					while (c < 8) {
 						plaintext[c] = (unsigned char)"0";
 						++c;
 					}
 					return 0;
 				}
 			}
-
 			plaintext[c] = fgetc(fp);
 			++c;
 		}
@@ -135,8 +127,7 @@ void printFile(FILE* fp)
 
 	printf("Document:\n");
 
-	while (fp != NULL)
-	{
+	while (fp != NULL) {
 		c = fgetc(fp);
 		if (feof(fp))
 			break;
@@ -154,10 +145,8 @@ int getFileSize(FILE* fp, char* flag)
 	if (!fp || fp == 0)
 		return 1;
 
-	while (fp != NULL)
-	{
-		if(fgetc(fp))
-		{
+	while (fp != NULL) {
+		if(fgetc(fp)) {
 			if (feof(fp))
 				break;
 		}

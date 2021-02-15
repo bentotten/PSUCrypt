@@ -3,12 +3,6 @@
 	CS585
 */
 
-/*
-TODO:
-- Read in plaintext (currently only prints it)
-- Get key in hex to read in correctly
-*/
-
 /* Keys */
 int getKey(unsigned char *, int *);
 void readKey(FILE*, unsigned char*);

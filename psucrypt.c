@@ -14,11 +14,14 @@
 */
 
 /* Key Scheduler K(x) *//*
+* x is the round number
 1. There will be 12 subkeys in each row.
-2. Divy up key into bytes.
-3. To encrypt, left rotate the key by 1 bit and store new value as K`
-4. Take the key input (x) and mod it by 8 byte of the key (where 0 is the first byte)
+2. Label the key (K) by bytes (8 bytes for 64 bit and 10 bytes for 80 bit). Label 0-10 with highest bit as k0.
+3. To encrypt, left rotate the subkey by 1 bit and store new value as K`
+4. Take the round number (x) and mod it by 10 (or 8 if a 64 bit key). 
+5. Take that output as the byte of K` to swap with K.
 */
+
 
 /* F Box *//*
 1. Construct four values (T_0, T_1, F_0, and F_1) and return the last two.
