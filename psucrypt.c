@@ -39,7 +39,9 @@
 7. concatenate g5 and g6 (for 16 bits) and return the value
 */
 
-/* S-Box */
+/* S-Box *//*
+		   
+*/
 
 /* PADDING *//*
 The last block will need to be padded. 
@@ -75,5 +77,5 @@ int main(int argc, char* argv[])
 	printf("\nKeysize: %d", keysize);
 	printf("\nTextsize:%d\n", textsize);
 
-  return (0);
+  return 0;
 }
