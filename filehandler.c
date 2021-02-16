@@ -87,7 +87,7 @@ int readPlaintext(FILE * fp, unsigned char * plaintext)
 					return 2;	/* Needs a full block of padding */
 				else {
 					while (c < 8) {
-						plaintext[c] = (unsigned char)"0";
+						plaintext[c] = '0';
 						++c;
 					}
 					return 0;
