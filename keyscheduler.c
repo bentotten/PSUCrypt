@@ -12,7 +12,7 @@ int generateSubkeys(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 	int subkeyNumber; /* Inner row: Subkeys */
 	int constant; /* constant that is added onto round number when sending to keyscheduler*/
 	int keygenInput;
-	unsigned char z; /* delete me*/
+	unsigned char z = 'y'; /* delete me*/
 
 	if (initializeTable(subkeyTable) != 0)
 		return 1;
@@ -43,20 +43,36 @@ int generateSubkeys(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 
 	printf("\nChar: %c \nHex: (0x%02X)", z, z);
 
-	printTable(subkeyTable);
+	/* printTable(subkeyTable); */
 
 	return 0;
 }
 
 
+/* We intentionally do not use the 9th and 10th byte of the key*/
 unsigned char K(unsigned char * key, int x)
 {
-	unsigned char shifted[21];
+	unsigned char shifted[21] = "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0";
 	unsigned char subkey = 'z';
+	int byteNumber;
+	unsigned char byte;
 
-	printf("\n Original Key key: %s", key);
+	printf("\nK() - \nOriginal Key: %s", key);
 
-	leftRotate(shifted, key);
+	/***********************************/
+	x = 0;	/* DELETE ME!!!!!!*/
+	/***********************************/
+
+	byteNumber = x % 8;
+	
+	printf("\n0 mod 8 should be 0: %d", byteNumber);
+	printf("\nK[0] should be a: %c", key[byteNumber]);
+	byte = key[byteNumber];
+	printf("\nByte should be a: %c", byte);
+
+	subkey = leftRotate(byte);
+
+	printf("\nSubkey should be a: %c", subkey);
 
 
 	/* printf(" K() key: %s", key); */
@@ -68,18 +84,26 @@ unsigned char K(unsigned char * key, int x)
 
 
 /* Thank you https://www.geeksforgeeks.org/rotate-bits-of-an-integer/ */
-void leftRotate(unsigned char* key, unsigned char * keyPrime)
+unsigned char leftRotate(unsigned char byte)
 {
-	copyKey(keyPrime, key);
+	unsigned char subkey = byte;
+	/*
+	int i;
 
-	(*n << 1) | (*n >> (8 - 1));
-	return;
+	(keyPrime << 1) | (keyPrime >> (8 - 1));
+
+	printf("\nKey: %s \nKey Prime: %s\n", key, keyPrime);
+	*/
+
+	return subkey;
 }
 
 /*Function to right rotate n by d bits*/
 void rightRotate(unsigned char* key, unsigned char* keyPrime)
 {
+	/*
 	(*n >> 1) | (*n << (8 - 1));
+	*/
 	return;
 }
 
@@ -126,6 +150,9 @@ void copyKey(unsigned char* key, unsigned char* keyPrime)
 {
 	int i;
 
-	for(i = 0; i < )
+	for (i = 0; i < KEYLENGTH; ++i) {
+		keyPrime[i] = key[i];
+	}
+
 	return;
 }

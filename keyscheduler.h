@@ -11,7 +11,7 @@
 /* Keys */
 int generateSubkeys(unsigned char* , unsigned char [ROUNDS][COLS]);
 unsigned char K(unsigned char*, int);
-void leftRotate(unsigned char* n, unsigned char*);
+unsigned char leftRotate(unsigned char);
 void rightRotate(unsigned char* n, unsigned char*);
 
 /* Utility */
