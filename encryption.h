@@ -3,4 +3,4 @@
 	CS585
 */
 
-int encrypt(unsigned char*, unsigned char*);
+int encrypt(unsigned char*, unsigned char subkeyTable[ROUNDS][COLS]);
