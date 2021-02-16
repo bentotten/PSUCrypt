@@ -38,15 +38,11 @@ int generateSubkeys(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 			keygenInput = 4 * round + constant;
 
 			/* Send to keyscheduler */
-			/*subkeyTable[round][subkeyNumber] = K(keyPrime, keygenInput); */
+			subkeyTable[round][subkeyNumber] = K(keyPrime, keygenInput); 
 		}
 	}
 
-	subkeyTable[0][0] = K(keyPrime, (4*0+0));
-
-	printf("\nRound 0: (0x %02X)", subkeyTable[0][0]);
-
-	/* printTable(subkeyTable, 'h'); */
+	printTable(subkeyTable, 'h'); 
 
 	return 0;
 }
@@ -63,7 +59,7 @@ unsigned char K(unsigned char * key, int x)
 	int bytePrime;
 
 	byteNumber = x % 8;
-	printf("\nByte number: %d", byteNumber);
+	/* printf("\nByte number: %d", byteNumber); DELETE ME */ 
 
 	switch (byteNumber) {
 	case 0:
@@ -100,10 +96,10 @@ unsigned char K(unsigned char * key, int x)
 	/* DELETE ME */
 	/* printf("\nShifted Key should be ...\n     (0x57)(0x9B)(0xDE)(0x02)(0x46)(0x8A)(0xCF)(0x13)(0x57)(0x9B): ");	
 	printKey(key);
-	*/
 
 	printf("\nByte Prime: %d", bytePrime);
 	printf("\nByte Prime: (0x %02X)", key[bytePrime]);
+	*/
 
 	return key[bytePrime];
 }
@@ -189,7 +185,7 @@ void printTable(unsigned char table[ROUNDS][COLS], char flag)
 			for (subkeyNumber = 0; subkeyNumber < COLS; ++subkeyNumber) {
 				printf("(0x%02X) ", table[round][subkeyNumber]);
 			}
-			printf('\n');
+			putchar('\n');
 		}
 	}
 
