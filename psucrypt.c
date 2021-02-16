@@ -15,6 +15,7 @@ int main(int argc, char* argv[])
 	int textsize = 0;
 	int paddingFlag;
 
+	/*
 	test(); /* DELETE ME */
 
 	printf("Running...\n");	/* TODO DELETE ME */
@@ -25,6 +26,7 @@ int main(int argc, char* argv[])
 	if (generateSubkeys(key, subkeys) != 0)
 		printf("Subkey Generation Error");
 
+	/*
 	paddingFlag = getPlaintext(plaintextBlock);
 	if (paddingFlag == 2)
 		printf("\nADDITIONAL BLOCK OF PADDING HAPPENS HERE");
@@ -36,6 +38,8 @@ int main(int argc, char* argv[])
 	printKey(key);
 	printf("\nKeysize: %d", keysize);
 	printf("\nTextsize:%d\n", textsize);
+
+	*/
 
   return 0;
 }

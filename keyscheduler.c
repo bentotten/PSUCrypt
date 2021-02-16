@@ -12,7 +12,7 @@ int generateSubkeys(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 	int subkeyNumber; /* Inner row: Subkeys */
 	int constant; /* constant that is added onto round number when sending to keyscheduler*/
 	int keygenInput;
-	unsigned char z = 'y'; /* delete me*/
+	unsigned char z; /* delete me*/
 
 	if (initializeTable(subkeyTable) != 0)
 		return 1;
@@ -41,8 +41,6 @@ int generateSubkeys(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 
 	z = K(key, keygenInput);
 
-	printf("\nChar: %c \nHex: (0x%02X)", z, z);
-
 	/* printTable(subkeyTable); */
 
 	return 0;
@@ -57,9 +55,6 @@ unsigned char K(unsigned char * key, int x)
 	int byteNumber;
 	unsigned char byte;
 
-	printf("\nK() - \nOriginal Key:");
-	printKey(key);
-
 	/***********************************/
 	x = 0;	/* DELETE ME!!!!!!*/
 	/***********************************/
@@ -69,7 +64,7 @@ unsigned char K(unsigned char * key, int x)
 
 	leftRotate(key, shifted);
 
-	printf("\nShifted Key should be ...: ");
+	printf("\nShifted Key should be ...\n     (0x57)(0x9B)(0xDE)(0x02)(0x46)(0x8A)(0xCF)(0x13)(0x57)(0x9B): ");
 
 	printKey(shifted);
 
@@ -96,12 +91,40 @@ void leftRotate(unsigned char * key, unsigned char * shifted)
 	(key[0] << 80) | (key[1] << 64) | (key[2] << 56) | (key[3] << 48) | (key[4] << 40) | (key[5] << 32) | (key[6] << 24) | (key[7] << 16) | (key[8] << 8) | key[9] | key[0] >> (80 - 1);
 	*/
 
+	/*
 	for (i = KEYLENGTH - 1; i >= 0; --i) {
 		temp2 = shifted[i] & 0x07;
 		shifted[i] <<= 1;
-		shifted[i] |= temp1 >> 1;
+		shifted[i] |= temp1 >> 5; 
 		temp1 = temp2;
 	}
+	*/
+
+	
+	for(i = 0; i <= KEYLENGTH - 1; ++i) {
+		temp2 = shifted[i] & 0x7F;
+		shifted[i] <<= 1;
+		shifted[i] |= temp2 >> 7; 
+	}
+	
+
+	unsigned char test[2];
+	test[0] = key[0];
+	test[1] = key[1];
+	unsigned char hold = 0;
+	
+	for (i = 1; i >= 0; --i) {
+		printf("\n\nTEST: (0x%02X)\n", test[i]);
+		hold = test[i] & 0xFF;
+		printf("\n\HOLD: (0x%02X)\n", hold);
+		hold >>= 7;
+		printf("\n\HOLD SHIFT: (0x%02X)\n", hold);
+		test[i] <<= 1;
+		printf("\nTEST SHIFT: (0x%02X)\n", test[i]);
+		test[i] |= hold;
+		printf("\nTEST OR: (0x%02X)\n", test[i]);
+	}
+
 
 	return;
 }
@@ -109,8 +132,20 @@ void leftRotate(unsigned char * key, unsigned char * shifted)
 /*Function to right rotate n by d bits*/
 void rightRotate(unsigned char* key, unsigned char* keyPrime)
 {
+	unsigned char temp1 = 0;
+	unsigned char temp2 = 0;
+	int i;
 	/*
 	(*n >> 1) | (*n << (8 - 1));
+	*/
+	/*
+	for (i = KEYLENGTH - 1; i >= 0; --i) {
+		temp2 = shifted[i] & 0x07;
+		shifted[i] >>= 3;
+		shifted[i] |= temp1 << 5;
+		temp1 = temp2;
+	}
+
 	*/
 	return;
 }
