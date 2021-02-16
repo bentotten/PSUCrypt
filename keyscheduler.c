@@ -85,94 +85,17 @@ void leftRotate(unsigned char * key, unsigned char * shifted)
 	int i;
 
 	copyKey(shifted, key);
-
-	/* If we could do the entire key */
-	/*
-	(key[0] << 80) | (key[1] << 64) | (key[2] << 56) | (key[3] << 48) | (key[4] << 40) | (key[5] << 32) | (key[6] << 24) | (key[7] << 16) | (key[8] << 8) | key[9] | key[0] >> (80 - 1);
-	*/
-
-	/*
-	* BAD
-	for (i = KEYLENGTH - 1; i >= 0; --i) {
-		temp2 = shifted[i] & 0x07;
-		shifted[i] <<= 1;
-		shifted[i] |= temp1 >> 5; 
-		temp1 = temp2;
-	}
-	*/
-
-	
-	/*
-	* ALMOST WORKING
-	for(i = 0; i < KEYLENGTH - 1; ++i) {
-		printf("\nArray: (0x%02X)", shifted[i]);
-		temp2 = shifted[i] & 0xFF;
-		printf("\n\HOLD: (0x%02X)", temp2);
-		temp2 >>= 7;
-		printf("\n\HOLD SHIFT: (0x%02X)", temp2);
-		shifted[i] <<= 1;
-		printf("\nARRAY SHIFT: (0x%02X)", shifted[i]);
-		shifted[i] |= temp2;
-		printf("\nARRAY OR: (0x%02X)\n", shifted[i]);
-	}
-
-	*/
-
-	/* ONLY OFF BY ONE! */
-	/*
-	for (i = KEYLENGTH - 1; i >= 0 ; --i) {
-		printf("\nArray: (0x%02X)", shifted[i]);
-		temp2 = shifted[i] & 0xFF;
-		printf("\n\HOLD: (0x%02X)", temp2);
-		temp1 >>= 7;
-		printf("\n\HOLD SHIFT: (0x%02X)", temp1);
-		shifted[i] <<= 1;
-		printf("\nARRAY SHIFT: (0x%02X)", shifted[i]);
-		shifted[i] |= temp1;
-		printf("\nARRAY OR: (0x%02X)\n", shifted[i]);
-		temp1 = temp2;
-	}
-	*/
 	
 	hold = shifted[0] & 0xFF;
-	printf("\n\HOLD: (0x%02X)", hold);
 	for (i = KEYLENGTH - 1; i >= 0; --i) {
-		printf("\nArray: (0x%02X)", shifted[i]);
 		temp2 = shifted[i] & 0xFF;
-		printf("\n\HOLD: (0x%02X)", temp2);
 		temp1 >>= 7;
-		printf("\n\HOLD SHIFT: (0x%02X)", temp1);
 		shifted[i] <<= 1;
-		printf("\nARRAY SHIFT: (0x%02X)", shifted[i]);
 		shifted[i] |= temp1;
-		printf("\nARRAY OR: (0x%02X)\n", shifted[i]);
 		temp1 = temp2;
 	}
 	hold >>= 7;
-	printf("\n\HOLD last SHIFTED: (0x%02X)", hold);
-	shifted[9] |= hold;
-
-
-	/*
-	unsigned char test[4];
-	test[3] = key[9];
-	test[2] = key[8];
-	test[1] = key[7];
-	test[0] = key[6];
-	
-	
-	for (i = 1; i >= 0; --i) {
-		printf("\n\nTEST: (0x%02X)", test[i]);
-		hold = test[i] & 0xFF;
-		printf("\n\HOLD: (0x%02X)", hold);
-		hold >>= 7;
-		printf("\n\HOLD SHIFT: (0x%02X)", hold);
-		test[i] <<= 1;
-		printf("\nTEST SHIFT: (0x%02X)\n", test[i]);
-		test[i] |= hold;
-		printf("\nTEST OR: (0x%02X)\n", test[i]);
-	}
-	*/
+	shifted[KEYLENGTH-1] |= hold;
 
 	return;
 }
