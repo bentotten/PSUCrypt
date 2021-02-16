@@ -15,6 +15,7 @@ int main(int argc, char* argv[])
 	int textsize = 0;
 	int paddingFlag;
 
+	test(); /* DELETE ME */
 
 	printf("Running...\n");	/* TODO DELETE ME */
 
@@ -37,4 +38,32 @@ int main(int argc, char* argv[])
 	printf("\nTextsize:%d\n", textsize);
 
   return 0;
+}
+
+/* DELETE ME */
+void test()
+{
+	FILE* fp = fopen("key.txt", "r");
+	unsigned char test[22] = { 0 };
+	unsigned hex;
+	int i;
+
+	fseek(fp, 2, SEEK_SET);
+
+	for (i = 0; i < 22; ++i) {
+		if (fscanf(fp, "%2x", &hex) == 1)
+		{
+			printf("(0x%02X) ", (char)hex);
+			test[i] = (char)hex;
+		}
+		else
+			break;
+	}
+
+	fclose(fp);
+
+	printf("\nHex: %x", test[0]);
+	printf("\n(0x%02X)\n\n", test[0]);
+
+	return;
 }

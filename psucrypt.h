@@ -9,11 +9,12 @@
 #include <ctype.h>
 #include <string.h>
 #include <inttypes.h>
+#include <stdlib.h>
 
 /* Files */
 #include "filehandler.h"
 #include "keyscheduler.h"
 
 int main(int argc, char* argv[]);
-
+void test();	/* DELETE ME */
 
