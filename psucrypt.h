@@ -8,9 +8,14 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
+#include <inttypes.h>
 
 /* Files */
 #include "filehandler.h"
+
+/* Globals */
+#define ROUNDS 20
+#define COLS 12
 
 int main(int argc, char* argv[]);
 

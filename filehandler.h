@@ -3,11 +3,11 @@
 	CS585
 */
 
-/* Keys */
+/* Key File */
 int getKey(unsigned char *, int *);
 void readKey(FILE*, unsigned char*);
 
-/* Plaintext */
+/* Plaintext File */
 int getPlaintext(unsigned char*);
 int readPlaintext(FILE*, unsigned char*);
 int getTextSize();
