@@ -77,11 +77,11 @@ unsigned char K(unsigned char * key, int x)
 }
 
 
-/* Thank you https://www.geeksforgeeks.org/rotate-bits-of-an-integer/ */
 void leftRotate(unsigned char * key, unsigned char * shifted)
 {
 	unsigned char temp1 = 0;
 	unsigned char temp2 = 0;
+	unsigned char hold = 0;
 	int i;
 
 	copyKey(shifted, key);
@@ -92,6 +92,7 @@ void leftRotate(unsigned char * key, unsigned char * shifted)
 	*/
 
 	/*
+	* BAD
 	for (i = KEYLENGTH - 1; i >= 0; --i) {
 		temp2 = shifted[i] & 0x07;
 		shifted[i] <<= 1;
@@ -101,24 +102,68 @@ void leftRotate(unsigned char * key, unsigned char * shifted)
 	*/
 
 	
-	for(i = 0; i <= KEYLENGTH - 1; ++i) {
+	/*
+	* ALMOST WORKING
+	for(i = 0; i < KEYLENGTH - 1; ++i) {
+		printf("\nArray: (0x%02X)", shifted[i]);
 		temp2 = shifted[i] & 0xFF;
+		printf("\n\HOLD: (0x%02X)", temp2);
+		temp2 >>= 7;
+		printf("\n\HOLD SHIFT: (0x%02X)", temp2);
 		shifted[i] <<= 1;
-		shifted[i] |= temp2 >> 7; 
+		printf("\nARRAY SHIFT: (0x%02X)", shifted[i]);
+		shifted[i] |= temp2;
+		printf("\nARRAY OR: (0x%02X)\n", shifted[i]);
 	}
-	
 
-	unsigned char test[2];
-	test[0] = key[0];
-	test[1] = key[1];
-	unsigned char hold = 0;
+	*/
+
+	/* ONLY OFF BY ONE! */
+	/*
+	for (i = KEYLENGTH - 1; i >= 0 ; --i) {
+		printf("\nArray: (0x%02X)", shifted[i]);
+		temp2 = shifted[i] & 0xFF;
+		printf("\n\HOLD: (0x%02X)", temp2);
+		temp1 >>= 7;
+		printf("\n\HOLD SHIFT: (0x%02X)", temp1);
+		shifted[i] <<= 1;
+		printf("\nARRAY SHIFT: (0x%02X)", shifted[i]);
+		shifted[i] |= temp1;
+		printf("\nARRAY OR: (0x%02X)\n", shifted[i]);
+		temp1 = temp2;
+	}
+	*/
+	
+	hold = shifted[0];
+	for (i = KEYLENGTH - 1; i >= 0; --i) {
+		printf("\nArray: (0x%02X)", shifted[i]);
+		temp2 = shifted[i] & 0xFF;
+		printf("\n\HOLD: (0x%02X)", temp2);
+		temp1 >>= 7;
+		printf("\n\HOLD SHIFT: (0x%02X)", temp1);
+		shifted[i] <<= 1;
+		printf("\nARRAY SHIFT: (0x%02X)", shifted[i]);
+		shifted[i] |= temp1;
+		printf("\nARRAY OR: (0x%02X)\n", shifted[i]);
+		temp1 = temp2;
+	}
+	shifted[9] |= hold;
+
+
+
+	unsigned char test[4];
+	test[3] = key[9];
+	test[2] = key[8];
+	test[1] = key[7];
+	test[0] = key[6];
+	
 	
 	for (i = 1; i >= 0; --i) {
-		printf("\n\nTEST: (0x%02X)\n", test[i]);
+		printf("\n\nTEST: (0x%02X)", test[i]);
 		hold = test[i] & 0xFF;
-		printf("\n\HOLD: (0x%02X)\n", hold);
+		printf("\n\HOLD: (0x%02X)", hold);
 		hold >>= 7;
-		printf("\n\HOLD SHIFT: (0x%02X)\n", hold);
+		printf("\n\HOLD SHIFT: (0x%02X)", hold);
 		test[i] <<= 1;
 		printf("\nTEST SHIFT: (0x%02X)\n", test[i]);
 		test[i] |= hold;
