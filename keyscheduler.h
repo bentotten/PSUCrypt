@@ -3,7 +3,7 @@
 	CS585
 */
 
-/* Globals */
+/* Global Macros */
 #define ROUNDS 20
 #define COLS 12
 

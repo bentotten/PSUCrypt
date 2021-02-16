@@ -12,10 +12,7 @@
 
 /* Files */
 #include "filehandler.h"
-
-/* Globals */
-#define ROUNDS 20
-#define COLS 12
+#include "keyscheduler.h"
 
 int main(int argc, char* argv[]);
 

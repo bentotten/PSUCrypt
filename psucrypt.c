@@ -5,6 +5,7 @@
 
 #include "psucrypt.h"
 
+
 int main(int argc, char* argv[])
 {
 	unsigned char plaintextBlock[9] = "\0\0\0\0\0\0\0\0\0"; /* 64 bits (+ delimiter) */
@@ -13,6 +14,7 @@ int main(int argc, char* argv[])
 	int keysize = 0;
 	int textsize = 0;
 	int paddingFlag;
+
 
 	printf("Running...\n");	/* TODO DELETE ME */
 

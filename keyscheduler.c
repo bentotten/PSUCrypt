@@ -4,7 +4,6 @@
 */
 
 #include "psucrypt.h"
-#include "keyscheduler.h"
 
 /* Future TODO: use trees instead of for loops and do this in parallel */
 int generateSubkeys(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS])
@@ -59,7 +58,7 @@ int initializeTable(unsigned char subkeyTable[ROUNDS][COLS])
 
 	for (round = 0; round < ROUNDS; ++round) {
 		for (subkeyNumber = 0; subkeyNumber < COLS; ++subkeyNumber) {
-			subkeyTable[round][subkeyNumber] = "01";
+			subkeyTable[round][subkeyNumber] = (unsigned) "01";
 			printf("%u", subkeyTable[round][subkeyNumber]);
 		}
 	}
