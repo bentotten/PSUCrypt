@@ -7,6 +7,7 @@
 * Future improvements:
 * Switch out for loops for trees (or recursion, but probably not if the loop has the potential to get huge)
 * Immutable keys? Unneccessary? 
+* Make so accepts 64 bit key and 80 bit key
 */
 
 #include "psucrypt.h"
@@ -14,9 +15,9 @@
 
 int main(int argc, char* argv[])
 {
-	unsigned char plaintextBlock[8] = { 0 }; /* 64 bits */
 	unsigned char key[KEYLENGTH] = { 0 };	/* Future recast as immutable const? */
 	unsigned char subkeys[ROUNDS][COLS]; /* 20 rounds, 12 subkeys, 1 byte each*/
+	int keysize = 0;
 
 	printf("Running...\n");	/* TODO DELETE ME */
 
