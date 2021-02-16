@@ -8,7 +8,10 @@
 int encrypt(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS])
 {
 	unsigned char plaintextBlock[8] = { 0 }; /* 64 bits */
+	unsigned char blockInProcess[8] = { 0 }; /* 64 bits */
+	unsigned char ciphertextBlock[8] = { 0 }; /* 64 bits */
 	FILE* fp = NULL;
+	int paddingFlag;
 	
 	/* Open File */
 	fp = fopen("plaintext.txt", "r");
@@ -18,20 +21,26 @@ int encrypt(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS])
 	/* Loop until EOF */
 	/*
 	while (fp) {
-		if (getPlaintextBlock(fp, plaintextBlock) != 0)
-			return 1;
+		paddingFlag = getPlaintextBlock(fp, plaintextBlock);
 	}
 	*/
 
-	getPlaintextBlock(fp, plaintextBlock); /* DELETE ME */
+	paddingFlag = getPlaintextBlock(fp, plaintextBlock);
+
+
+	switch (paddingFlag) {
+		case 0:
+			fclose(fp);
+			return 0;
+		case 1:
+			fclose(fp);
+			return 1;
+		case 2:
+			printf("\nCALL PADDING HERE");
+	}
 
 	/* Close File */
 	fclose(fp);
-
-	/*
-	printKey(key);
-	printTable(subkey, 'h');
-	*/
 
 	return 0;
 }
