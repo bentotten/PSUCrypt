@@ -38,7 +38,7 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	printf("Test: %d", PSU);
+	printf("\nTest: %d", PSU);
 
 
 	putchar('\n');
