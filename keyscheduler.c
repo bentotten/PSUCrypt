@@ -4,9 +4,10 @@
 */
 
 #include "psucrypt.h"
+#include "keyscheduler.h"
 
 /* Future TODO: use trees instead of for loops and do this in parallel */
-int generateSubkeys(unsigned char * key, unsigned char subkeyTable[20][12])
+int generateSubkeys(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS])
 {
 	int round; /* Outer row: Rounds */
 	int subkeyNumber; /* Inner row: Subkeys */

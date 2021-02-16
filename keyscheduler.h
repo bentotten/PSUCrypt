@@ -3,6 +3,10 @@
 	CS585
 */
 
-int generateSubkeys(unsigned char *, unsigned char[][]);
-int initializeTable(unsigned char[][]);
+/* Globals */
+#define ROUNDS 20
+#define COLS 12
+
+int generateSubkeys(unsigned char* , unsigned char [ROUNDS][COLS]);
+int initializeTable(unsigned char [ROUNDS][COLS]);
 /* unsigned char K(int x); */
