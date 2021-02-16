@@ -21,6 +21,7 @@ int main(int argc, char* argv[])
 
 	printf("Running...\n");	/* TODO DELETE ME */
 
+	/*
 	if (getKey(key, &keysize) != 0) {
 		printf("\nKey fetch error: %s", key);
 		return 1;
@@ -31,22 +32,13 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
+	*/
 	if (encrypt(key, subkeys) != 0) {
 		printf("\nEncryption Error");
 		return 1;
 	}
 
-  return 0;
-}
 
-
-void printKey(unsigned char * key)
-{
-	int i;
-	printf("\nKey: ");
-	for (i = 0; i < KEYLENGTH; ++i) {
-		printf("(0x%02X)", key[i]);
-	}
-
-	return;
+	putchar('\n');
+	return 0;
 }

@@ -76,56 +76,54 @@ void readKey(FILE* fp, unsigned char * key)
 }
 
 
-int getPlaintextBlock(unsigned char* plaintext)
+/* Reads in plaintext 64 bits (8 chars) at a time to be encrypted */
+int getPlaintextBlock(FILE * fp, unsigned char * plaintext)
 {
-	FILE* fp = NULL;
+	unsigned int paddingSize;
+	unsigned char c;
+	int i;
 
-	/* Open File */
-	fp = fopen("plaintext.txt", "r");
-	if (!fp || fp == 0)
-		return 1;
+	/* Read in 64 bits; Apply padding; return 2 if full block of padding is needed */
+	for (i = 0; i < 8; ++i) {
+		c = fgetc(fp);
+		if (feof(fp)) {
+			if (i == 7)
+				return 2;	
+			else {
+				paddingSize = padBlock(i, plaintext);
+				plaintext[i] = (unsigned char) paddingSize;
+				return 0;
+			}
+		}
+		plaintext[i] = c;
+	}
 
-	fseek(fp, 0, SEEK_SET);	/* Return to beginning of file  TODO DELETE ME*/  
-
-	/* Read in key */
-	readPlaintext(fp, plaintext);
-
-	clearerr(fp);
-	fclose(fp);
+	printPlaintext(plaintext);
 
 	return 0;
 }
 
-
-/* Reads in plaintext 64 bits at a time to be encrypted */
-int readPlaintext(FILE * fp, unsigned char * plaintext)
+unsigned int padBlock(int i, unsigned char* plaintext)
 {
-	int c = 0;
+	unsigned char hold;
+	unsigned int paddingSize = 0;
 
+	padBlockRecurse(i, paddingSize, plaintext, &hold);
 
-	fseek(fp, 0, SEEK_SET);	/* Return to beginning of file */
+	return hold;
+}
 
-	while(fp) {
-		if (c < 8) {
-			if (feof(fp)) {
-				/* Apply padding */
-				if (c == 8)
-					return 2;	/* Needs a full block of padding */
-				else {
-					while (c < 8) {
-						plaintext[c] = '0';
-						++c;
-					}
-					return 0;
-				}
-			}
-			plaintext[c] = fgetc(fp);
-			++c;
-		}
-		else
-			return 0;
+void padBlockRecurse(int i, unsigned char paddingSize, unsigned char * test, unsigned char * hold)
+{
+	if (i >= 7) {
+		*hold = paddingSize;
+		return;
 	}
-	return 1;
+
+	padBlockRecurse(++i, ++paddingSize, test, hold);
+
+	test[i] = *hold;
+	return;
 }
 
 
@@ -181,4 +179,28 @@ int getFileSize(FILE* fp, char* flag)
 	}
 
 	return i;
+}
+
+
+void printKey(unsigned char* key)
+{
+	int i;
+	printf("\nKey: ");
+	for (i = 0; i < KEYLENGTH; ++i) {
+		printf("(0x%02X)", key[i]);
+	}
+
+	return;
+}
+
+
+void printPlaintext(unsigned char* plaintext)
+{
+	int i;
+	printf("\nPlaintext: ");
+	for (i = 0; i < 8; ++i) {
+		printf("%c", plaintext[i]);
+	}
+
+	return;
 }

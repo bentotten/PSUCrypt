@@ -17,5 +17,5 @@
 #include "encryption.h"
 
 int main(int argc, char* argv[]);
-void printKey(unsigned char*);
+
 
