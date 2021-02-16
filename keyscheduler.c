@@ -16,7 +16,7 @@ int generateSubkeys(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 	if (initializeTable(subkeyTable) != 0)
 		return 1;
 
-	printf("\nOut of function check: %c", subkeyTable[0][0]);
+	printTable(subkeyTable);
 
 	/*
 	for(round = 0; round < ROUNDS; ++round) {
@@ -62,11 +62,10 @@ int initializeTable(unsigned char subkeyTable[ROUNDS][COLS])
 	for (round = 0; round < ROUNDS; ++round) {
 		for (subkeyNumber = 0; subkeyNumber < COLS; ++subkeyNumber) {
 			subkeyTable[round][subkeyNumber] = (unsigned) '0';
-			printf("%c", subkeyTable[round][subkeyNumber]);
 		}
 	}
 	
-	
+	/* DELTE ME
 	unsigned char s = '0';
 	if (subkeyTable[0][0] == s)
 		printf("\nSuccess!");
@@ -74,10 +73,33 @@ int initializeTable(unsigned char subkeyTable[ROUNDS][COLS])
 		printf("Failure...");
 
 	printf("\nIn function check: %c", subkeyTable[0][0]);
+	*/
 
 	return 0;
 }
 
+
+void printTable(unsigned char table[ROUNDS][COLS])
+{
+	int round; /* Outer row: Rounds */
+	int subkeyNumber; /* Inner row: Subkeys */
+
+	printf("\n\nPrinting Table as Chars\n\n");
+	for (round = 0; round < ROUNDS; ++round) {
+		for (subkeyNumber = 0; subkeyNumber < COLS; ++subkeyNumber) {
+			printf("%c ", table[round][subkeyNumber]);
+		}
+	}
+
+	printf("\n\nPrinting Table as Hex\n\n");
+	for (round = 0; round < ROUNDS; ++round) {
+		for (subkeyNumber = 0; subkeyNumber < COLS; ++subkeyNumber) {
+			printf("(0x%02X)", table[round][subkeyNumber]);
+		}
+	}
+
+	return;
+}
 /*
 unsigned char K(int x)
 {

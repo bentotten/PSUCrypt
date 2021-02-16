@@ -24,8 +24,6 @@ int main(int argc, char* argv[])
 	if (generateSubkeys(key, subkeys) != 0)
 		printf("Subkey Generation Error");
 
-	printf("\nMain check: %c", subkeys[0][0]);
-
 	paddingFlag = getPlaintext(plaintextBlock);
 	if (paddingFlag == 2)
 		printf("\nADDITIONAL BLOCK OF PADDING HAPPENS HERE");
