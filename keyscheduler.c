@@ -52,7 +52,7 @@ int generateSubkeys(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 /* We intentionally do not use the 9th and 10th byte of the key*/
 unsigned char K(unsigned char * key, int x)
 {
-	unsigned char shifted[21] = "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0";
+	unsigned char shifted[KEYLENGTH] = { '0' };
 	unsigned char subkey = 'z';
 	int byteNumber;
 	unsigned char byte;
@@ -65,15 +65,13 @@ unsigned char K(unsigned char * key, int x)
 	/***********************************/
 
 	byteNumber = x % 8;
-	
-	printf("\n0 mod 8 should be 0: %d", byteNumber);
-	printf("\nK[0] should be a: %c", key[byteNumber]);
 	byte = key[byteNumber];
-	printf("\nByte should be a: %c", byte);
 
-	subkey = leftRotate(byte);
+	leftRotate(key, shifted);
 
-	printf("\nSubkey should be a: %c", subkey);
+	printf("\nShifted Key should be ...: ");
+
+	printKey(shifted);
 
 
 	/* printf(" K() key: %s", key); */
@@ -85,18 +83,27 @@ unsigned char K(unsigned char * key, int x)
 
 
 /* Thank you https://www.geeksforgeeks.org/rotate-bits-of-an-integer/ */
-unsigned char leftRotate(unsigned char byte)
+void leftRotate(unsigned char * key, unsigned char * shifted)
 {
-	unsigned char subkey = byte;
-	/*
+	unsigned char temp1 = 0;
+	unsigned char temp2 = 0;
 	int i;
 
-	(keyPrime << 1) | (keyPrime >> (8 - 1));
+	copyKey(shifted, key);
 
-	printf("\nKey: %s \nKey Prime: %s\n", key, keyPrime);
+	/* If we could do the entire key */
+	/*
+	(key[0] << 80) | (key[1] << 64) | (key[2] << 56) | (key[3] << 48) | (key[4] << 40) | (key[5] << 32) | (key[6] << 24) | (key[7] << 16) | (key[8] << 8) | key[9] | key[0] >> (80 - 1);
 	*/
 
-	return subkey;
+	for (i = KEYLENGTH - 1; i >= 0; --i) {
+		temp2 = shifted[i] & 0x07;
+		shifted[i] <<= 1;
+		shifted[i] |= temp1 >> 1;
+		temp1 = temp2;
+	}
+
+	return;
 }
 
 /*Function to right rotate n by d bits*/
@@ -147,7 +154,7 @@ void printTable(unsigned char table[ROUNDS][COLS])
 }
 
 
-void copyKey(unsigned char* key, unsigned char* keyPrime)
+void copyKey(unsigned char* keyPrime, unsigned char* key)
 {
 	int i;
 
