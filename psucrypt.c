@@ -38,6 +38,8 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
+	printf("Test: %d", PSU);
+
 
 	putchar('\n');
 	return 0;
