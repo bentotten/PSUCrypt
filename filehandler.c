@@ -79,7 +79,7 @@ void readKey(FILE* fp, unsigned char * key)
 /* Reads in plaintext 64 bits (8 chars) at a time to be encrypted */
 int getPlaintextBlock(FILE * fp, unsigned char * plaintext)
 {
-	unsigned int paddingSize;
+	unsigned char paddingSize;
 	unsigned char c;
 	int i;
 
@@ -96,7 +96,7 @@ int getPlaintextBlock(FILE * fp, unsigned char * plaintext)
 				printf("\nEOF: Applying padding");	/* DELETE ME*/
 				--i;
 				paddingSize = padBlock(i, plaintext);
-				plaintext[i] = (unsigned char) paddingSize;
+				plaintext[i] = paddingSize;
 				break;
 			}
 		}
@@ -105,6 +105,11 @@ int getPlaintextBlock(FILE * fp, unsigned char * plaintext)
 	}
 
 	printPlaintext(plaintext);
+	unsigned char test = '4';
+	if (memcmp(&plaintext[7], &test, 1))
+		printf("\nPadding is working");
+	else
+		printf("\n%02x", plaintext[7]);
 
 	return 0;
 }
@@ -122,7 +127,7 @@ unsigned int padBlock(int i, unsigned char* plaintext)
 void padBlockRecurse(int i, unsigned char paddingSize, unsigned char * test, unsigned char * hold)
 {
 	if (i >= 7) {
-		*hold = paddingSize;
+		*hold = ++paddingSize;
 		return;
 	}
 
