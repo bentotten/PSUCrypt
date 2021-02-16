@@ -1,5 +1,5 @@
-CFLAGS = -DPSU=1 -pedantic -O0 -Wall 
-CFLAGS_ISO90 = -ansi -pedantic -O0 -Wall
+CFLAGS = -pedantic -O0 -Wall 
+CFLAGS_ISO90 = -DPSU=1 -ansi -pedantic -O0 -Wall
 DFLAGS = -g
 PROGS = psucrypt
 
