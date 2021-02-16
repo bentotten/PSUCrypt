@@ -77,41 +77,61 @@ void readKey(FILE* fp, unsigned char * key)
 
 
 /* Reads in plaintext 64 bits (8 chars) at a time to be encrypted */
-int getPlaintextBlock(FILE * fp, unsigned char * plaintext)
+int getPlaintextBlock(FILE* fp, unsigned char* plaintext)
 {
 	unsigned char paddingSize;
 	unsigned char c;
 	int i;
+	FILE* ptr = NULL;
 
 	/* Read in 64 bits; Apply padding; return 2 if full block of padding is needed */
 	for (i = 0; i < 8; ++i) {
+
+		c = fgetc(fp);
+
 		if (feof(fp)) {
-			printf("\nEOF REACHED"); /* DELETE ME*/
+			printf("\nEOF REACHED. i is at %d", i); /* DELETE ME*/
 			if (i == 7)
 			{
-				printf("\nEOF: Perfect size! Needs Pad Block");	/* DELETE ME*/
-				return 2;	
+				printf("\nEOF: Needs EOF stripped and to be given one pad block");	/* DELETE ME*/
+				paddingSize = padBlock(i, plaintext);
+				plaintext[i] = paddingSize;
+				printPlaintext(plaintext); /* DELETE ME */
+				return 0;
 			}
 			else {
 				printf("\nEOF: Applying padding");	/* DELETE ME*/
-				--i;
+				/*--i; */
 				paddingSize = padBlock(i, plaintext);
 				plaintext[i] = paddingSize;
-				break;
+				printPlaintext(plaintext);
+				return 0;
 			}
 		}
-		c = fgetc(fp);
+
 		plaintext[i] = c;
+		printf("i is at %d:%c. ", i, c); /* DELETE ME*/
 	}
 
-	printPlaintext(plaintext);
-	unsigned char test = '4';
-	if (memcmp(&plaintext[7], &test, 1))
-		printf("\nPadding is working");
-	else
-		printf("\n%02x", plaintext[7]);
+	/* If next move of pointer is EOF, then text block was perfectly sized 64 bits */
+	c = fgetc(fp);
 
-	return 0;
+	if (feof(fp)) {
+		printf("\nEOF REACHED. i is at %d", i); /* DELETE ME*/
+		printf("\nEOF: Perfect size! Needs Pad Block");	/* DELETE ME*/
+		printPlaintext(plaintext); /* DELETE ME */
+		return 2;
+	}
+	else {
+		fseek(fp, -1, SEEK_CUR);
+		c = fgetc(fp);
+		printf("\n64 bits read in, fp ptr reset to last char %c", c);	/* DELETE ME*/
+		fseek(fp, -1, SEEK_CUR);
+		printPlaintext(plaintext);
+		return 0;
+	}
+
+	return 1;
 }
 
 unsigned int padBlock(int i, unsigned char* plaintext)
