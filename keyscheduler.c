@@ -134,7 +134,8 @@ void leftRotate(unsigned char * key, unsigned char * shifted)
 	}
 	*/
 	
-	hold = shifted[0];
+	hold = shifted[0] & 0xFF;
+	printf("\n\HOLD: (0x%02X)", hold);
 	for (i = KEYLENGTH - 1; i >= 0; --i) {
 		printf("\nArray: (0x%02X)", shifted[i]);
 		temp2 = shifted[i] & 0xFF;
@@ -147,10 +148,12 @@ void leftRotate(unsigned char * key, unsigned char * shifted)
 		printf("\nARRAY OR: (0x%02X)\n", shifted[i]);
 		temp1 = temp2;
 	}
+	hold >>= 7;
+	printf("\n\HOLD last SHIFTED: (0x%02X)", hold);
 	shifted[9] |= hold;
 
 
-
+	/*
 	unsigned char test[4];
 	test[3] = key[9];
 	test[2] = key[8];
@@ -169,7 +172,7 @@ void leftRotate(unsigned char * key, unsigned char * shifted)
 		test[i] |= hold;
 		printf("\nTEST OR: (0x%02X)\n", test[i]);
 	}
-
+	*/
 
 	return;
 }
