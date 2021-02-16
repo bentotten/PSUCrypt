@@ -41,14 +41,15 @@ void readKey(FILE* fp, unsigned char * key)
 		if (fgetc(fp) == 'x')
 			flag = 1;
 
-	fseek(fp, 0, SEEK_SET);	/* Return to beginning of file */
+	/* Return to beginning of file */
+	fseek(fp, 0, SEEK_SET);	
 
+	/* If leading 0x */
 	if (flag == 1) {
 		fseek(fp, 2, SEEK_SET);
 		for (i = 0; i < 22; ++i) {
 			if (fscanf(fp, "%2x", &hex) == 1)
 			{
-				printf("(0x%02X) ", (char)hex);
 				key[i] = (char)hex;
 			}
 			else
@@ -56,11 +57,11 @@ void readKey(FILE* fp, unsigned char * key)
 		}
 	}
 
+	/* If no leading 0x */
 	else if (flag == 0) {
 		for (i = 0; i < 22; ++i) {
 			if (fscanf(fp, "%2x", &hex) == 1)
 			{
-				printf("(0x%02X) ", (char)hex);
 				key[i] = (char)hex;
 			}
 			else

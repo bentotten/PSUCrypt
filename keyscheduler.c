@@ -43,8 +43,6 @@ int generateSubkeys(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 		}
 	}
 
-	printTable(subkeyTable, 'h'); 
-
 	return 0;
 }
 
