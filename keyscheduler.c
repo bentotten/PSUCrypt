@@ -102,7 +102,7 @@ void leftRotate(unsigned char * key, unsigned char * shifted)
 
 	
 	for(i = 0; i <= KEYLENGTH - 1; ++i) {
-		temp2 = shifted[i] & 0x7F;
+		temp2 = shifted[i] & 0xFF;
 		shifted[i] <<= 1;
 		shifted[i] |= temp2 >> 7; 
 	}
