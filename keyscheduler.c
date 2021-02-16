@@ -55,13 +55,22 @@ int initializeTable(unsigned char subkeyTable[ROUNDS][COLS])
 {
 	int round; /* Outer row: Rounds */
 	int subkeyNumber; /* Inner row: Subkeys */
+	int t = 0;
 
 	for (round = 0; round < ROUNDS; ++round) {
 		for (subkeyNumber = 0; subkeyNumber < COLS; ++subkeyNumber) {
-			subkeyTable[round][subkeyNumber] = (unsigned) "01";
-			printf("%u", subkeyTable[round][subkeyNumber]);
+			subkeyTable[round][subkeyNumber] = (unsigned) '0';
+			printf("%c", subkeyTable[round][subkeyNumber]);
 		}
 	}
+	
+	unsigned char s = '0';
+	if (subkeyTable[0][0] == s)
+		printf("\nSuccess!");
+	else
+		printf("Failure...");
+
+	printf("\n%c", s);
 
 	return 0;
 }
