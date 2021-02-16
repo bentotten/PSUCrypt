@@ -85,16 +85,22 @@ int getPlaintextBlock(FILE * fp, unsigned char * plaintext)
 
 	/* Read in 64 bits; Apply padding; return 2 if full block of padding is needed */
 	for (i = 0; i < 8; ++i) {
-		c = fgetc(fp);
 		if (feof(fp)) {
+			printf("\nEOF REACHED"); /* DELETE ME*/
 			if (i == 7)
+			{
+				printf("\nEOF: Perfect size! Needs Pad Block");	/* DELETE ME*/
 				return 2;	
+			}
 			else {
+				printf("\nEOF: Applying padding");	/* DELETE ME*/
+				--i;
 				paddingSize = padBlock(i, plaintext);
 				plaintext[i] = (unsigned char) paddingSize;
-				return 0;
+				break;
 			}
 		}
+		c = fgetc(fp);
 		plaintext[i] = c;
 	}
 
