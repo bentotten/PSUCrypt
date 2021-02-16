@@ -10,7 +10,7 @@ int getKey(unsigned char * key, int * keysize)
 	FILE* fp = NULL;
 
 	/* Open File */
-	fp = fopen("gradkey.txt", "r");	
+	fp = fopen("key.txt", "r");	
 	if (!fp || fp == 0)
 		return 1;
 
