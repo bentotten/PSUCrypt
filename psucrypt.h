@@ -16,5 +16,6 @@
 #include "keyscheduler.h"
 
 int main(int argc, char* argv[]);
+void printKey(unsigned char*);
 void test();	/* DELETE ME */
 

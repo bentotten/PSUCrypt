@@ -8,8 +8,8 @@
 
 int main(int argc, char* argv[])
 {
-	unsigned char plaintextBlock[9] = "\0\0\0\0\0\0\0\0\0"; /* 64 bits (+ delimiter) */
-	unsigned char key[KEYLENGTH+1] = "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0";	/* Future recast as immutable const? */
+	unsigned char plaintextBlock[9] = { '\0' }; /* 64 bits (+ delimiter) */
+	unsigned char key[KEYLENGTH] = { 0 };	/* Future recast as immutable const? */
 	unsigned char subkeys[ROUNDS][COLS]; /* 20 rounds, 12 subkeys, 1 byte each*/
 	int keysize = 0;
 	int textsize = 0;
@@ -33,11 +33,23 @@ int main(int argc, char* argv[])
 	
 	textsize = getTextSize();
 	printf("\n\nText: %s", plaintextBlock);
-	printf("\nKey: %s", key);
+	printKey(key);
 	printf("\nKeysize: %d", keysize);
 	printf("\nTextsize:%d\n", textsize);
 
   return 0;
+}
+
+
+void printKey(unsigned char * key)
+{
+	int i;
+	printf("\nKey: ");
+	for (i = 0; i < KEYLENGTH; ++i) {
+		printf("(0x%02X)", key[i]);
+	}
+
+	return;
 }
 
 /* DELETE ME */

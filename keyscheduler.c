@@ -57,7 +57,8 @@ unsigned char K(unsigned char * key, int x)
 	int byteNumber;
 	unsigned char byte;
 
-	printf("\nK() - \nOriginal Key: %s", key);
+	printf("\nK() - \nOriginal Key:");
+	printKey(key);
 
 	/***********************************/
 	x = 0;	/* DELETE ME!!!!!!*/

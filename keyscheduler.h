@@ -6,7 +6,7 @@
 /* Global Macros */
 #define ROUNDS 20
 #define COLS 12
-#define KEYLENGTH 20
+#define KEYLENGTH 10
 
 /* Keys */
 int generateSubkeys(unsigned char* , unsigned char [ROUNDS][COLS]);
