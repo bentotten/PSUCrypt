@@ -16,9 +16,11 @@ int generateSubkeys(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 	if (initializeTable(subkeyTable) != 0)
 		return 1;
 
+	printf("\nOut of function check: %c", subkeyTable[0][0]);
+
 	/*
-	for(round = 0; round < 20; ++round) {
-		for (subkeyNumber = 0; subkeyNumber < 12; ++subkeyNumber) {
+	for(round = 0; round < ROUNDS; ++round) {
+		for (subkeyNumber = 0; subkeyNumber < COLS; ++subkeyNumber) {
 			/* Determine Constant for G() and F() subkey generation*/
 
 	/*
@@ -64,13 +66,14 @@ int initializeTable(unsigned char subkeyTable[ROUNDS][COLS])
 		}
 	}
 	
+	
 	unsigned char s = '0';
 	if (subkeyTable[0][0] == s)
 		printf("\nSuccess!");
 	else
 		printf("Failure...");
 
-	printf("\n%c", s);
+	printf("\nIn function check: %c", subkeyTable[0][0]);
 
 	return 0;
 }

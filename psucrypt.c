@@ -10,7 +10,7 @@ int main(int argc, char* argv[])
 {
 	unsigned char plaintextBlock[9] = "\0\0\0\0\0\0\0\0\0"; /* 64 bits (+ delimiter) */
 	unsigned char key[21] = "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0";	/* Future recast as immutable const? */
-	unsigned char subkeys[ROUNDS][COLS][1]; /* 20 rounds, 12 subkeys, 1 byte each*/
+	unsigned char subkeys[ROUNDS][COLS]; /* 20 rounds, 12 subkeys, 1 byte each*/
 	int keysize = 0;
 	int textsize = 0;
 	int paddingFlag;
@@ -24,6 +24,7 @@ int main(int argc, char* argv[])
 	if (generateSubkeys(key, subkeys) != 0)
 		printf("Subkey Generation Error");
 
+	printf("\nMain check: %c", subkeys[0][0]);
 
 	paddingFlag = getPlaintext(plaintextBlock);
 	if (paddingFlag == 2)
