@@ -16,7 +16,8 @@ int main(int argc, char* argv[])
 	int paddingFlag;
 
 	/*
-	test(); /* DELETE ME */
+	test();
+	*/ /* DELETE ME */
 
 	printf("Running...\n");	/* TODO DELETE ME */
 

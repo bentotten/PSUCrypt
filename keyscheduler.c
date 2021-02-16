@@ -35,7 +35,7 @@ int generateSubkeys(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 			else
 				return 1;
 
-			keygenInput = 4 * round + constant;
+			keygenInput = ((4 * round) + constant);
 
 			/* Send to keyscheduler */
 			subkeyTable[round][subkeyNumber] = K(keyPrime, keygenInput); 
@@ -48,8 +48,10 @@ int generateSubkeys(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 }
 
 
-/*	We intentionally do not use the 9th and 10th byte of the key (so bytePrime will never be 1 or 0.
-	the x input gets modded by 8 to give us which byte of the key we will be returning as the subkey.
+/*
+	NOTE: This is the version that mod's 10, per the test vector. A version that mods 8 (per the lecture) is commented out below.
+
+	The x input gets modded by 8 to give us which byte of the key we will be returning as the subkey.
 	We then bitshift the key left (with a carry) to give us Key` or "shifted".
 	The keys are from the right, so we must switch the mod results with its key_byte equivelant.
 */
@@ -58,8 +60,8 @@ unsigned char K(unsigned char * key, int x)
 	int byteNumber;
 	int bytePrime;
 
-	byteNumber = x % 8;
-	/* printf("\nByte number: %d", byteNumber); DELETE ME */ 
+	byteNumber = x % 10;
+	printf("\nByte number: %d", byteNumber); /* DELETE ME */
 
 	switch (byteNumber) {
 	case 0:
@@ -86,23 +88,30 @@ unsigned char K(unsigned char * key, int x)
 	case 7:
 		bytePrime = 2;
 		break;
+	case 8:
+		bytePrime = 1;
+		break;
+	case 9:
+		bytePrime = 0;
+		break;
 	default:
 		printf("Input error in Key Scheduler");
-		return (unsigned char)'00';
+		return (unsigned char)'0';
 	}
 
-	leftRotate(key);
+leftRotate(key);
 
-	/* DELETE ME */
-	/* printf("\nShifted Key should be ...\n     (0x57)(0x9B)(0xDE)(0x02)(0x46)(0x8A)(0xCF)(0x13)(0x57)(0x9B): ");	
-	printKey(key);
+/* DELETE ME */
+/* printf("\nShifted Key should be ...\n     (0x57)(0x9B)(0xDE)(0x02)(0x46)(0x8A)(0xCF)(0x13)(0x57)(0x9B): ");
+printKey(key);
+*/
+printf(" Byte Prime: %d", bytePrime);
+printf(" Byte Prime: (0x %02X)", key[bytePrime]);
+/**/
 
-	printf("\nByte Prime: %d", bytePrime);
-	printf("\nByte Prime: (0x %02X)", key[bytePrime]);
-	*/
-
-	return key[bytePrime];
+return key[bytePrime];
 }
+
 
 
 void leftRotate(unsigned char * shifted)
@@ -127,6 +136,7 @@ void leftRotate(unsigned char * shifted)
 }
 
 
+/* UNTESTED! */
 void rightRotate(unsigned char* shifted)
 {
 	unsigned char temp1 = 0;
@@ -203,3 +213,126 @@ void copyKey(unsigned char* keyPrime, unsigned char* key)
 
 	return;
 }
+
+
+/*
+	NOTE: This is the version that mod's 8, per instructor lecture. It has been commented out because it does not match the Test Vectors, which mods by 10.
+	Leaving it here in case of last minute grading changes.
+
+	We intentionally do not use the 9th and 10th byte of the key (so bytePrime will never be 1 or 0.
+	the x input gets modded by 8 to give us which byte of the key we will be returning as the subkey.
+	We then bitshift the key left (with a carry) to give us Key` or "shifted".
+	The keys are from the right, so we must switch the mod results with its key_byte equivelant.
+*/
+
+/*
+unsigned char K(unsigned char * key, int x)
+{
+	int byteNumber;
+	int bytePrime;
+
+	byteNumber = x % 8;
+	printf("\nByte number: %d", byteNumber);
+
+	switch (byteNumber) {
+	case 0:
+		bytePrime = 9;
+		break;
+	case 1:
+		bytePrime = 8;
+		break;
+	case 2:
+		bytePrime = 7;
+		break;
+	case 3:
+		bytePrime = 6;
+		break;
+	case 4:
+		bytePrime = 5;
+		break;
+	case 5:
+		bytePrime = 4;
+		break;
+	case 6:
+		bytePrime = 3;
+		break;
+	case 7:
+		bytePrime = 2;
+		break;
+	default:
+		printf("Input error in Key Scheduler");
+		return (unsigned char)'00';
+	}
+
+	leftRotate(key);
+
+	printf("\nShifted Key should be ...\n     (0x57)(0x9B)(0xDE)(0x02)(0x46)(0x8A)(0xCF)(0x13)(0x57)(0x9B): ");
+	printKey(key);
+
+	printf(" Byte Prime: %d", bytePrime);
+	printf(" Byte Prime: (0x %02X)", key[bytePrime]);
+
+	return key[bytePrime];
+}
+*/
+
+
+/*
+	NOTE: This is the 64 bit key version
+	It has been left here in case someone changes their minds before launch.
+
+	The x input gets modded by 8 to give us which byte of the key we will be returning as the subkey.
+	We then bitshift the key left (with a carry) to give us Key` or "shifted".
+	The keys are from the right, so we must switch the mod results with its key_byte equivelant.
+*/
+
+/*
+unsigned char K(unsigned char * key, int x)
+{
+	int byteNumber;
+	int bytePrime;
+
+	byteNumber = x % 8;
+	printf("\nByte number: %d", byteNumber);
+
+	switch (byteNumber) {
+	case 0:
+		bytePrime = 7;
+		break;
+	case 1:
+		bytePrime = 6;
+		break;
+	case 2:
+		bytePrime = 5;
+		break;
+	case 3:
+		bytePrime = 4;
+		break;
+	case 4:
+		bytePrime = 3;
+		break;
+	case 5:
+		bytePrime = 2;
+		break;
+	case 6:
+		bytePrime = 1;
+		break;
+	case 7:
+		bytePrime = 0;
+		break;
+	default:
+		printf("Input error in Key Scheduler");
+		return (unsigned char)'00';
+	}
+
+	leftRotate(key);
+
+	printf("\nShifted Key should be ...\n     (0x57)(0x9B)(0xDE)(0x02)(0x46)(0x8A)(0xCF)(0x13)(0x57)(0x9B): ");
+	printKey(key);
+
+	printf(" Byte Prime: %d", bytePrime);
+	printf(" Byte Prime: (0x %02X)", key[bytePrime]);
+
+	return key[bytePrime];
+}
+*/
