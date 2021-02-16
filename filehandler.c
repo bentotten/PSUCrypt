@@ -30,11 +30,13 @@ int getKey(unsigned char * key, int * keysize)
 
 void readKey(FILE* fp, unsigned char * key)
 {
-	int flag = 0;	/* Checks for leading 0x on key */
-	char c;
+	int flag = 0;	
+	unsigned hex;
 	int i;
 
 	fseek(fp, 0, SEEK_SET);	/* Return to beginning of file */
+	
+	/* Checks for leading 0x on key */
 	if (fgetc(fp) == '0')
 		if (fgetc(fp) == 'x')
 			flag = 1;
@@ -42,26 +44,27 @@ void readKey(FILE* fp, unsigned char * key)
 	fseek(fp, 0, SEEK_SET);	/* Return to beginning of file */
 
 	if (flag == 1) {
-		for (i = 0; i < (KEYLENGTH + 2) && (fp != NULL); ++i) {
-			c = fgetc(fp);
-			if (feof(fp))
-				return;
+		fseek(fp, 2, SEEK_SET);
+		for (i = 0; i < 22; ++i) {
+			if (fscanf(fp, "%2x", &hex) == 1)
+			{
+				printf("(0x%02X) ", (char)hex);
+				key[i] = (char)hex;
+			}
 			else
-				if (i != 0 && i != 1) {
-					key[i - 2] = c;
-				}
+				break;
 		}
 	}
 
 	else if (flag == 0) {
-		for (i = 0; i < KEYLENGTH && (fp != NULL); ++i) {
-			c = fgetc(fp);
-			if (feof(fp))
-				return;
+		for (i = 0; i < 22; ++i) {
+			if (fscanf(fp, "%2x", &hex) == 1)
+			{
+				printf("(0x%02X) ", (char)hex);
+				key[i] = (char)hex;
+			}
 			else
-				if (i != 0 && i != 1) {
-					key[i] = c;
-				}
+				break;
 		}
 	}
 
@@ -172,9 +175,8 @@ int getFileSize(FILE* fp, char* flag)
 		if(fgetc(fp)) {
 			if (feof(fp))
 				break;
-		}
-		else
 			++i;
+		}	
 	}
 
 	return i;
