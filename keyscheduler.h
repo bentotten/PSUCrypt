@@ -7,8 +7,9 @@
 #define ROUNDS 20
 #define COLS 12
 
+/* Keys */
 int generateSubkeys(unsigned char* , unsigned char [ROUNDS][COLS]);
-/* unsigned char K(int x); */
+unsigned char K(unsigned char*, int x);
 
 /* Utility */
 void printTable(unsigned char [ROUNDS][COLS]);

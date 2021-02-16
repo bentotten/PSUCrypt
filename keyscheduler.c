@@ -16,14 +16,10 @@ int generateSubkeys(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 	if (initializeTable(subkeyTable) != 0)
 		return 1;
 
-	printTable(subkeyTable);
-
-	/*
 	for(round = 0; round < ROUNDS; ++round) {
 		for (subkeyNumber = 0; subkeyNumber < COLS; ++subkeyNumber) {
-			/* Determine Constant for G() and F() subkey generation*/
 
-	/*
+			/* Determine Constant for G() and F() subkey generation*/
 			if (subkeyNumber == 0 || subkeyNumber == 4 || subkeyNumber == 8)
 				constant = 0;
 			else if (subkeyNumber == 1 || subkeyNumber == 5 || subkeyNumber == 9)
@@ -34,22 +30,27 @@ int generateSubkeys(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 				constant = 3;
 			else
 				return 1;
-			
-			*/
-			/* Send to keyscheduler */
 
-	/*
 			keygenInput = 4 * round + constant;
-			
-			//subkeyTable[round][subkeyNumber] = K(keygenInput);
-			subkeyTable[round][subkeyNumber] = "c";
-			printf("\nRow: %d\n", round);
-			printf("\nSubkey: %d\n", subkeyNumber);
-			printf(subkeyTable[round][subkeyNumber]);
+
+			/* Send to keyscheduler */
+			subkeyTable[round][subkeyNumber] = K(key, keygenInput);
 		}
 	}
-	*/
+
+	printTable(subkeyTable);
+
 	return 0;
+}
+
+
+unsigned char K(unsigned char * key, int x)
+{
+	unsigned char subkey = 'z';
+
+	printf(" K() key: %s ", key);
+
+	return subkey;
 }
 
 
@@ -57,23 +58,12 @@ int initializeTable(unsigned char subkeyTable[ROUNDS][COLS])
 {
 	int round; /* Outer row: Rounds */
 	int subkeyNumber; /* Inner row: Subkeys */
-	int t = 0;
 
 	for (round = 0; round < ROUNDS; ++round) {
 		for (subkeyNumber = 0; subkeyNumber < COLS; ++subkeyNumber) {
 			subkeyTable[round][subkeyNumber] = (unsigned) '0';
 		}
 	}
-	
-	/* DELTE ME
-	unsigned char s = '0';
-	if (subkeyTable[0][0] == s)
-		printf("\nSuccess!");
-	else
-		printf("Failure...");
-
-	printf("\nIn function check: %c", subkeyTable[0][0]);
-	*/
 
 	return 0;
 }
@@ -100,9 +90,3 @@ void printTable(unsigned char table[ROUNDS][COLS])
 
 	return;
 }
-/*
-unsigned char K(int x)
-{
-	return (unsigned char)x;
-}
-*/

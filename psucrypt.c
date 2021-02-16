@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
 		printf("plaintext fetch error: %s", plaintextBlock);
 	
 	textsize = getTextSize();
-	printf("\nText: %s", plaintextBlock);
+	printf("\n\nText: %s", plaintextBlock);
 	printf("\nKey: %s", key);
 	printf("\nKeysize: %d", keysize);
 	printf("\nTextsize:%d\n", textsize);
