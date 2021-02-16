@@ -30,7 +30,7 @@ int getKey(unsigned char * key, int * keysize)
 
 void readKey(FILE* fp, unsigned char * key)
 {
-	int flag = 0;	// Checks for leading 0x on key
+	int flag = 0;	/* Checks for leading 0x on key */
 	char c;
 	int i;
 
