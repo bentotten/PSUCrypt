@@ -12,6 +12,7 @@ int generateSubkeys(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 	int subkeyNumber; /* Inner row: Subkeys */
 	int constant; /* constant that is added onto round number when sending to keyscheduler*/
 	int keygenInput;
+	unsigned char z; /* delete me*/
 
 	if (initializeTable(subkeyTable) != 0)
 		return 1;
@@ -34,9 +35,13 @@ int generateSubkeys(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 			keygenInput = 4 * round + constant;
 
 			/* Send to keyscheduler */
-			subkeyTable[round][subkeyNumber] = K(key, keygenInput);
+			/* subkeyTable[round][subkeyNumber] = K(key, keygenInput); */
 		}
 	}
+
+	z = K(key, keygenInput);
+
+	printf("\nChar: %c \nHex: (0x%02X)", z, z);
 
 	printTable(subkeyTable);
 
@@ -46,11 +51,36 @@ int generateSubkeys(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 
 unsigned char K(unsigned char * key, int x)
 {
+	unsigned char shifted[21];
 	unsigned char subkey = 'z';
 
-	printf(" K() key: %s ", key);
+	printf("\n Original Key key: %s", key);
+
+	leftRotate(shifted, key);
+
+
+	/* printf(" K() key: %s", key); */
+	
+	/* printf("(0x%02X)", key); */
 
 	return subkey;
+}
+
+
+/* Thank you https://www.geeksforgeeks.org/rotate-bits-of-an-integer/ */
+void leftRotate(unsigned char* key, unsigned char * keyPrime)
+{
+	copyKey(keyPrime, key);
+
+	(*n << 1) | (*n >> (8 - 1));
+	return;
+}
+
+/*Function to right rotate n by d bits*/
+void rightRotate(unsigned char* key, unsigned char* keyPrime)
+{
+	(*n >> 1) | (*n << (8 - 1));
+	return;
 }
 
 
@@ -88,5 +118,14 @@ void printTable(unsigned char table[ROUNDS][COLS])
 		}
 	}
 
+	return;
+}
+
+
+void copyKey(unsigned char* key, unsigned char* keyPrime)
+{
+	int i;
+
+	for(i = 0; i < )
 	return;
 }

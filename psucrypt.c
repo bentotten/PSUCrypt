@@ -9,7 +9,7 @@
 int main(int argc, char* argv[])
 {
 	unsigned char plaintextBlock[9] = "\0\0\0\0\0\0\0\0\0"; /* 64 bits (+ delimiter) */
-	unsigned char key[21] = "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0";	/* Future recast as immutable const? */
+	unsigned char key[KEYLENGTH+1] = "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0";	/* Future recast as immutable const? */
 	unsigned char subkeys[ROUNDS][COLS]; /* 20 rounds, 12 subkeys, 1 byte each*/
 	int keysize = 0;
 	int textsize = 0;

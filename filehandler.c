@@ -30,20 +30,43 @@ int getKey(unsigned char * key, int * keysize)
 
 void readKey(FILE* fp, unsigned char * key)
 {
+	int flag = 0;	// Checks for leading 0x on key
 	char c;
 	int i;
 
 	fseek(fp, 0, SEEK_SET);	/* Return to beginning of file */
+	if (fgetc(fp) == '0')
+		if (fgetc(fp) == 'x')
+			flag = 1;
 
-	for (i = 0; i < 22 && (fp != NULL); ++i) {
-		c = fgetc(fp);
-		if (feof(fp))
-			return;
-		else
-			if (i != 0 && i != 1) {
-				key[i-2] = c;
-			}
+	fseek(fp, 0, SEEK_SET);	/* Return to beginning of file */
+
+	if (flag == 1) {
+		for (i = 0; i < (KEYLENGTH + 2) && (fp != NULL); ++i) {
+			c = fgetc(fp);
+			if (feof(fp))
+				return;
+			else
+				if (i != 0 && i != 1) {
+					key[i - 2] = c;
+				}
+		}
 	}
+
+	else if (flag == 0) {
+		for (i = 0; i < KEYLENGTH && (fp != NULL); ++i) {
+			c = fgetc(fp);
+			if (feof(fp))
+				return;
+			else
+				if (i != 0 && i != 1) {
+					key[i] = c;
+				}
+		}
+	}
+
+	else
+		printf("\nKey Read Error\n");
 
 	return;
 }
