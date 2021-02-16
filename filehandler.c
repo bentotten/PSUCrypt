@@ -75,8 +75,7 @@ void readKey(FILE* fp, unsigned char * key)
 }
 
 
-
-int getPlaintext(unsigned char* plaintext)
+int getPlaintextBlock(unsigned char* plaintext)
 {
 	FILE* fp = NULL;
 
@@ -163,6 +162,7 @@ void printFile(FILE* fp)
 
 	return;
 }
+
 
 int getFileSize(FILE* fp, char* flag)
 {

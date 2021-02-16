@@ -8,7 +8,7 @@ int getKey(unsigned char *, int *);
 void readKey(FILE*, unsigned char*);
 
 /* Plaintext File */
-int getPlaintext(unsigned char*);
+int getPlaintextBlock(unsigned char*);
 int readPlaintext(FILE*, unsigned char*);
 int getTextSize();
 

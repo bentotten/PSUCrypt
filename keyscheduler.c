@@ -39,6 +39,8 @@ int generateSubkeys(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 
 			/* Send to keyscheduler */
 			subkeyTable[round][subkeyNumber] = K(keyPrime, keygenInput); 
+			if (!subkeyTable[round][subkeyNumber])
+				return 1;
 		}
 	}
 
@@ -61,7 +63,6 @@ unsigned char K(unsigned char * key, int x)
 	int bytePrime;
 
 	byteNumber = x % 10;
-	printf("\nByte number: %d", byteNumber); /* DELETE ME */
 
 	switch (byteNumber) {
 	case 0:
@@ -96,24 +97,20 @@ unsigned char K(unsigned char * key, int x)
 		break;
 	default:
 		printf("Input error in Key Scheduler");
-		return (unsigned char)'0';
+		return NULL;
 	}
 
 leftRotate(key);
-
-/* DELETE ME */
-/* printf("\nShifted Key should be ...\n     (0x57)(0x9B)(0xDE)(0x02)(0x46)(0x8A)(0xCF)(0x13)(0x57)(0x9B): ");
-printKey(key);
-*/
-printf(" Byte Prime: %d", bytePrime);
-printf(" Byte Prime: (0x %02X)", key[bytePrime]);
-/**/
 
 return key[bytePrime];
 }
 
 
-
+/* Saves the first high byte to eventually move the last bit of to the front of the array.
+*  Starts at the high bytes and begins shifting over. temp1 and temp2 hold the shifted in
+*  order to move the last bit to the new element via bit shifting 7 bits over (one shy of 
+*  a byte) and then OR'ing it to ensure the proper bit stays.
+*/
 void leftRotate(unsigned char * shifted)
 {
 	unsigned char temp1 = 0;
@@ -132,28 +129,6 @@ void leftRotate(unsigned char * shifted)
 	hold >>= 7;
 	shifted[KEYLENGTH-1] |= hold;
 
-	return;
-}
-
-
-/* UNTESTED! */
-void rightRotate(unsigned char* shifted)
-{
-	unsigned char temp1 = 0;
-	unsigned char temp2 = 0;
-	unsigned char hold = 0;
-	int i;
-
-	hold = shifted[0] & 0xFF;
-	for (i = KEYLENGTH - 1; i >= 0; --i) {
-		temp2 = shifted[i] & 0xFF;
-		temp1 <<= 7;
-		shifted[i] >>= 1;
-		shifted[i] |= temp1;
-		temp1 = temp2;
-	}
-	hold <<= 7;
-	shifted[KEYLENGTH - 1] |= hold;
 	return;
 }
 
