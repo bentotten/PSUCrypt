@@ -17,9 +17,6 @@ int main(int argc, char* argv[])
 	unsigned char plaintextBlock[8] = { 0 }; /* 64 bits */
 	unsigned char key[KEYLENGTH] = { 0 };	/* Future recast as immutable const? */
 	unsigned char subkeys[ROUNDS][COLS]; /* 20 rounds, 12 subkeys, 1 byte each*/
-	int keysize = 0;
-	int textsize = 0;
-	int paddingFlag;
 
 	printf("Running...\n");	/* TODO DELETE ME */
 

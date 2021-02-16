@@ -12,7 +12,6 @@ int generateSubkeys(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 	int subkeyNumber; /* Inner row: Subkeys */
 	int constant; /* constant that is added onto round number when sending to keyscheduler*/
 	int keygenInput;
-	unsigned char z; /* delete me*/
 	unsigned char keyPrime[KEYLENGTH] = { '0' };
 
 	copyKey(keyPrime, key);
@@ -97,7 +96,7 @@ unsigned char K(unsigned char * key, int x)
 		break;
 	default:
 		printf("Input error in Key Scheduler");
-		return NULL;
+		return (unsigned char) NULL;
 	}
 
 leftRotate(key);
