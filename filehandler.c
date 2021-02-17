@@ -154,9 +154,9 @@ int getPlaintextPSU(FILE* fp, unsigned char* plaintext)
 	for (i = 0; i < 8; ++i) {
 
 		c = fgetc(fp);
-
+		printf("\nStart: i is at %d. c is at %c", i, c); /* DELETE ME*/
 		if (feof(fp)) {
-			printf("\nEOF REACHED. i is at %d", i); /* DELETE ME*/
+			printf("\EOF: i is at %d. c is at %c", i, c); /* DELETE ME*/
 			if (i == 7)
 			{
 				printf("\nEOF: Needs EOF stripped and to be given one pad block");	/* DELETE ME*/
