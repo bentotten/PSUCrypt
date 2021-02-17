@@ -189,9 +189,7 @@ int getPlaintextPSU(FILE* fp, unsigned char* plaintext)
 
 	c = fgetc(fp);
 
-
 	if (feof(fp)) {
-		printf("\n\nPost FORLOOP EOF REACHED. i: %d   c: %c", i,c); /* DELETE ME*/
 		printf("\nEOF: Perfect size! Needs Pad Block");	/* DELETE ME*/
 		printPlaintext(plaintext); /* DELETE ME */
 		return 2;
@@ -200,7 +198,7 @@ int getPlaintextPSU(FILE* fp, unsigned char* plaintext)
 		fseek(fp, -1, SEEK_CUR);
 		c = fgetc(fp);
 		printf("\n64 bits read in, fp ptr reset to last char %c", c);	/* DELETE ME*/
-		fseek(fp, -1, SEEK_CUR);
+		fseek(fp, -2, SEEK_CUR);
 		printPlaintext(plaintext);
 		return 0;
 	}
