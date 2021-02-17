@@ -195,7 +195,7 @@ int getPlaintextPSU(FILE* fp, unsigned char* plaintext)
 		return 2;
 	}
 	else {
-		fseek(fp, -1, SEEK_CUR);
+		fseek(fp, -2, SEEK_CUR);
 		c = fgetc(fp);
 		printf("\n64 bits read in, fp ptr reset to last char %c", c);	/* DELETE ME*/
 		fseek(fp, -2, SEEK_CUR);
