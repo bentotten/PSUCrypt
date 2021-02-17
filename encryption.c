@@ -73,13 +73,6 @@ void whiten(unsigned char* plaintext, unsigned int* inprocess, unsigned char * k
 }
 
 
-void joinChar(unsigned int* w, unsigned char* a, unsigned char* b)
-{
-	*w = (*a << 8)  | *b; 
-	return;
-}
-
-
 void encrypt(unsigned int* inprocess, unsigned char subkeys[ROUNDS][COLS])
 {
 	struct fboxResults fResults = { 0,0 };
@@ -95,8 +88,60 @@ void encrypt(unsigned int* inprocess, unsigned char subkeys[ROUNDS][COLS])
 	return;
 }
 
+void decrypt(unsigned int* inprocess, unsigned char subkeys[ROUNDS][COLS])
+{
+	struct fboxResults fResults = { 0,0 };
+	int round;
+
+	for (round = 0; round < 20; ++round)
+	{
+		/* TODO: REVERSE KEYS AND SEND THEM */
+		/* fResults = F(inprocess[0], inprocess[1], round, subkeys[round]); */
+
+	}
+
+	return;
+}
+
 struct fboxResults F(unsigned int* r0, unsigned int* r1, int round, unsigned char subkeys[COLS])
 {
-	printf("\nfbox round %d", round);
+	struct fboxResults fresults = { 0,0 };
+	struct fboxResults gresults = { 0,0 };
+
+	/* G Permutation */
+	gresults.x0 = G(r0, subkeys[0], subkeys[1], subkeys[2], subkeys[3], round);
+	gresults.x1 = G(r1, subkeys[4], subkeys[5], subkeys[6], subkeys[7], round);
+
+	/* TODO FINISH CALCULATING f0 and f1*/
+
+	return fboxResults;
+}
+
+
+unsigned int G(unsigned int* r0, unsigned char* k0, unsigned char* k1, unsigned char* k2, unsigned char* k3, int round)
+{
+	unsigned char g0, g1 = {'0'};
+	splitInt(&r0, &g0, &g1);
+
+	/* Do stuff */
+
+	joinChar(&r0, &g0, &g1);
+
+	printf("\n(%02X)", r0);
+
+	return;
+}
+
+
+void joinChar(unsigned int* w, unsigned char* a, unsigned char* b)
+{
+	*w = (*a << 8) | *b;
+	return;
+}
+
+
+void splitInt(unsigned int* w, unsigned char* a, unsigned char* b)
+{
+	*w = (*a << 8) | *b;
 	return;
 }
