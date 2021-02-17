@@ -168,8 +168,13 @@ unsigned int G(unsigned int r0, unsigned char k0, unsigned char k1, unsigned cha
 
 unsigned char ftable(unsigned char lookup)
 {
-	printf("\nLooking up: (%02x)", lookup);
-	return '0';
+	unsigned char row, col, hold;
+
+	row = (lookup >> 4);
+	hold = (lookup << 4);
+	col = (hold >> 4);
+
+	return FTABLE[row][col];
 }
 
 
