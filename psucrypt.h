@@ -10,6 +10,7 @@
 #include <string.h>
 #include <inttypes.h>
 #include <stdlib.h>
+#include <math.h>
 
 /* Files */
 #include "filehandler.h"

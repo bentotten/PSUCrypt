@@ -48,8 +48,6 @@ int blockEncryption(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 	}
 	*/
 
-	printf("\nFTABLE TEST: (%02x)", FTABLE[15][15]);
-
 	paddingFlag = getPlaintextBlock(fp, plaintextBlock);
 	whiten(plaintextBlock, inProcess, key);
 	encrypt(inProcess, subkeyTable);
@@ -134,6 +132,9 @@ struct fboxResults F(unsigned int r0, unsigned int r1, int round, unsigned char 
 {
 	struct fboxResults fresults = { 0,0 };
 	struct fboxResults gresults = { 0,0 };
+	unsigned int con1 = { 0 };
+	unsigned int con2 = { 0 };
+	unsigned int power = (unsigned int)pow((double)2, (double)16);
 
 	/* G Permutation */
 	gresults.x0 = G(r0, subkeys[0], subkeys[1], subkeys[2], subkeys[3], round);
@@ -142,7 +143,11 @@ struct fboxResults F(unsigned int r0, unsigned int r1, int round, unsigned char 
 	printf("\nResult: (%02X)", gresults.x0);
 	printf("\nResult: (%02X)", gresults.x1);
 
-	/* TODO FINISH CALCULATING f0 and f1*/
+	joinChar(&con1, &subkeys[8], &subkeys[9]);
+	joinChar(&con2, &subkeys[10], &subkeys[11]);
+
+	fresults.x0 = (gresults.x0 + (2 * gresults.x1) + con1) % power;
+	fresults.x1 = ((2 * gresults.x0) + gresults.x1 + con2) % power;
 
 	return fresults;
 }
