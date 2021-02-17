@@ -75,9 +75,18 @@ void readKey(FILE* fp, unsigned char * key)
 	return;
 }
 
-
-/* Reads in plaintext 64 bits (8 chars) at a time to be encrypted */
+/* If PSU is set to 0, not in PSU environment */
 int getPlaintextBlock(FILE* fp, unsigned char* plaintext)
+{
+	if (PSU == 0)
+		return getPlaintext(fp, plaintext);
+	if (PSU == 1)
+		return getPlaintextPSU(fp, plaintext);
+}
+
+
+/* Non-PSU: Reads in plaintext 64 bits (8 chars) at a time to be encrypted */
+int getPlaintext(FILE* fp, unsigned char* plaintext)
 {
 	unsigned char paddingSize;
 	unsigned char c;
@@ -132,6 +141,65 @@ int getPlaintextBlock(FILE* fp, unsigned char* plaintext)
 
 	return 1;
 }
+
+
+/* PSU Environment: Reads in plaintext 64 bits (8 chars) at a time to be encrypted with off-by-one-error fixed*/
+int getPlaintextPSU(FILE* fp, unsigned char* plaintext)
+{
+	unsigned char paddingSize;
+	unsigned char c;
+	int i;
+
+	/* Read in 64 bits; Apply padding; return 2 if full block of padding is needed */
+	for (i = 0; i < 8; ++i) {
+
+		c = fgetc(fp);
+
+		if (feof(fp)) {
+			printf("\nEOF REACHED. i is at %d", i); /* DELETE ME*/
+			if (i == 7)
+			{
+				printf("\nEOF: Needs EOF stripped and to be given one pad block");	/* DELETE ME*/
+				paddingSize = padBlock(i, plaintext);
+				plaintext[i] = paddingSize;
+				printPlaintext(plaintext); /* DELETE ME */
+				return 0;
+			}
+			else {
+				printf("\nEOF: Applying padding");	/* DELETE ME*/
+				/*--i; */
+				paddingSize = padBlock(i, plaintext);
+				plaintext[i] = paddingSize;
+				printPlaintext(plaintext);
+				return 0;
+			}
+		}
+
+		plaintext[i] = c;
+		printf("i is at %d:%c. ", i, c); /* DELETE ME*/
+	}
+
+	/* If next move of pointer is EOF, then text block was perfectly sized 64 bits */
+	c = fgetc(fp);
+
+	if (feof(fp)) {
+		printf("\nEOF REACHED. i is at %d", i); /* DELETE ME*/
+		printf("\nEOF: Perfect size! Needs Pad Block");	/* DELETE ME*/
+		printPlaintext(plaintext); /* DELETE ME */
+		return 2;
+	}
+	else {
+		fseek(fp, -1, SEEK_CUR);
+		c = fgetc(fp);
+		printf("\n64 bits read in, fp ptr reset to last char %c", c);	/* DELETE ME*/
+		fseek(fp, -1, SEEK_CUR);
+		printPlaintext(plaintext);
+		return 0;
+	}
+
+	return 1;
+}
+
 
 unsigned int padBlock(int i, unsigned char* plaintext)
 {

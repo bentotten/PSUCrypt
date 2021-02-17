@@ -9,6 +9,8 @@ void readKey(FILE*, unsigned char*);
 
 /* Plaintext File */
 int getPlaintextBlock(FILE*, unsigned char*);
+int getPlaintext(FILE*, unsigned char*);
+int getPlaintextPSU(FILE*, unsigned char* );
 int getTextSize();
 unsigned int padBlock(int, unsigned char*);
 void padBlockRecurse(int, unsigned char, unsigned char*, unsigned char*);

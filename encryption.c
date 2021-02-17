@@ -21,11 +21,11 @@ int encrypt(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS])
 	/* Loop until EOF */
 	/*
 	while (fp) {
-		paddingFlag = getPlaintextBlock(fp, plaintextBlock);
+		paddingFlag = getPlaintext(fp, plaintextBlock);
 	}
 	*/
 
-	paddingFlag = getPlaintextBlock(fp, plaintextBlock);
+	paddingFlag = getPlaintext(fp, plaintextBlock);
 
 
 	switch (paddingFlag) {
