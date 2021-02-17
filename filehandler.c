@@ -303,7 +303,7 @@ void printPlaintext(unsigned char* plaintext)
 	int i;
 	printf("\nPlaintext: ");
 	for (i = 0; i < 8; ++i) {
-		printf("%c", plaintext[i]);
+		printf("%x", plaintext[i]);
 	}
 
 	return;
