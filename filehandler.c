@@ -184,11 +184,13 @@ int getPlaintextPSU(FILE* fp, unsigned char* plaintext)
 
 	/* If next move of pointer is EOF, then text block was perfectly sized 64 bits */
 
-	printf("\n\n\nFOR LOOP CONCLUDED. CURRENT- i: %d   c: %c", i, c); /* DELETE ME*/
+	printf("\n\nFOR LOOP CONCLUDED. CURRENT- i: %d   c: %c", i, c); /* DELETE ME*/
+	if (!c)
+		printf("\cc does not exist\n");
 	c = fgetc(fp);
 
 	if (feof(fp)) {
-		printf("\n\n\nPost FORLOOP EOF REACHED. i: %d   c: %c", i,c); /* DELETE ME*/
+		printf("\n\nPost FORLOOP EOF REACHED. i: %d   c: %c", i,c); /* DELETE ME*/
 		printf("\nEOF: Perfect size! Needs Pad Block");	/* DELETE ME*/
 		printPlaintext(plaintext); /* DELETE ME */
 		return 2;
