@@ -81,9 +81,11 @@ void encrypt(unsigned int* inprocess, unsigned char subkeys[ROUNDS][COLS])
 	for (round = 0; round < 20; ++round)
 	{
 
-		fResults = F(inprocess[0], inprocess[1], round, subkeys[round]);
+		/* fResults = F(inprocess[0], inprocess[1], round, subkeys[round]); */
 
 	}
+
+	fResults = F(inprocess[0], inprocess[1], 0, subkeys[0]);
 
 	return;
 }
@@ -103,33 +105,38 @@ void decrypt(unsigned int* inprocess, unsigned char subkeys[ROUNDS][COLS])
 	return;
 }
 
-struct fboxResults F(unsigned int* r0, unsigned int* r1, int round, unsigned char subkeys[COLS])
+struct fboxResults F(unsigned int r0, unsigned int r1, int round, unsigned char subkeys[COLS])
 {
 	struct fboxResults fresults = { 0,0 };
 	struct fboxResults gresults = { 0,0 };
 
 	/* G Permutation */
 	gresults.x0 = G(r0, subkeys[0], subkeys[1], subkeys[2], subkeys[3], round);
-	gresults.x1 = G(r1, subkeys[4], subkeys[5], subkeys[6], subkeys[7], round);
+	gresults.x1 = G(r1, subkeys[4], subkeys[5], subkeys[6], subkeys[7], round); 
 
 	/* TODO FINISH CALCULATING f0 and f1*/
 
-	return fboxResults;
+	return fresults;
 }
 
 
-unsigned int G(unsigned int* r0, unsigned char* k0, unsigned char* k1, unsigned char* k2, unsigned char* k3, int round)
+unsigned int G(unsigned int r0, unsigned char k0, unsigned char k1, unsigned char k2, unsigned char k3, int round)
 {
-	unsigned char g0, g1 = {'0'};
-	splitInt(&r0, &g0, &g1);
+	unsigned char g1, g2 = {'0'};
+
+	printf("\nBefore Split: (%02X)", r0);
+	splitInt(&r0, &g1, &g2);
+
+
+	printf("\nSplit Keys: (%02X) (%02X)", g1, g2);
 
 	/* Do stuff */
 
-	joinChar(&r0, &g0, &g1);
+	joinChar(&r0, &g1, &g2);
 
-	printf("\n(%02X)", r0);
+	printf("\nAfter Rejoin: (%02X)", r0);
 
-	return;
+	return 0;
 }
 
 
@@ -142,6 +149,10 @@ void joinChar(unsigned int* w, unsigned char* a, unsigned char* b)
 
 void splitInt(unsigned int* w, unsigned char* a, unsigned char* b)
 {
-	*w = (*a << 8) | *b;
+	unsigned int hold;
+
+	*a = (*w >> 8 );
+	hold = (*w << 24);
+	*b = (hold >> 24);
 	return;
 }
