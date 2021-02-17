@@ -159,6 +159,7 @@ int getPlaintextPSU(FILE* fp, unsigned char* plaintext)
 		/*printf("\nStart: i is at %d\nc is at %c\n", i, c); /* DELETE ME*/
 		if (feof(fp)) {
 			printf("\nEOF: i is at %d\nc is at %c\n", i, c); /* DELETE ME*/
+			--i;
 			printf("\nEOF Adjusted: i is at %d\nc is at %c", i, c); /* DELETE ME*/
 			if (i == 7)
 			{
@@ -303,7 +304,7 @@ void printPlaintext(unsigned char* plaintext)
 	int i;
 	printf("\nPlaintext: ");
 	for (i = 0; i < 8; ++i) {
-		printf("%x", plaintext[i]);
+		printf("%c", plaintext[i]);
 	}
 
 	return;
