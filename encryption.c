@@ -38,7 +38,7 @@ int blockEncryption(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 			fclose(fp);
 			return 1;
 		case 2:
-			printf("\nCALL PADDING HERE");
+			printf("\nCALL 64 BIT PADDING BLOCK HERE");
 	}
 
 	/* Close File */
@@ -82,8 +82,21 @@ void joinChar(unsigned int* w, unsigned char* a, unsigned char* b)
 
 void encrypt(unsigned int* inprocess, unsigned char subkeys[ROUNDS][COLS])
 {
-	int round = 0;
+	struct fboxResults fResults = { 0,0 };
+	int round;
 
-	printf("%d", round);
+	for (round = 0; round < 20; ++round)
+	{
+
+		fResults = F(inprocess[0], inprocess[1], round, subkeys[round]);
+
+	}
+
+	return;
+}
+
+struct fboxResults F(unsigned int* r0, unsigned int* r1, int round, unsigned char subkeys[COLS])
+{
+	printf("\nfbox round %d", round);
 	return;
 }
