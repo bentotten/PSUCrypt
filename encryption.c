@@ -67,7 +67,7 @@ int blockEncryption(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 	int t;
 	for (t = 0; t < 8; ++t)
 	{
-		printf("(% 02x)", ciphertextBlock[t]);
+		printf("(%02x)", ciphertextBlock[t]);
 	}
 
 	switch (paddingFlag) {
@@ -124,10 +124,10 @@ void lastWhiten(unsigned int* ciphertext, unsigned char* ciphertextBlock, unsign
 	joinChar(&k3, &key[6], &key[7]);
 
 	/* XOR with unrefined ciphertext */
-	ciphertext[0] ^ k0;
-	ciphertext[1] ^ k1;
-	ciphertext[2] ^ k2;
-	ciphertext[3] ^ k3;
+	ciphertext[0] = ciphertext[0] ^ k0;
+	ciphertext[1] = ciphertext[1] ^ k1;
+	ciphertext[2] = ciphertext[2] ^ k2;
+	ciphertext[3] = ciphertext[3] ^ k3;
 
 	/* Split the ciphertext into chars */
 	splitInt(&ciphertext[0], &y0, &y1);
