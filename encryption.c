@@ -73,8 +73,8 @@ int blockEncryption(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 	lastWhiten(ciphertext, ciphertextBlock, key);
 	*/
 
-	/* DELETE ME */
-	putchar('\n');
+
+	putchar('\n'); 	/* DELETE ME */
 
 	switch (paddingFlag) {
 		case 0:
@@ -159,6 +159,7 @@ void encrypt(unsigned int* inprocess, unsigned char subkeys[ROUNDS][COLS])
 	struct fboxResults fResults = { 0,0 }; /* results from the fbox*/
 	unsigned int temp[2] = { 0 }; /* 16 bits each element for doing the swap before the next round*/
 	int round;
+	int i; /* DELETE ME */
 
 	for (round = 0; round < 20; ++round)
 	{
@@ -170,6 +171,12 @@ void encrypt(unsigned int* inprocess, unsigned char subkeys[ROUNDS][COLS])
 		inprocess[1] = fResults.x1 ^ inprocess[3];
 		inprocess[2] = temp[0];
 		inprocess[3] = temp[1];
+
+		if (round == 0)
+		{
+			printf("\nBlock should be: (a05f) (53c4) (d8a8) (8c74)");
+			printf("\n\t\t (%02x) (%02x) (%02x) (%02x)", inprocess[0], inprocess[1], inprocess[2], inprocess[3]);
+		}
 	}
 
 	return;
@@ -207,10 +214,10 @@ struct fboxResults F(unsigned int r0, unsigned int r1, int round, unsigned char 
 	/* DELETE ME */
 	if (round == 0)
 	{
-		printf("\n\nt0 should be: (53f2)");	/* DELETE ME */
-		printf("\n(%02x)", gresults.x0);
-		printf("\nt1 should be: (1ba0)");	/* DELETE ME */
-		printf("\n(%02x)", gresults.x1);
+		printf("\n\nt0 should be:   (62fd)");	/* DELETE ME */
+		printf("\n\t\t(%02x)", gresults.x0);
+		printf("\nt1 should be:   (1ba0)");	/* DELETE ME */
+		printf("\n\t\t(%02x)", gresults.x1);
 	}
 
 	joinChar(&con1, &subkeys[8], &subkeys[9]);
@@ -222,10 +229,10 @@ struct fboxResults F(unsigned int r0, unsigned int r1, int round, unsigned char 
 	/* DELETE ME */
 	if (round == 0)
 	{
-		printf("\n\nf0 should be: (f173)");	/* DELETE ME */
-		printf("\n(%02x)", fresults.x0);
-		printf("\nf1 should be: (4034)");	/* DELETE ME */
-		printf("\n(%02x)", fresults.x1);
+		printf("\n\nf0 should be:   (f173)");	/* DELETE ME */
+		printf("\n\t\t(%02x)", fresults.x0);
+		printf("\nf1 should be:   (4034)");	/* DELETE ME */
+		printf("\n\t\t(%02x)", fresults.x1);
 	}
 
 	return fresults;
