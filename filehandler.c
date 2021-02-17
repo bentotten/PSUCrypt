@@ -150,7 +150,7 @@ int getPlaintextPSU(FILE* fp, unsigned char* plaintext)
 	unsigned char c;
 	int i;
 
-	printf("\n\nIN PSU ENVIRONMENT\n\n");
+	printf("\n\nIN PSU ENVIRONMENT\n");
 
 	/* Read in 64 bits; Apply padding; return 2 if full block of padding is needed */
 	for (i = 0; i < 8; ++i) {
@@ -187,7 +187,7 @@ int getPlaintextPSU(FILE* fp, unsigned char* plaintext)
 	c = fgetc(fp);
 
 	if (feof(fp)) {
-		printf("\n\n\nPost FORLOOP EOF REACHED. i is at %d", i); /* DELETE ME*/
+		printf("\n\n\nPost FORLOOP EOF REACHED. i: %d   c: %c", i,c); /* DELETE ME*/
 		printf("\nEOF: Perfect size! Needs Pad Block");	/* DELETE ME*/
 		printPlaintext(plaintext); /* DELETE ME */
 		return 2;
