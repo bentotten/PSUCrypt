@@ -153,13 +153,12 @@ int getPlaintextPSU(FILE* fp, unsigned char* plaintext)
 	printf("\n\nIN PSU ENVIRONMENT\n");
 
 	/* Read in 64 bits; Apply padding; return 2 if full block of padding is needed */
-	for (i = 0; i < 10; ++i) {
+	for (i = 0; i < 9; ++i) {
 
 		c = fgetc(fp);
 		/*printf("\nStart: i is at %d\nc is at %c\n", i, c); /* DELETE ME*/
 		if (feof(fp)) {
 			printf("\nEOF: i is at %d\nc is at %c\n", i, c); /* DELETE ME*/
-			--i;
 			printf("\nEOF Adjusted: i is at %d\nc is at %c", i, c); /* DELETE ME*/
 			if (i == 7)
 			{
@@ -185,11 +184,9 @@ int getPlaintextPSU(FILE* fp, unsigned char* plaintext)
 	/* If next move of pointer is EOF, then text block was perfectly sized 64 bits */
 
 	printf("\n\nFOR LOOP CONCLUDED. CURRENT- i: %d   c: %c", i, c); /* DELETE ME*/
-	if (!c)
-		printf("\cc does not exist\n");
+
 	c = fgetc(fp);
-	if (!c)
-		printf("\cc does not exist after second pull\n");
+
 
 	if (feof(fp)) {
 		printf("\n\nPost FORLOOP EOF REACHED. i: %d   c: %c", i,c); /* DELETE ME*/
