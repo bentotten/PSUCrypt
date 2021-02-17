@@ -3,9 +3,6 @@
 	CS585
 */
 
-/* Macros */
-#define PSU 0
-
 /* Libraries */
 #include <stdio.h>
 #include <stdlib.h>
