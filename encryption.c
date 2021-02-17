@@ -171,6 +171,7 @@ void encrypt(unsigned int* inprocess, unsigned char subkeys[ROUNDS][COLS])
 
 void decrypt(unsigned int* inprocess, unsigned char subkeys[ROUNDS][COLS])
 {
+	/*
 	struct fboxResults fResults = { 0,0 };
 	int round;
 
@@ -178,9 +179,10 @@ void decrypt(unsigned int* inprocess, unsigned char subkeys[ROUNDS][COLS])
 	{
 		/* TODO: REVERSE KEYS AND SEND THEM */
 		/* fResults = F(inprocess[0], inprocess[1], round, subkeys[round]); */
-
+	/*
 	}
 
+	*/
 	return;
 }
 
