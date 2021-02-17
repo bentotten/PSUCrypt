@@ -33,7 +33,7 @@ int blockEncryption(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 	unsigned int ciphertext[4] = { 0 }; /* 16 bits each element */
 	unsigned char ciphertextBlock[8] = { 0 }; /* 64 bits */
 	FILE* fp = NULL;
-	int paddingFlag;
+	int paddingFlag = 0;
 	int err;
 	int t;
 	
@@ -45,7 +45,21 @@ int blockEncryption(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 	/* TODO: LOOP THROUGH ENTIRE PLAINTEXT FILE, ADD PADDING BLOCK IF NEEDED, PRINT OUT CIPHERTEXT TO FILE, DECRYPT */
 	/* Loop until EOF */
 
-	/* while (fp) { */
+	while (fp) { 
+		/* Check if at EOF */
+		fgetc(fp);
+		if (feof(fp))
+			break;
+		else
+		{
+			if (PSU == 1)
+				fseek(fp, -2, SEEK_CUR);
+			else if (PSU == 0)
+				fseek(fp, -1, SEEK_CUR);
+			else
+				return 1;
+		}
+
 		paddingFlag = getPlaintextBlock(fp, plaintextBlock);
 
 		printf("\nPlaintext should be: security");
@@ -80,7 +94,7 @@ int blockEncryption(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 		}
 
 		err = writeCiphertext(ciphertextBlock);
-	/* } */
+	} 
 
 	/* Close File */
 	fclose(fp);
