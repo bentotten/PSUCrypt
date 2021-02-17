@@ -25,7 +25,7 @@ int encrypt(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS])
 	}
 	*/
 
-	paddingFlag = getPlaintext(fp, plaintextBlock);
+	paddingFlag = getPlaintextBlock(fp, plaintextBlock);
 
 
 	switch (paddingFlag) {
