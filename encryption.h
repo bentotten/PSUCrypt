@@ -3,8 +3,9 @@
 	CS585
 */
 
-int encrypt(unsigned char*, unsigned char subkeyTable[ROUNDS][COLS]);
-void whiten (unsigned char*, unsigned char *, unsigned char subkeyTable[ROUNDS][COLS]);
+int blockEncryption(unsigned char*, unsigned char [ROUNDS][COLS]);
+void whiten (unsigned char*, unsigned int *, unsigned char *);
+void encrypt(unsigned int*, unsigned char[ROUNDS][COLS]);
 
 /* Utility */
 void joinChar(unsigned int*, unsigned char*, unsigned char*);

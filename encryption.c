@@ -5,10 +5,10 @@
 
 #include "psucrypt.h"
 
-int encrypt(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS])
+int blockEncryption(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS])
 {
 	unsigned char plaintextBlock[8] = { 0 }; /* 64 bits */
-	unsigned int inProcess[4] = { 0 }; /* 64 bits */
+	unsigned int inProcess[4] = { 0 }; /* 16 bits each element */
 	unsigned char ciphertextBlock[8] = { 0 }; /* 64 bits */
 	FILE* fp = NULL;
 	int paddingFlag;
@@ -26,8 +26,8 @@ int encrypt(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS])
 	*/
 
 	paddingFlag = getPlaintextBlock(fp, plaintextBlock);
-
-	whiten(plaintextBlock, inProcess, subkeyTable);
+	whiten(plaintextBlock, inProcess, key);
+	encrypt(inProcess, subkeyTable);
 
 
 	switch (paddingFlag) {
@@ -47,20 +47,27 @@ int encrypt(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS])
 	return 0;
 }
 
-void whiten(unsigned char* plaintext, unsigned char* inprocess, unsigned char subkeys[ROUNDS][COLS])
+void whiten(unsigned char* plaintext, unsigned int* inprocess, unsigned char * key)
 {
-	unsigned int w0, w1, w2, w3;
+	unsigned int w0, w1, w2, w3, k0, k1, k2, k3;
 
 	/* Divide into 16 bit words */
-	printf("Chars: ");
-	printf("%c ", plaintext[0]);
-	printf("%c", plaintext[1]);
 	joinChar(&w0, &plaintext[0], &plaintext[1]);
 	joinChar(&w1, &plaintext[2], &plaintext[3]);
 	joinChar(&w2, &plaintext[4], &plaintext[5]);
 	joinChar(&w3, &plaintext[6], &plaintext[7]);
+	
+	/* Divide into 16 bit keys*/
+	joinChar(&k0, &key[0], &key[1]);
+	joinChar(&k1, &key[2], &key[3]);
+	joinChar(&k2, &key[4], &key[5]);
+	joinChar(&k3, &key[6], &key[7]);
 
-	printf("\n(%2X)", w0);
+	/* XOR with key with plaintext */
+	inprocess[0] = w0 ^ k0;
+	inprocess[1] = w1 ^ k1;
+	inprocess[2] = w2 ^ k2;
+	inprocess[3] = w3 ^ k3;
 	
 	return;
 }
@@ -69,5 +76,14 @@ void whiten(unsigned char* plaintext, unsigned char* inprocess, unsigned char su
 void joinChar(unsigned int* w, unsigned char* a, unsigned char* b)
 {
 	*w = (*a << 8)  | *b; 
+	return;
+}
+
+
+void encrypt(unsigned int* inprocess, unsigned char subkeys[ROUNDS][COLS])
+{
+	int round = 0;
+
+	printf("%d", round);
 	return;
 }
