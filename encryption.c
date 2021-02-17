@@ -64,15 +64,25 @@ int blockEncryption(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 	}
 
 	encrypt(inProcess, subkeyTable);
-	/*
+
 	ciphertext[0] = inProcess[2];
 	ciphertext[1] = inProcess[3];
 	ciphertext[2] = inProcess[0];
 	ciphertext[3] = inProcess[1];
 
-	lastWhiten(ciphertext, ciphertextBlock, key);
-	*/
+	printf("\nLast block swapped should be: \n(d001) (c95b) (1ba2) (32d6)\n");
+	for (t = 0; t < 4; ++t)
+	{
+		printf("(%02x) ", ciphertext[t]);
+	}
 
+	lastWhiten(ciphertext, ciphertextBlock, key);
+
+	printf("\nPost whiten should be: \n(7b) (cc) (26) (5a) (38) (e7) (55) (5f)\n");
+	for (t = 0; t < 8; ++t)
+	{
+		printf("(%02x) ", ciphertextBlock[t]);
+	}
 
 	putchar('\n'); 	/* DELETE ME */
 
@@ -142,14 +152,14 @@ void lastWhiten(unsigned int* ciphertext, unsigned char* ciphertextBlock, unsign
 	splitInt(&ciphertext[3], &y6, &y7);
 
 	/* Assign to Ciphertext Block Array */
-	ciphertext[0] = y0;
-	ciphertext[1] = y1;
-	ciphertext[2] = y2;
-	ciphertext[3] = y3;
-	ciphertext[4] = y4;
-	ciphertext[5] = y5;
-	ciphertext[6] = y6;
-	ciphertext[7] = y7;
+	ciphertextBlock[0] = y0;
+	ciphertextBlock[1] = y1;
+	ciphertextBlock[2] = y2;
+	ciphertextBlock[3] = y3;
+	ciphertextBlock[4] = y4;
+	ciphertextBlock[5] = y5;
+	ciphertextBlock[6] = y6;
+	ciphertextBlock[7] = y7;
 
 	return;
 }
