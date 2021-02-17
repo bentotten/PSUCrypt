@@ -150,6 +150,8 @@ int getPlaintextPSU(FILE* fp, unsigned char* plaintext)
 	unsigned char c;
 	int i;
 
+	printf("\n\nIN PSU ENVIRONMENT");
+
 	/* Read in 64 bits; Apply padding; return 2 if full block of padding is needed */
 	for (i = 0; i < 8; ++i) {
 
