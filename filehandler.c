@@ -211,7 +211,7 @@ int writeCiphertext(unsigned char* ciphertext)
 	sprintf(toWrite, "%02x%02x%02x%02x%02x%02x%02x%02x", ciphertext[0], ciphertext[1], ciphertext[2], ciphertext[3], ciphertext[4], ciphertext[5], ciphertext[6], ciphertext[7]);
 	printf("\nTo Write: %s", toWrite);
 
-	for (i = 0; i < 9; ++i) {
+	for (i = 0; i < 16; ++i) {
 		fputc(toWrite[i], fp);
 	}
 
