@@ -34,6 +34,7 @@ int blockEncryption(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 	unsigned char ciphertextBlock[8] = { 0 }; /* 64 bits */
 	FILE* fp = NULL;
 	int paddingFlag;
+	int err;
 	int t;
 	
 	/* Open File */
@@ -43,62 +44,57 @@ int blockEncryption(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 
 	/* TODO: LOOP THROUGH ENTIRE PLAINTEXT FILE, ADD PADDING BLOCK IF NEEDED, PRINT OUT CIPHERTEXT TO FILE, DECRYPT */
 	/* Loop until EOF */
-	/*
-	while (fp) {
+
+	/* while (fp) { */
 		paddingFlag = getPlaintextBlock(fp, plaintextBlock);
+
+		printf("\nPlaintext should be: security");
+		printPlaintext(plaintextBlock);	/* DELETE ME */
+
 		whiten(plaintextBlock, inProcess, key);
+		printf("\nPost whiten should be: (d8a8)(8c74)(512c)(13f0)\n");
+		for (t = 0; t < 4; ++t)
+		{
+			printf("(%02x)", inProcess[t]);
+		}
+
 		encrypt(inProcess, subkeyTable);
-	}
-	*/
 
-	paddingFlag = getPlaintextBlock(fp, plaintextBlock);
-	
-	printf("\nPlaintext should be: security");
-	printPlaintext(plaintextBlock);	/* DELETE ME */
+		ciphertext[0] = inProcess[2];
+		ciphertext[1] = inProcess[3];
+		ciphertext[2] = inProcess[0];
+		ciphertext[3] = inProcess[1];
 
-	whiten(plaintextBlock, inProcess, key);
-	printf("\nPost whiten should be: (d8a8)(8c74)(512c)(13f0)\n");
-	for (t = 0; t < 4; ++t)
-	{
-		printf("(%02x)", inProcess[t]);
-	}
+		printf("\nLast block swapped should be: \n(d001) (c95b) (1ba2) (32d6)\n");
+		for (t = 0; t < 4; ++t)
+		{
+			printf("(%02x) ", ciphertext[t]);
+		}
 
-	encrypt(inProcess, subkeyTable);
+		lastWhiten(ciphertext, ciphertextBlock, key);
 
-	ciphertext[0] = inProcess[2];
-	ciphertext[1] = inProcess[3];
-	ciphertext[2] = inProcess[0];
-	ciphertext[3] = inProcess[1];
+		printf("\nPost whiten should be: \n(7b) (cc) (26) (5a) (38) (e7) (55) (5f)\n");
+		for (t = 0; t < 8; ++t)
+		{
+			printf("(%02x) ", ciphertextBlock[t]);
+		}
 
-	printf("\nLast block swapped should be: \n(d001) (c95b) (1ba2) (32d6)\n");
-	for (t = 0; t < 4; ++t)
-	{
-		printf("(%02x) ", ciphertext[t]);
-	}
-
-	lastWhiten(ciphertext, ciphertextBlock, key);
-
-	printf("\nPost whiten should be: \n(7b) (cc) (26) (5a) (38) (e7) (55) (5f)\n");
-	for (t = 0; t < 8; ++t)
-	{
-		printf("(%02x) ", ciphertextBlock[t]);
-	}
-
-	putchar('\n'); 	/* DELETE ME */
-
-	switch (paddingFlag) {
-		case 0:
-			fclose(fp);
-			return 0;
-		case 1:
-			fclose(fp);
-			return 1;
-		case 2:
-			printf("\nCALL 64 BIT PADDING BLOCK HERE");
-	}
+		err = writeCiphertext(ciphertextBlock);
+	/* } */
 
 	/* Close File */
 	fclose(fp);
+
+	switch (paddingFlag) {
+	case 0:
+		fclose(fp);
+		return 0;
+	case 1:
+		fclose(fp);
+		return 1;
+	case 2:
+		printf("\nCALL 64 BIT PADDING BLOCK HERE");
+	}
 
 	return 0;
 }

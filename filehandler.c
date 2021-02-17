@@ -198,6 +198,30 @@ void padBlockRecurse(int i, unsigned char paddingSize, unsigned char * test, uns
 	return;
 }
 
+int writeCiphertext(unsigned char* ciphertext)
+{
+	FILE* fp; 
+	char toWrite[9];
+	int i;
+
+	fp = fopen("ciphertext.txt", "a");
+	if (!fp || fp == 0)
+		return 1;
+
+	
+
+	sprintf(toWrite, "%02x%02x%02x%02x%02x%02x%02x%02x", ciphertext[0], ciphertext[1], ciphertext[2], ciphertext[3], ciphertext[4], ciphertext[5], ciphertext[6], ciphertext[7]);
+	printf("\nTo Write: %s", toWrite);
+
+	for (i = 0; i < 9; ++i) {
+		fputc(toWrite[i], fp);
+	}
+
+	fclose(fp);
+
+	return 0;
+}
+
 
 int getTextSize()
 {

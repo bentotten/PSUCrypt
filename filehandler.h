@@ -15,6 +15,9 @@ int getTextSize();
 unsigned int padBlock(int, unsigned char*);
 void padBlockRecurse(int, unsigned char, unsigned char*, unsigned char*);
 
+/* Ciphertext File */
+int writeCiphertext(unsigned char*);
+
 /* Utility */
 void printFile(FILE*);
 int getFileSize(FILE*, char*);
