@@ -154,9 +154,9 @@ int getPlaintextPSU(FILE* fp, unsigned char* plaintext)
 	for (i = 0; i < 8; ++i) {
 
 		c = fgetc(fp);
-		printf("\nStart: i is at %d\nc is at %c", i, c); /* DELETE ME*/
+		/*printf("\nStart: i is at %d\nc is at %c\n", i, c); /* DELETE ME*/
 		if (feof(fp)) {
-			printf("\nEOF: i is at %d\nc is at %c", i, c); /* DELETE ME*/
+			printf("\nEOF: i is at %d\nc is at %c\n", i, c); /* DELETE ME*/
 			--i;
 			printf("\nEOF Adjusted: i is at %d\nc is at %c", i, c); /* DELETE ME*/
 			if (i == 7)
@@ -182,10 +182,11 @@ int getPlaintextPSU(FILE* fp, unsigned char* plaintext)
 	}
 
 	/* If next move of pointer is EOF, then text block was perfectly sized 64 bits */
+
 	c = fgetc(fp);
 
 	if (feof(fp)) {
-		printf("\nEOF REACHED. i is at %d", i); /* DELETE ME*/
+		printf("\n\n\nPost FORLOOP EOF REACHED. i is at %d", i); /* DELETE ME*/
 		printf("\nEOF: Perfect size! Needs Pad Block");	/* DELETE ME*/
 		printPlaintext(plaintext); /* DELETE ME */
 		return 2;
