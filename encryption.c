@@ -99,16 +99,20 @@ void whiten(unsigned char* plaintext, unsigned int* inprocess, unsigned char * k
 void encrypt(unsigned int* inprocess, unsigned char subkeys[ROUNDS][COLS])
 {
 	struct fboxResults fResults = { 0,0 };
+	unsigned int temp[2] = { 0 }; /* 16 bits each element */
 	int round;
 
 	for (round = 0; round < 20; ++round)
 	{
+		fResults = F(inprocess[0], inprocess[1], round, subkeys[round]);
 
-		/* fResults = F(inprocess[0], inprocess[1], round, subkeys[round]); */
-
+		temp[0] = inprocess[0];
+		temp[1] = inprocess[1];
+		inprocess[0] = fResults.x0 ^ inprocess[2];
+		inprocess[1] = fResults.x1 ^ inprocess[3];
+		inprocess[2] = temp[0];
+		inprocess[3] = temp[1];
 	}
-
-	fResults = F(inprocess[0], inprocess[1], 0, subkeys[0]);
 
 	return;
 }
