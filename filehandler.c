@@ -201,7 +201,7 @@ void padBlockRecurse(int i, unsigned char paddingSize, unsigned char * test, uns
 int writeCiphertext(unsigned char* ciphertext)
 {
 	FILE* fp; 
-	char toWrite[9];
+	char toWrite[17];
 	int i;
 
 	fp = fopen("ciphertext.txt", "a");
