@@ -150,7 +150,7 @@ int getPlaintextPSU(FILE* fp, unsigned char* plaintext)
 	unsigned char c;
 	int i;
 
-	printf("\n\nIN PSU ENVIRONMENT");
+	printf("\n\nIN PSU ENVIRONMENT\n\n");
 
 	/* Read in 64 bits; Apply padding; return 2 if full block of padding is needed */
 	for (i = 0; i < 8; ++i) {
@@ -180,7 +180,6 @@ int getPlaintextPSU(FILE* fp, unsigned char* plaintext)
 		}
 
 		plaintext[i] = c;
-		printf("i is at %d:%c. ", i, c); /* DELETE ME*/
 	}
 
 	/* If next move of pointer is EOF, then text block was perfectly sized 64 bits */
