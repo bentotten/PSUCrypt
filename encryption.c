@@ -5,7 +5,7 @@
 
 #include "psucrypt.h"
 
-/* Global Table */
+/* Table */
 static unsigned char FTABLE[16][16] = {
 		{0xa3,0xd7,0x09,0x83,0xf8,0x48,0xf6,0xf4,0xb3, 0x21,0x15,0x78,0x99,0xb1,0xaf,0xf9},
 		{0xe7,0x2d,0x4d,0x8a,0xce,0x4c,0xca,0x2e,0x52,0x95,0xd9,0x1e,0x4e,0x38,0x44,0x28},
@@ -34,12 +34,14 @@ int blockEncryption(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 	unsigned char ciphertextBlock[8] = { 0 }; /* 64 bits */
 	FILE* fp = NULL;
 	int paddingFlag;
+	int t;
 	
 	/* Open File */
 	fp = fopen("plaintext.txt", "r");
 	if (!fp || fp == 0)
 		return 1;
 
+	/* TODO: LOOP THROUGH ENTIRE PLAINTEXT FILE, ADD PADDING BLOCK IF NEEDED, PRINT OUT CIPHERTEXT TO FILE, DECRYPT */
 	/* Loop until EOF */
 	/*
 	while (fp) {
@@ -50,25 +52,29 @@ int blockEncryption(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 	*/
 
 	paddingFlag = getPlaintextBlock(fp, plaintextBlock);
-	whiten(plaintextBlock, inProcess, key);
-	encrypt(inProcess, subkeyTable);
+	
+	printf("\nPlaintext should be: security");
+	printPlaintext(plaintextBlock);	/* DELETE ME */
 
+	whiten(plaintextBlock, inProcess, key);
+	printf("\nPost whiten should be: (d8a8)(8c74)(512c)(13f0)\n");
+	for (t = 0; t < 4; ++t)
+	{
+		printf("(%02x)", inProcess[t]);
+	}
+
+	encrypt(inProcess, subkeyTable);
+	/*
 	ciphertext[0] = inProcess[2];
 	ciphertext[1] = inProcess[3];
 	ciphertext[2] = inProcess[0];
 	ciphertext[3] = inProcess[1];
 
 	lastWhiten(ciphertext, ciphertextBlock, key);
-
-	/* TODO: LOOP THROUGH ENTIRE PLAINTEXT FILE, ADD PADDING BLOCK IF NEEDED, PRINT OUT CIPHERTEXT TO FILE, DECRYPT */
+	*/
 
 	/* DELETE ME */
 	putchar('\n');
-	int t;
-	for (t = 0; t < 8; ++t)
-	{
-		printf("(%02x)", ciphertextBlock[t]);
-	}
 
 	switch (paddingFlag) {
 		case 0:
@@ -150,8 +156,8 @@ void lastWhiten(unsigned int* ciphertext, unsigned char* ciphertextBlock, unsign
 
 void encrypt(unsigned int* inprocess, unsigned char subkeys[ROUNDS][COLS])
 {
-	struct fboxResults fResults = { 0,0 };
-	unsigned int temp[2] = { 0 }; /* 16 bits each element */
+	struct fboxResults fResults = { 0,0 }; /* results from the fbox*/
+	unsigned int temp[2] = { 0 }; /* 16 bits each element for doing the swap before the next round*/
 	int round;
 
 	for (round = 0; round < 20; ++round)
@@ -188,8 +194,8 @@ void decrypt(unsigned int* inprocess, unsigned char subkeys[ROUNDS][COLS])
 
 struct fboxResults F(unsigned int r0, unsigned int r1, int round, unsigned char subkeys[COLS])
 {
-	struct fboxResults fresults = { 0,0 };
-	struct fboxResults gresults = { 0,0 };
+	struct fboxResults fresults = { 0,0 }; /* f0 and f1 in algorithm */
+	struct fboxResults gresults = { 0,0 }; /* t0 and t1 in alogrithm */
 	unsigned int con1 = { 0 };
 	unsigned int con2 = { 0 };
 	unsigned int power = (unsigned int)pow((double)2, (double)16);
@@ -198,11 +204,29 @@ struct fboxResults F(unsigned int r0, unsigned int r1, int round, unsigned char 
 	gresults.x0 = G(r0, subkeys[0], subkeys[1], subkeys[2], subkeys[3], round);
 	gresults.x1 = G(r1, subkeys[4], subkeys[5], subkeys[6], subkeys[7], round); 
 
+	/* DELETE ME */
+	if (round == 0)
+	{
+		printf("\n\nt0 should be: (53f2)");	/* DELETE ME */
+		printf("\n(%02x)", gresults.x0);
+		printf("\nt1 should be: (1ba0)");	/* DELETE ME */
+		printf("\n(%02x)", gresults.x1);
+	}
+
 	joinChar(&con1, &subkeys[8], &subkeys[9]);
 	joinChar(&con2, &subkeys[10], &subkeys[11]);
 
 	fresults.x0 = (gresults.x0 + (2 * gresults.x1) + con1) % power;
 	fresults.x1 = ((2 * gresults.x0) + gresults.x1 + con2) % power;
+
+	/* DELETE ME */
+	if (round == 0)
+	{
+		printf("\n\nf0 should be: (f173)");	/* DELETE ME */
+		printf("\n(%02x)", fresults.x0);
+		printf("\nf1 should be: (4034)");	/* DELETE ME */
+		printf("\n(%02x)", fresults.x1);
+	}
 
 	return fresults;
 }
@@ -216,12 +240,35 @@ unsigned int G(unsigned int r0, unsigned char k0, unsigned char k1, unsigned cha
 	splitInt(&r0, &g1, &g2);
 
 	/* FTable Lookups and XORs */
-	g3 = ftable((unsigned char)(g2 ^ k0)) ^ g1;
-	g4 = ftable((unsigned char)(g3 ^ k0)) ^ g2;
-	g5 = ftable((unsigned char)(g4 ^ k0)) ^ g3;
-	g6 = ftable((unsigned char)(g5 ^ k0)) ^ g4;
+	g3 = ftable((g2 ^ k0)) ^ g1;
+	g4 = ftable((g3 ^ k1)) ^ g2;
+	g5 = ftable((g4 ^ k2)) ^ g3;
+	g6 = ftable((g5 ^ k3)) ^ g4;
+
+	/* DELETE ME */
+	if (round == 0)
+	{
+		printf("\ng1 should be: (d8) or (8c)");	/* DELETE ME */
+		printf("\n\t\t  (%02x)", g1);
+
+		printf("\ng2 should be: (a8) or (74)");	/* DELETE ME */
+		printf("\n\t\t  (%02x)", g2);
+
+		printf("\ng3 should be: (62) or (88)");	/* DELETE ME */
+		printf("\n\t\t  (%02x)", g3);
+
+		printf("\ng4 should be: (24) or (90)");	/* DELETE ME */
+		printf("\n\t\t  (%02x)", g4);
+
+		printf("\ng5 should be: (62) or (1b)");	/* DELETE ME */
+		printf("\n\t\t  (%02x)", g5);
+
+		printf("\ng6 should be: (fd) or (a0)");	/* DELETE ME */
+		printf("\n\t\t  (%02x)", g6);
+	}
 
 	joinChar(&result, &g5, &g6);
+
 	return result;
 }
 
