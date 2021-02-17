@@ -8,10 +8,10 @@
 * Switch out for loops for trees (or recursion, but probably not if the loop has the potential to get huge)
 * Immutable keys? Unneccessary? 
 * Make so accepts 64 bit key and 80 bit key
+* Find better way to access ftable that doesnt involve initializing it every single time
 */
 
 #include "psucrypt.h"
-
 
 int main(int argc, char* argv[])
 {

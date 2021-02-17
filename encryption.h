@@ -3,7 +3,7 @@
 	CS585
 */
 
-/* Structures */
+/* Structures and Globals */
 struct fboxResults {
 	unsigned int x0, x1;
 };
@@ -19,6 +19,7 @@ void decrypt(unsigned int*, unsigned char [ROUNDS][COLS]);
 /* Subroutines */
 struct fboxResults F(unsigned int, unsigned int, int, unsigned char[COLS]);
 unsigned int G(unsigned int, unsigned char, unsigned char, unsigned char, unsigned char, int);
+unsigned char ftable(unsigned char);
 
 /* Utility */
 void joinChar(unsigned int*, unsigned char*, unsigned char*);
