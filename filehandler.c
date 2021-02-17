@@ -98,44 +98,30 @@ int getPlaintext(FILE* fp, unsigned char* plaintext)
 		c = fgetc(fp);
 
 		if (feof(fp)) {
-			printf("\nEOF REACHED. i is at %d", i); /* DELETE ME*/
 			if (i == 7)
 			{
-				printf("\nEOF: Needs EOF stripped and to be given one pad block");	/* DELETE ME*/
 				paddingSize = padBlock(i, plaintext);
 				plaintext[i] = paddingSize;
-				printPlaintext(plaintext); /* DELETE ME */
 				return 0;
 			}
 			else {
-				printf("\nEOF: Applying padding");	/* DELETE ME*/
-				/*--i; */
 				paddingSize = padBlock(i, plaintext);
 				plaintext[i] = paddingSize;
-				printPlaintext(plaintext);
 				return 0;
 			}
 		}
 
 		plaintext[i] = c;
-		printf("i is at %d:%c. ", i, c); /* DELETE ME*/
 	}
 
 	/* If next move of pointer is EOF, then text block was perfectly sized 64 bits */
 	c = fgetc(fp);
 
 	if (feof(fp)) {
-		printf("\nEOF REACHED. i is at %d", i); /* DELETE ME*/
-		printf("\nEOF: Perfect size! Needs Pad Block");	/* DELETE ME*/
-		printPlaintext(plaintext); /* DELETE ME */
 		return 2;
 	}
 	else {
 		fseek(fp, -1, SEEK_CUR);
-		c = fgetc(fp);
-		printf("\n64 bits read in, fp ptr reset to last char %c", c);	/* DELETE ME*/
-		fseek(fp, -1, SEEK_CUR);
-		printPlaintext(plaintext);
 		return 0;
 	}
 
@@ -176,7 +162,6 @@ int getPlaintextPSU(FILE* fp, unsigned char* plaintext)
 	}
 
 	/* If next move of pointer is EOF, then text block was perfectly sized 64 bits */
-
 	c = fgetc(fp);
 	if (feof(fp)) {
 		return 2;
