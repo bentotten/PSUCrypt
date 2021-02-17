@@ -12,6 +12,7 @@ struct fboxResults {
 int blockEncryption(unsigned char*, unsigned char [ROUNDS][COLS]);
 void whiten (unsigned char*, unsigned int *, unsigned char *);
 void encrypt(unsigned int*, unsigned char[ROUNDS][COLS]);
+void lastWhiten(unsigned int*, unsigned char*, unsigned char*);
 
 /* Decryption */
 void decrypt(unsigned int*, unsigned char [ROUNDS][COLS]);

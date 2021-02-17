@@ -30,6 +30,7 @@ int blockEncryption(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 {
 	unsigned char plaintextBlock[8] = { 0 }; /* 64 bits */
 	unsigned int inProcess[4] = { 0 }; /* 16 bits each element */
+	unsigned int ciphertext[4] = { 0 }; /* 16 bits each element */
 	unsigned char ciphertextBlock[8] = { 0 }; /* 64 bits */
 	FILE* fp = NULL;
 	int paddingFlag;
@@ -52,6 +53,22 @@ int blockEncryption(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 	whiten(plaintextBlock, inProcess, key);
 	encrypt(inProcess, subkeyTable);
 
+	ciphertext[0] = inProcess[2];
+	ciphertext[1] = inProcess[3];
+	ciphertext[2] = inProcess[0];
+	ciphertext[3] = inProcess[1];
+
+	lastWhiten(ciphertext, ciphertextBlock, key);
+
+	/* TODO: LOOP THROUGH ENTIRE PLAINTEXT FILE, ADD PADDING BLOCK IF NEEDED, PRINT OUT CIPHERTEXT TO FILE, DECRYPT */
+
+	/* DELETE ME */
+	putchar('\n');
+	int t;
+	for (t = 0; t < 8; ++t)
+	{
+		printf("(% 02x)", ciphertextBlock[t]);
+	}
 
 	switch (paddingFlag) {
 		case 0:
@@ -95,6 +112,41 @@ void whiten(unsigned char* plaintext, unsigned int* inprocess, unsigned char * k
 	return;
 }
 
+void lastWhiten(unsigned int* ciphertext, unsigned char* ciphertextBlock, unsigned char* key)
+{
+	unsigned int k0, k1, k2, k3;
+	unsigned char y0, y1, y2, y3, y4, y5, y6, y7;
+
+	/* Divide into 16 bit keys*/
+	joinChar(&k0, &key[0], &key[1]);
+	joinChar(&k1, &key[2], &key[3]);
+	joinChar(&k2, &key[4], &key[5]);
+	joinChar(&k3, &key[6], &key[7]);
+
+	/* XOR with unrefined ciphertext */
+	ciphertext[0] ^ k0;
+	ciphertext[1] ^ k1;
+	ciphertext[2] ^ k2;
+	ciphertext[3] ^ k3;
+
+	/* Split the ciphertext into chars */
+	splitInt(&ciphertext[0], &y0, &y1);
+	splitInt(&ciphertext[1], &y2, &y3);
+	splitInt(&ciphertext[2], &y4, &y5);
+	splitInt(&ciphertext[3], &y6, &y7);
+
+	/* Assign to Ciphertext Block Array */
+	ciphertext[0] = y0;
+	ciphertext[1] = y1;
+	ciphertext[2] = y2;
+	ciphertext[3] = y3;
+	ciphertext[4] = y4;
+	ciphertext[5] = y5;
+	ciphertext[6] = y6;
+	ciphertext[7] = y7;
+
+	return;
+}
 
 void encrypt(unsigned int* inprocess, unsigned char subkeys[ROUNDS][COLS])
 {
@@ -143,9 +195,6 @@ struct fboxResults F(unsigned int r0, unsigned int r1, int round, unsigned char 
 	/* G Permutation */
 	gresults.x0 = G(r0, subkeys[0], subkeys[1], subkeys[2], subkeys[3], round);
 	gresults.x1 = G(r1, subkeys[4], subkeys[5], subkeys[6], subkeys[7], round); 
-
-	printf("\nResult: (%02X)", gresults.x0);
-	printf("\nResult: (%02X)", gresults.x1);
 
 	joinChar(&con1, &subkeys[8], &subkeys[9]);
 	joinChar(&con2, &subkeys[10], &subkeys[11]);
