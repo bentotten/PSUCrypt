@@ -167,6 +167,7 @@ int getPlaintextPSU(FILE* fp, unsigned char* plaintext)
 				paddingSize = padBlock(i, plaintext);
 				plaintext[i] = paddingSize;
 				printPlaintext(plaintext); /* DELETE ME */
+				printf("\nLast element: %x", plaintext[7]); /* DELETE ME */
 				return 0;
 			}
 			else {
