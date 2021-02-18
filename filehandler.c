@@ -198,6 +198,7 @@ void padBlockRecurse(int i, unsigned char paddingSize, unsigned char * test, uns
 	return;
 }
 
+
 int writeCiphertext(unsigned char* ciphertext)
 {
 	FILE* fp; 
@@ -216,6 +217,91 @@ int writeCiphertext(unsigned char* ciphertext)
 	}
 
 	fclose(fp);
+
+	return 0;
+}
+
+
+int getCiphertextBlock(FILE* fp, unsigned char* ciphertext)
+{
+	/* If PSU is set to 0, not in PSU environment */
+	int getPlaintextBlock(FILE * fp, unsigned char* ciphertext)
+	{
+		if (PSU == 0)
+			return getCiphertext(fp, ciphertext);
+		if (PSU == 1)
+			return getCipherextPSU(fp, ciphertext);
+	}
+}
+
+
+/* Non-PSU: Reads in plaintext 64 bits (8 chars) at a time to be encrypted */
+int getCiphertext(FILE* fp, unsigned char* ciphertext)
+{
+	unsigned char paddingSize;
+	unsigned char c;
+	int i;
+
+	/* Read in 64 bits; At EOF, check last digit to see if there is padding. Remove last bytes of padding */
+	for (i = 0; i < 8; ++i) {
+
+		c = fgetc(fp);
+
+		/*
+		if (feof(fp)) {
+			if (i == 7)
+			{
+				/*
+				paddingSize = padBlock(i, ciphertext);
+				ciphertext[i] = paddingSize;
+				return 0;
+			}
+			else {
+				paddingSize = padBlock(i, ciphertext);
+				ciphertext[i] = paddingSize;
+				return 0;
+			}
+		}
+		*/
+
+		ciphertext[i] = c;
+	}
+
+	return 0;
+}
+
+
+/* PSU Environment: Reads in plaintext 64 bits (8 chars) at a time to be encrypted with off-by-one-error fixed*/
+int getCiphertextPSU(FILE* fp, unsigned char* ciphertext)
+{
+	unsigned char paddingSize;
+	unsigned char c;
+	int i;
+
+	printf("\n\nIN PSU ENVIRONMENT\n");
+
+	/* Read in 64 bits; Apply padding; return 2 if full block of padding is needed */
+	for (i = 0; i < 9; ++i) {
+
+		c = fgetc(fp);
+		if (feof(fp)) {
+			--i;
+			if (i == 7)
+			{
+				paddingSize = padBlock(i, ciphertext);
+				ciphertext[i] = paddingSize;
+				return 0;
+			}
+			else {
+				paddingSize = padBlock(i, ciphertext);
+				ciphertext[i] = paddingSize;
+				printPlaintext(ciphertext);
+				return 0;
+			}
+		}
+
+		ciphertext[i] = c;
+	}
 
 	return 0;
 }

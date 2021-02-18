@@ -42,35 +42,17 @@ int blockEncryption(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 	if (!fp || fp == 0)
 		return 1;
 
-	/* TODO: LOOP THROUGH ENTIRE PLAINTEXT FILE, ADD PADDING BLOCK IF NEEDED, PRINT OUT CIPHERTEXT TO FILE, DECRYPT */
+	/* TODO: DECRYPT */
 	/* Loop until EOF */
-
 	do {
 
-		/* Check if at EOF */
-		/*
-		fgetc(fp);
-		if (feof(fp))
-			break;
-		else
-		{
-			if (PSU == 1)
-				fseek(fp, -2, SEEK_CUR);
-			else if (PSU == 0)
-				fseek(fp, -1, SEEK_CUR);
-			else
-				return 1;
-		}
-		*/
-
 		paddingFlag = getPlaintextBlock(fp, plaintextBlock);
-		
-
 
 		printf("\nPlaintext should be: security");
 		printPlaintext(plaintextBlock);	/* DELETE ME */
 
 		whiten(plaintextBlock, inProcess, key);
+
 		printf("\nPost whiten should be: (d8a8)(8c74)(512c)(13f0)\n");
 		for (t = 0; t < 4; ++t)
 		{
@@ -101,7 +83,6 @@ int blockEncryption(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 		err = writeCiphertext(ciphertextBlock);
 	} while (fp && !feof(fp));
 
-	/* Close File */
 	fclose(fp);
 
 	switch (paddingFlag) {
@@ -112,11 +93,42 @@ int blockEncryption(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 		fclose(fp);
 		return 1;
 	case 2:
-		printf("\nCALL 64 BIT PADDING BLOCK HERE");
+		addPaddingBlock(unsigned char* key, unsigned char subkeyTable[ROUNDS][COLS]);
 	}
 
 	return 0;
 }
+
+
+int addPaddingBlock(unsigned char* key, unsigned char subkeyTable[ROUNDS][COLS])
+{
+	unsigned char block[8] = { '8' }; /* 64 bits */
+	unsigned int inProcess[4] = { 0 }; /* 16 bits each element */
+	unsigned int ciphertext[4] = { 0 }; /* 16 bits each element */
+	unsigned char ciphertextBlock[8] = { 0 }; /* 64 bits */
+
+	int t;
+
+
+	printf("\nBlock:");
+	for (t = 0; t < 4; ++t)
+	{
+		printf("(%02x)", block[t]);
+	}
+
+	whiten(block, inProcess, key);
+	encrypt(inProcess, subkeyTable);
+
+	ciphertext[0] = inProcess[2];
+	ciphertext[1] = inProcess[3];
+	ciphertext[2] = inProcess[0];
+	ciphertext[3] = inProcess[1];
+
+	lastWhiten(ciphertext, ciphertextBlock, key);
+
+	return writeCiphertext(ciphertextBlock);
+}
+
 
 void whiten(unsigned char* plaintext, unsigned int* inprocess, unsigned char * key)
 {
