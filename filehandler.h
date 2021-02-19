@@ -24,5 +24,5 @@ int getCipherextPSU(FILE*, unsigned char*);
 /* Utility */
 void printFile(FILE*);
 int getFileSize(FILE*, char*);
-void printPlaintext(unsigned char* plaintext);
+void printText(unsigned char* plaintext);
 void printKey(unsigned char*);

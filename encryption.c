@@ -49,7 +49,7 @@ int blockEncryption(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 		paddingFlag = getPlaintextBlock(fp, plaintextBlock);
 
 		printf("\nPlaintext should be: security");
-		printPlaintext(plaintextBlock);	/* DELETE ME */
+		printText(plaintextBlock);	/* DELETE ME */
 
 		whiten(plaintextBlock, inProcess, key);
 
@@ -241,7 +241,7 @@ int blockDecryption(unsigned char* key, unsigned char subkeyTable[ROUNDS][COLS])
 		paddingFlag = getCiphertextBlock(fp, ciphertextBlock);
 
 		printf("\nCiphertext should be: <fill me in>");
-		printPlaintext(ciphertextBlock);	/* DELETE ME */
+		printText(ciphertextBlock);	/* DELETE ME */
 
 		whiten(ciphertextBlock, inProcess, key);
 

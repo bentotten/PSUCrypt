@@ -153,7 +153,7 @@ int getPlaintextPSU(FILE* fp, unsigned char* plaintext)
 			else {
 				paddingSize = padBlock(i, plaintext);
 				plaintext[i] = paddingSize;
-				printPlaintext(plaintext);
+				printText(plaintext);
 				return 0;
 			}
 		}
@@ -240,48 +240,31 @@ int getCiphertext(FILE* fp, unsigned char* ciphertext)
 	unsigned char c;
 	int i;
 
-	fp = fopen("ciphertext.txt", "r");
-	if (!fp || fp == 0)
-		return 1;
-
-
 	printFile(fp);
 	fseek(fp, 0, SEEK_SET);	/* Return to beginning of file */
 
 	printf("\nPrinting Ciphertext");
+
+	/*
+	while (fp != NULL && (c = fgetc(fp)) != EOF)
+		printf("%c", c);
+	*/
 	/* Read in 64 bits; At EOF, check last digit to see if there is padding. Remove last bytes of padding */
 	for (i = 0; i < 8; ++i) {
 
 		last = fp;
 		c = fgetc(fp);
-		//printf("\n%02x", c);
-		//printf("\n%02x", c);
-		
+
 		if (feof(fp)) {
 			c = fgetc(last);
 			printf("\n%c", c);
+			/* Check padding size here */
 		}
-		/*
-			if (i == 7)
-			{
-
-				paddingSize = padBlock(i, ciphertext);
-				ciphertext[i] = paddingSize;
-				return 0;
-			}
-			else {
-				paddingSize = padBlock(i, ciphertext);
-				ciphertext[i] = paddingSize;
-				return 0;
-			}
-		}
-
 
 		ciphertext[i] = c;
-		*/
 	}
 
-	fclose(fp);
+	printText(ciphertext);
 
 	return 0;
 }
@@ -290,34 +273,6 @@ int getCiphertext(FILE* fp, unsigned char* ciphertext)
 /* PSU Environment: Reads in plaintext 64 bits (8 chars) at a time to be encrypted with off-by-one-error fixed*/
 int getCipherextPSU (FILE* fp, unsigned char* ciphertext)
 {
-	unsigned char paddingSize;
-	unsigned char c;
-	int i;
-
-	printf("\n\nIN PSU ENVIRONMENT\n");
-
-	/* Read in 64 bits; Apply padding; return 2 if full block of padding is needed */
-	for (i = 0; i < 9; ++i) {
-
-		c = fgetc(fp);
-		if (feof(fp)) {
-			--i;
-			if (i == 7)
-			{
-				paddingSize = padBlock(i, ciphertext);
-				ciphertext[i] = paddingSize;
-				return 0;
-			}
-			else {
-				paddingSize = padBlock(i, ciphertext);
-				ciphertext[i] = paddingSize;
-				printPlaintext(ciphertext);
-				return 0;
-			}
-		}
-
-		ciphertext[i] = c;
-	}
 
 	return 0;
 }
@@ -357,17 +312,14 @@ void printFile(FILE* fp)
 int getFileSize(FILE* fp, char* flag)
 {
 	int i = 1;
+	char c;
 
 	if (!fp || fp == 0)
 		return 1;
 
-	while (fp != NULL) {
-		if(fgetc(fp)) {
-			if (feof(fp))
-				break;
+	while (fp != NULL && (c = fgetc(fp)) != EOF) {
 			++i;
 		}	
-	}
 
 	return i;
 }
@@ -385,12 +337,12 @@ void printKey(unsigned char* key)
 }
 
 
-void printPlaintext(unsigned char* plaintext)
+void printText(unsigned char* text)
 {
 	int i;
-	printf("\nPlaintext: ");
+	printf("\nText: ");
 	for (i = 0; i < 8; ++i) {
-		printf("%c", plaintext[i]);
+		printf("%c", text[i]);
 	}
 
 	return;

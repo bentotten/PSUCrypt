@@ -41,8 +41,13 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
+	fp = fopen("ciphertext.txt", "r");
+	if (!fp || fp == 0)
+		return 1;
 
 	getCiphertext(fp, ciphertextBlock);
+
+	fclose(fp);
 
 
 	putchar('\n');
