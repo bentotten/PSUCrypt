@@ -93,7 +93,7 @@ int blockEncryption(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 		fclose(fp);
 		return 1;
 	case 2:
-		addPaddingBlock(unsigned char* key, unsigned char subkeyTable[ROUNDS][COLS]);
+		addPaddingBlock(key, subkeyTable);
 	}
 
 	return 0;
@@ -102,13 +102,18 @@ int blockEncryption(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 
 int addPaddingBlock(unsigned char* key, unsigned char subkeyTable[ROUNDS][COLS])
 {
-	unsigned char block[8] = { '8' }; /* 64 bits */
+	unsigned char block[8] = {0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08}; /* 64 bits */
 	unsigned int inProcess[4] = { 0 }; /* 16 bits each element */
 	unsigned int ciphertext[4] = { 0 }; /* 16 bits each element */
 	unsigned char ciphertextBlock[8] = { 0 }; /* 64 bits */
 
 	int t;
-
+	
+	printf("\n\nPadding Block:");
+	for (t = 0; t < 4; ++t)
+	{
+		printf("(%02x)", block[t]);
+	}
 
 	printf("\nBlock:");
 	for (t = 0; t < 4; ++t)
@@ -196,7 +201,6 @@ void encrypt(unsigned int* inprocess, unsigned char subkeys[ROUNDS][COLS])
 	struct fboxResults fResults = { 0,0 }; /* results from the fbox*/
 	unsigned int temp[2] = { 0 }; /* 16 bits each element for doing the swap before the next round*/
 	int round;
-	int i; /* DELETE ME */
 
 	for (round = 0; round < 20; ++round)
 	{
@@ -208,33 +212,88 @@ void encrypt(unsigned int* inprocess, unsigned char subkeys[ROUNDS][COLS])
 		inprocess[1] = fResults.x1 ^ inprocess[3];
 		inprocess[2] = temp[0];
 		inprocess[3] = temp[1];
-
-		if (round == 0)
-		{
-			printf("\nBlock should be: (a05f) (53c4) (d8a8) (8c74)");
-			printf("\n\t\t (%02x) (%02x) (%02x) (%02x)", inprocess[0], inprocess[1], inprocess[2], inprocess[3]);
-		}
 	}
 
 	return;
 }
 
-void decrypt(unsigned int* inprocess, unsigned char subkeys[ROUNDS][COLS])
+
+int blockDecryption(unsigned char* key, unsigned char subkeyTable[ROUNDS][COLS])
 {
-	/*
-	struct fboxResults fResults = { 0,0 };
-	int round;
+	unsigned char ciphertextBlock[8] = { 0 }; /* 64 bits */
+	unsigned int inProcess[4] = { 0 }; /* 16 bits each element */
+	unsigned int plaintext[4] = { 0 }; /* 16 bits each element */
+	unsigned char plaintextBlock[8] = { 0 }; /* 64 bits */
+	FILE* fp = NULL;
+	int paddingFlag = 0;
+	int err;
+	int t;
 
-	for (round = 0; round < 20; ++round)
-	{
-		/* TODO: REVERSE KEYS AND SEND THEM */
-		/* fResults = F(inprocess[0], inprocess[1], round, subkeys[round]); */
+	/* Open File */
+	fp = fopen("cipher.txt", "r");
+	if (!fp || fp == 0)
+		return 1;
+
+	reverseSubkeys(subkeyTable);
+
+	/* Loop until EOF */
+	do {
+		paddingFlag = getCiphertextBlock(fp, ciphertextBlock);
+
+		printf("\nCiphertext should be: <fill me in>");
+		printPlaintext(ciphertextBlock);	/* DELETE ME */
+
+		whiten(ciphertextBlock, inProcess, key);
+
+		printf("\nPost whiten should be: <>\n");
+		for (t = 0; t < 4; ++t)
+		{
+			printf("(%02x)", inProcess[t]);
+		}
+
+		encrypt(inProcess, subkeyTable);
+
+		plaintext[0] = inProcess[2];
+		plaintext[1] = inProcess[3];
+		plaintext[2] = inProcess[0];
+		plaintext[3] = inProcess[1];
+
+		printf("\nLast block swapped should be: \n<>\n");
+		for (t = 0; t < 4; ++t)
+		{
+			printf("(%02x) ", plaintext[t]);
+		}
+
+		lastWhiten(plaintext, plaintextBlock, key);
+
+		printf("\nPost whiten should be: \n<>\n");
+		for (t = 0; t < 8; ++t)
+		{
+			printf("(%02x) ", plaintextBlock[t]);
+		}
+
+		err = writeCiphertext(plaintextBlock);
+	} while (fp && !feof(fp));
+
+	fclose(fp);
+
 	/*
+	* REMOVE PADDING HERE *
+	switch (paddingFlag) {
+	case 0:
+		fclose(fp);
+		return 0;
+	case 1:
+		fclose(fp);
+		return 1;
+	case 2:
+		addPaddingBlock(unsigned char* key, unsigned char subkeyTable[ROUNDS][COLS]);
 	}
-
 	*/
-	return;
+
+	return 0;
 }
+
 
 struct fboxResults F(unsigned int r0, unsigned int r1, int round, unsigned char subkeys[COLS])
 {
@@ -248,37 +307,37 @@ struct fboxResults F(unsigned int r0, unsigned int r1, int round, unsigned char 
 	gresults.x0 = G(r0, subkeys[0], subkeys[1], subkeys[2], subkeys[3], round);
 	gresults.x1 = G(r1, subkeys[4], subkeys[5], subkeys[6], subkeys[7], round); 
 
-	/* DELETE ME */
-	if (round == 0)
-	{
-		printf("\n\nt0 should be:   (62fd)");	/* DELETE ME */
-		printf("\n\t\t(%02x)", gresults.x0);
-		printf("\nt1 should be:   (1ba0)");	/* DELETE ME */
-		printf("\n\t\t(%02x)", gresults.x1);
-	}
+/* DELETE ME */
+if (round == 0)
+{
+	printf("\n\nt0 should be:   (62fd)");	/* DELETE ME */
+	printf("\n\t\t(%02x)", gresults.x0);
+	printf("\nt1 should be:   (1ba0)");	/* DELETE ME */
+	printf("\n\t\t(%02x)", gresults.x1);
+}
 
-	joinChar(&con1, &subkeys[8], &subkeys[9]);
-	joinChar(&con2, &subkeys[10], &subkeys[11]);
+joinChar(&con1, &subkeys[8], &subkeys[9]);
+joinChar(&con2, &subkeys[10], &subkeys[11]);
 
-	fresults.x0 = (gresults.x0 + (2 * gresults.x1) + con1) % power;
-	fresults.x1 = ((2 * gresults.x0) + gresults.x1 + con2) % power;
+fresults.x0 = (gresults.x0 + (2 * gresults.x1) + con1) % power;
+fresults.x1 = ((2 * gresults.x0) + gresults.x1 + con2) % power;
 
-	/* DELETE ME */
-	if (round == 0)
-	{
-		printf("\n\nf0 should be:   (f173)");	/* DELETE ME */
-		printf("\n\t\t(%02x)", fresults.x0);
-		printf("\nf1 should be:   (4034)");	/* DELETE ME */
-		printf("\n\t\t(%02x)", fresults.x1);
-	}
+/* DELETE ME */
+if (round == 0)
+{
+	printf("\n\nf0 should be:   (f173)");	/* DELETE ME */
+	printf("\n\t\t(%02x)", fresults.x0);
+	printf("\nf1 should be:   (4034)");	/* DELETE ME */
+	printf("\n\t\t(%02x)", fresults.x1);
+}
 
-	return fresults;
+return fresults;
 }
 
 
 unsigned int G(unsigned int r0, unsigned char k0, unsigned char k1, unsigned char k2, unsigned char k3, int round)
 {
-	unsigned char g1, g2, g3, g4, g5, g6 = {'0'};
+	unsigned char g1, g2, g3, g4, g5, g6 = { '0' };
 	unsigned int result;
 
 	splitInt(&r0, &g1, &g2);
@@ -340,8 +399,39 @@ void splitInt(unsigned int* w, unsigned char* a, unsigned char* b)
 {
 	unsigned int hold;
 
-	*a = (*w >> 8 );
+	*a = (*w >> 8);
 	hold = (*w << 24);
 	*b = (hold >> 24);
+	return;
+}
+
+
+void reverseSubkeys(unsigned char subkeyTable[ROUNDS][COLS])
+{
+	unsigned char temp[COLS];
+	int start = 0;
+	int end = ROUNDS-1;
+
+
+	while (start < end)
+	{
+			copyArray(temp, subkeyTable[start]);
+			copyArray(subkeyTable[start], subkeyTable[end]);
+			copyArray(subkeyTable[end], temp);
+			++start;
+			++end;
+	}
+
+	return;
+}
+
+
+void copyArray(unsigned char newRow[COLS], unsigned char oldRow[COLS])
+{
+	int i;
+
+	for (i = 0; i < COLS; ++i)
+		newRow[i] = oldRow[i];
+
 	return;
 }

@@ -222,36 +222,49 @@ int writeCiphertext(unsigned char* ciphertext)
 }
 
 
-int getCiphertextBlock(FILE* fp, unsigned char* ciphertext)
+int getCiphertextBlock(FILE * fp, unsigned char* ciphertext)
 {
 	/* If PSU is set to 0, not in PSU environment */
-	int getPlaintextBlock(FILE * fp, unsigned char* ciphertext)
-	{
-		if (PSU == 0)
-			return getCiphertext(fp, ciphertext);
-		if (PSU == 1)
-			return getCipherextPSU(fp, ciphertext);
-	}
+	if (PSU == 0)
+		return getCiphertext(fp, ciphertext);
+	if (PSU == 1)
+		return getCipherextPSU(fp, ciphertext);
 }
 
 
 /* Non-PSU: Reads in plaintext 64 bits (8 chars) at a time to be encrypted */
 int getCiphertext(FILE* fp, unsigned char* ciphertext)
 {
+	FILE* last;
 	unsigned char paddingSize;
 	unsigned char c;
 	int i;
 
+	fp = fopen("ciphertext.txt", "r");
+	if (!fp || fp == 0)
+		return 1;
+
+
+	printFile(fp);
+	fseek(fp, 0, SEEK_SET);	/* Return to beginning of file */
+
+	printf("\nPrinting Ciphertext");
 	/* Read in 64 bits; At EOF, check last digit to see if there is padding. Remove last bytes of padding */
 	for (i = 0; i < 8; ++i) {
 
+		last = fp;
 		c = fgetc(fp);
-
-		/*
+		//printf("\n%02x", c);
+		//printf("\n%02x", c);
+		
 		if (feof(fp)) {
+			c = fgetc(last);
+			printf("\n%c", c);
+		}
+		/*
 			if (i == 7)
 			{
-				/*
+
 				paddingSize = padBlock(i, ciphertext);
 				ciphertext[i] = paddingSize;
 				return 0;
@@ -262,17 +275,20 @@ int getCiphertext(FILE* fp, unsigned char* ciphertext)
 				return 0;
 			}
 		}
-		*/
+
 
 		ciphertext[i] = c;
+		*/
 	}
+
+	fclose(fp);
 
 	return 0;
 }
 
 
 /* PSU Environment: Reads in plaintext 64 bits (8 chars) at a time to be encrypted with off-by-one-error fixed*/
-int getCiphertextPSU(FILE* fp, unsigned char* ciphertext)
+int getCipherextPSU (FILE* fp, unsigned char* ciphertext)
 {
 	unsigned char paddingSize;
 	unsigned char c;
@@ -329,15 +345,10 @@ void printFile(FILE* fp)
 {
 	char c;
 
-	printf("Document:\n");
+	printf("\nDocument:\n");
 
-	while (fp != NULL) {
-		c = fgetc(fp);
-		if (feof(fp))
-			break;
-		else
-			printf("%c", c);
-	}
+	while(fp != NULL && (c=fgetc(fp)) != EOF)
+		printf("%c", c);
 
 	return;
 }

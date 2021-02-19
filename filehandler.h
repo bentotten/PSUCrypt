@@ -17,8 +17,9 @@ void padBlockRecurse(int, unsigned char, unsigned char*, unsigned char*);
 
 /* Ciphertext File */
 int writeCiphertext(unsigned char*);
-int getCiphertextBlock(FILE*, unsigned char*);
-int getCiphertext(unsigned char*);
+int getCiphertextBlock(FILE*,unsigned char*);
+int getCiphertext(FILE*, unsigned char*);
+int getCipherextPSU(FILE*, unsigned char*);
 
 /* Utility */
 void printFile(FILE*);

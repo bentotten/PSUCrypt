@@ -16,7 +16,7 @@ void encrypt(unsigned int*, unsigned char[ROUNDS][COLS]);
 void lastWhiten(unsigned int*, unsigned char*, unsigned char*);
 
 /* Decryption */
-void decrypt(unsigned int*, unsigned char [ROUNDS][COLS]);
+int blockDecryption(unsigned char*, unsigned char[ROUNDS][COLS]);
 
 /* Subroutines */
 struct fboxResults F(unsigned int, unsigned int, int, unsigned char[COLS]);
@@ -26,3 +26,5 @@ unsigned char ftable(unsigned char);
 /* Utility */
 void joinChar(unsigned int*, unsigned char*, unsigned char*);
 void splitInt(unsigned int*, unsigned char*, unsigned char*);
+void reverseSubkeys(unsigned char[ROUNDS][COLS]);
+void copyArray(unsigned char[COLS], unsigned char[COLS]);

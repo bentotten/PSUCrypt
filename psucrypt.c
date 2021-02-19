@@ -19,7 +19,12 @@ int main(int argc, char* argv[])
 	unsigned char subkeys[ROUNDS][COLS]; /* 20 rounds, 12 subkeys, 1 byte each*/
 	int keysize = 0;
 	
-	printf("Starting Encryption...\n");	/* TODO DELETE ME */
+
+	/* DELETE ME */
+	unsigned char ciphertextBlock[8] = { 0 }; /* 64 bits */
+	FILE* fp = NULL;
+
+	printf("Starting Encryption...\n");
 	
 	if (getKey(key, &keysize) != 0) {
 		printf("\nKey fetch error: %s", key);
@@ -35,6 +40,10 @@ int main(int argc, char* argv[])
 		printf("\nEncryption Error");
 		return 1;
 	}
+
+
+	getCiphertext(fp, ciphertextBlock);
+
 
 	putchar('\n');
 	return 0;
