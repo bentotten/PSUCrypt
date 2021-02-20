@@ -249,6 +249,7 @@ int getCiphertext(FILE* fp, unsigned char* ciphertext)
 		c = fgetc(fp);
 
 		if (feof(fp)) {
+			--i;
 			c = fgetc(last);
 			printf("\n%c", c);
 		}
@@ -270,7 +271,7 @@ int getCiphertext(FILE* fp, unsigned char* ciphertext)
 		return 2;
 	}
 	else {
-		fseek(fp, -1, SEEK_CUR);
+		fseek(fp, -2, SEEK_CUR);
 		return 0;
 	}
 }
@@ -279,7 +280,44 @@ int getCiphertext(FILE* fp, unsigned char* ciphertext)
 /* PSU Environment: Reads in plaintext 64 bits (8 chars) at a time to be encrypted with off-by-one-error fixed*/
 int getCipherextPSU (FILE* fp, unsigned char* ciphertext)
 {
-	printf("\nNEED TO WRITE AND FIX OFF BY ONE ERROR\n");
+	FILE* last;
+	unsigned char temp[16];
+	unsigned char c;
+	int i;
+	int p = 0;
+
+
+	/* Read in 64 bits; At EOF, check last digit to see if there is padding. Remove last bytes of padding */
+	for (i = 0; i < 16; ++i) {
+
+		last = fp;
+		c = fgetc(fp);
+
+		if (feof(fp)) {
+			c = fgetc(last);
+			printf("\n%c", c);
+		}
+
+		temp[i] = c;
+	}
+
+	/* Change to hex */
+	for (i = 0; i < 8; ++i)
+	{
+		ciphertext[i] = (temp[p] <= '9' ? temp[p] - '0' : toupper(temp[p]) - 'A' + 10) << 4;
+		ciphertext[i] |= (temp[p + 1] <= '9' ? temp[p + 1] - '0' : toupper(temp[p + 1]) - 'A' + 10);
+		p += 2;
+	}
+
+	/* If next move of pointer is EOF, then EOF is reached and padding needs to be stripped */
+	c = fgetc(fp);
+	if (feof(fp)) {
+		return 2;
+	}
+	else {
+		fseek(fp, -1, SEEK_CUR);
+		return 0;
+	}
 	return 0;
 }
 
