@@ -240,7 +240,7 @@ int blockDecryption(unsigned char* key, unsigned char subkeyTable[ROUNDS][COLS])
 	/*do { */
 		paddingFlag = getCiphertextBlock(fp, ciphertextBlock);
 
-		printf("\nCiphertext should be: <fill me in>");
+		printf("\nCiphertext should be: 7bcc265a");
 		printText(ciphertextBlock);	/* DELETE ME */
 
 		whiten(ciphertextBlock, inProcess, key);
