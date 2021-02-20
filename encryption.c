@@ -35,6 +35,7 @@ int blockEncryption(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 	FILE* fp = NULL;
 	int paddingFlag = 0;
 	int t;
+	int err = 0;
 	
 	/* Open File */
 	fp = fopen("plaintext.txt", "r");
@@ -95,7 +96,7 @@ int blockEncryption(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 		addPaddingBlock(key, subkeyTable);
 	}
 
-	return 0;
+	return err;
 }
 
 
@@ -225,6 +226,7 @@ int blockDecryption(unsigned char* key, unsigned char subkeyTable[ROUNDS][COLS])
 	unsigned char plaintextBlock[8] = { 0 }; /* 64 bits */
 	FILE* fp = NULL;
 	int paddingFlag = 0;
+	int err = 0;
 
 	/* Open File */
 	fp = fopen("ciphertext.txt", "r");
@@ -274,7 +276,7 @@ int blockDecryption(unsigned char* key, unsigned char subkeyTable[ROUNDS][COLS])
 	}
 	
 
-	return 0;
+	return err;
 }
 
 
