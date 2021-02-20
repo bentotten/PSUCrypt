@@ -38,11 +38,12 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 	*/
-
+	
 	if (blockDecryption(key, subkeys) != 0) {
 		printf("Decryption Error");
 		return 1;
 	}	
+	
 
 	putchar('\n');
 	return 0;

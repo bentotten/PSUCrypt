@@ -271,6 +271,7 @@ int blockDecryption(unsigned char* key, unsigned char subkeyTable[ROUNDS][COLS])
 		return 1;
 	case 2:
 		removePadding(plaintextBlock);
+		printText(plaintextBlock);	/*DELETE ME*/
 		err = writePlaintext(plaintextBlock);
 		return 0;
 	}
@@ -282,11 +283,11 @@ int blockDecryption(unsigned char* key, unsigned char subkeyTable[ROUNDS][COLS])
 
 int removePadding(unsigned char * plaintext)
 {
-	unsigned char padding;
-	int i = 8;
+	unsigned char padding = plaintext[7];
+	int i = 7;
 
 	/* ECB Mode */
-	if (plaintext[8] == 0x0)
+	if (plaintext[7] == 0x0)
 	{
 		while (i >= 0 && plaintext[i] == 0x0)
 		{
@@ -298,7 +299,6 @@ int removePadding(unsigned char * plaintext)
 	/* ANSI X9.23 Mode*/
 	else
 	{
-		padding = plaintext[8];
 		while (i >= 0 && plaintext[i] == padding)
 		{
 			plaintext[i] = '\0';
