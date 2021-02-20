@@ -34,7 +34,6 @@ int blockEncryption(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 	unsigned char ciphertextBlock[8] = { 0 }; /* 64 bits */
 	FILE* fp = NULL;
 	int paddingFlag = 0;
-	int err;
 	int t;
 	
 	/* Open File */
@@ -226,8 +225,6 @@ int blockDecryption(unsigned char* key, unsigned char subkeyTable[ROUNDS][COLS])
 	unsigned char plaintextBlock[8] = { 0 }; /* 64 bits */
 	FILE* fp = NULL;
 	int paddingFlag = 0;
-	int err;
-	int t;
 
 	/* Open File */
 	fp = fopen("ciphertext.txt", "r");

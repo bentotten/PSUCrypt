@@ -237,8 +237,6 @@ int getCiphertext(FILE* fp, unsigned char* ciphertext)
 {
 	FILE* last;
 	unsigned char temp[16];
-	unsigned char temp2;
-	unsigned char paddingSize;
 	unsigned char c;
 	int i;
 	int p = 0;
