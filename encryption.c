@@ -230,14 +230,14 @@ int blockDecryption(unsigned char* key, unsigned char subkeyTable[ROUNDS][COLS])
 	int t;
 
 	/* Open File */
-	fp = fopen("cipher.txt", "r");
+	fp = fopen("ciphertext.txt", "r");
 	if (!fp || fp == 0)
 		return 1;
 
 	reverseSubkeys(subkeyTable);
 
 	/* Loop until EOF */
-	do {
+	/*do { */
 		paddingFlag = getCiphertextBlock(fp, ciphertextBlock);
 
 		printf("\nCiphertext should be: <fill me in>");
@@ -272,8 +272,8 @@ int blockDecryption(unsigned char* key, unsigned char subkeyTable[ROUNDS][COLS])
 			printf("(%02x) ", plaintextBlock[t]);
 		}
 
-		err = writeCiphertext(plaintextBlock);
-	} while (fp && !feof(fp));
+		err = writePlaintext(plaintextBlock);
+	/*} while (fp && !feof(fp));*/
 
 	fclose(fp);
 
@@ -419,14 +419,17 @@ void reverseSubkeys(unsigned char subkeyTable[ROUNDS][COLS])
 			copyArray(subkeyTable[start], subkeyTable[end]);
 			copyArray(subkeyTable[end], temp);
 			++start;
-			++end;
+			--end;
 	}
+
+	printf("\nSubkeys:\n");
+	printTable(subkeyTable, 'h');
 
 	return;
 }
 
 
-void copyArray(unsigned char newRow[COLS], unsigned char oldRow[COLS])
+void copyArray(unsigned char * newRow, unsigned char oldRow[COLS])
 {
 	int i;
 

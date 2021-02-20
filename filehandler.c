@@ -245,10 +245,6 @@ int getCiphertext(FILE* fp, unsigned char* ciphertext)
 
 	printf("\nPrinting Ciphertext");
 
-	/*
-	while (fp != NULL && (c = fgetc(fp)) != EOF)
-		printf("%c", c);
-	*/
 	/* Read in 64 bits; At EOF, check last digit to see if there is padding. Remove last bytes of padding */
 	for (i = 0; i < 8; ++i) {
 
@@ -258,7 +254,6 @@ int getCiphertext(FILE* fp, unsigned char* ciphertext)
 		if (feof(fp)) {
 			c = fgetc(last);
 			printf("\n%c", c);
-			/* Check padding size here */
 		}
 
 		ciphertext[i] = c;
@@ -273,9 +268,64 @@ int getCiphertext(FILE* fp, unsigned char* ciphertext)
 /* PSU Environment: Reads in plaintext 64 bits (8 chars) at a time to be encrypted with off-by-one-error fixed*/
 int getCipherextPSU (FILE* fp, unsigned char* ciphertext)
 {
+	FILE* last;
+	unsigned char paddingSize;
+	unsigned char c;
+	int i;
+
+	printFile(fp);
+	fseek(fp, 0, SEEK_SET);	/* Return to beginning of file */
+
+	printf("\nPrinting Ciphertext. Needs off by one error fixed");
+
+	/* Read in 64 bits; At EOF, check last digit to see if there is padding. Remove last bytes of padding */
+	for (i = 0; i < 8; ++i) {
+
+		last = fp;
+		c = fgetc(fp);
+
+		if (feof(fp)) {
+			c = fgetc(last);
+			printf("\n%c", c);
+		}
+
+		ciphertext[i] = c;
+	}
+
+	printText(ciphertext);
+
+	return 0;
+	return 0;
+}
+
+
+int writePlaintext(unsigned char* plaintext)
+{
+	/*
+	FILE* fp;
+	char toWrite[17];
+	int i;
+
+	fp = fopen("ciphertext.txt", "a");
+	if (!fp || fp == 0)
+		return 1;
+
+	sprintf(toWrite, "%02x%02x%02x%02x%02x%02x%02x%02x", ciphertext[0], ciphertext[1], ciphertext[2], ciphertext[3], ciphertext[4], ciphertext[5], ciphertext[6], ciphertext[7]);
+	printf("\nTo Write: %s", toWrite);
+
+	for (i = 0; i < 16; ++i) {
+		fputc(toWrite[i], fp);
+	}
+
+	fclose(fp);
+	*/
+
+	printf("\nWrite plaintext goes here \n");
+	printText(plaintext);
 
 	return 0;
 }
+
 
 
 int getTextSize()

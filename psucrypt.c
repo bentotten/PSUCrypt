@@ -20,10 +20,6 @@ int main(int argc, char* argv[])
 	int keysize = 0;
 	
 
-	/* DELETE ME */
-	unsigned char ciphertextBlock[8] = { 0 }; /* 64 bits */
-	FILE* fp = NULL;
-
 	printf("Starting Encryption...\n");
 	
 	if (getKey(key, &keysize) != 0) {
@@ -36,19 +32,17 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
+	/*
 	if (blockEncryption(key, subkeys) != 0) {
 		printf("\nEncryption Error");
 		return 1;
 	}
+	*/
 
-	fp = fopen("ciphertext.txt", "r");
-	if (!fp || fp == 0)
+	if (blockDecryption(key, subkeys) != 0) {
+		printf("Decryption Error");
 		return 1;
-
-	getCiphertext(fp, ciphertextBlock);
-
-	fclose(fp);
-
+	}	
 
 	putchar('\n');
 	return 0;
