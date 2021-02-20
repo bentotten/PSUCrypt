@@ -240,12 +240,12 @@ int blockDecryption(unsigned char* key, unsigned char subkeyTable[ROUNDS][COLS])
 	/*do { */
 		paddingFlag = getCiphertextBlock(fp, ciphertextBlock);
 
-		printf("\nCiphertext should be: 7bcc265a");
+		printf("\nCiphertext should be: (7b) (cc) (26) (5a) (38) (e7) (55) (5f)");
 		printText(ciphertextBlock);	/* DELETE ME */
 
 		whiten(ciphertextBlock, inProcess, key);
 
-		printf("\nPost whiten should be: <>\n");
+		printf("\nPost whiten should be: (d001) (c95b) (1ba2) (32d6)\n");
 		for (t = 0; t < 4; ++t)
 		{
 			printf("(%02x)", inProcess[t]);
@@ -271,6 +271,8 @@ int blockDecryption(unsigned char* key, unsigned char subkeyTable[ROUNDS][COLS])
 		{
 			printf("(%02x) ", plaintextBlock[t]);
 		}
+
+		printText(plaintextBlock);
 
 		err = writePlaintext(plaintextBlock);
 	/*} while (fp && !feof(fp));*/
@@ -412,7 +414,6 @@ void reverseSubkeys(unsigned char subkeyTable[ROUNDS][COLS])
 	int start = 0;
 	int end = ROUNDS-1;
 
-
 	while (start < end)
 	{
 			copyArray(temp, subkeyTable[start]);
@@ -421,9 +422,6 @@ void reverseSubkeys(unsigned char subkeyTable[ROUNDS][COLS])
 			++start;
 			--end;
 	}
-
-	printf("\nSubkeys:\n");
-	printTable(subkeyTable, 'h');
 
 	return;
 }

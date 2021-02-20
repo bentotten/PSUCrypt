@@ -269,11 +269,6 @@ int getCiphertext(FILE* fp, unsigned char* ciphertext)
 		ciphertext[i] |= (temp[p+1] <= '9' ? temp[p+1] - '0' : toupper(temp[p+1]) - 'A' + 10);
 		p += 2;
 	}
-	//ciphertext[0] = temp2;
-	//printf("\nChar vs Hex: %02x vs (%02x)", temp[0], temp2);
-	printf("\nCiphertext: %02x", ciphertext[0]);
-
-	printText(ciphertext); 
 
 	return 0;
 }
@@ -378,9 +373,14 @@ void printKey(unsigned char* key)
 void printText(unsigned char* text)
 {
 	int i;
-	printf("\nText: ");
+	printf("\nIn ASCII: ");
 	for (i = 0; i < 8; ++i) {
 		printf("%c", text[i]);
+	}
+
+	printf("\nIn hex: ");
+	for (i = 0; i < 8; ++i) {
+		printf("(%02x) ", text[i]);
 	}
 
 	return;
