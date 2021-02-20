@@ -17,6 +17,7 @@ void lastWhiten(unsigned int*, unsigned char*, unsigned char*);
 
 /* Decryption */
 int blockDecryption(unsigned char*, unsigned char[ROUNDS][COLS]);
+int removePadding(unsigned char*);
 
 /* Subroutines */
 struct fboxResults F(unsigned int, unsigned int, int, unsigned char[COLS]);

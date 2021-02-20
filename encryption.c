@@ -237,20 +237,10 @@ int blockDecryption(unsigned char* key, unsigned char subkeyTable[ROUNDS][COLS])
 	reverseSubkeys(subkeyTable);
 
 	/* Loop until EOF */
-	/*do { */
+	do { 
 		paddingFlag = getCiphertextBlock(fp, ciphertextBlock);
 
-		printf("\nCiphertext should be: (7b) (cc) (26) (5a) (38) (e7) (55) (5f)");
-		printText(ciphertextBlock);	/* DELETE ME */
-
 		whiten(ciphertextBlock, inProcess, key);
-
-		printf("\nPost whiten should be: (d001) (c95b) (1ba2) (32d6)\n");
-		for (t = 0; t < 4; ++t)
-		{
-			printf("(%02x)", inProcess[t]);
-		}
-
 		encrypt(inProcess, subkeyTable);
 
 		plaintext[0] = inProcess[2];
@@ -258,40 +248,63 @@ int blockDecryption(unsigned char* key, unsigned char subkeyTable[ROUNDS][COLS])
 		plaintext[2] = inProcess[0];
 		plaintext[3] = inProcess[1];
 
-		printf("\nLast block swapped should be: \n<>\n");
-		for (t = 0; t < 4; ++t)
-		{
-			printf("(%02x) ", plaintext[t]);
-		}
-
 		lastWhiten(plaintext, plaintextBlock, key);
-
-		printf("\nPost whiten should be: \n<>\n");
-		for (t = 0; t < 8; ++t)
-		{
-			printf("(%02x) ", plaintextBlock[t]);
-		}
 
 		printText(plaintextBlock);
 
-		err = writePlaintext(plaintextBlock);
-	/*} while (fp && !feof(fp));*/
+		if(paddingFlag == 0)
+			err = writePlaintext(plaintextBlock);
+
+	} while (fp && !feof(fp));
 
 	fclose(fp);
 
-	/*
-	* REMOVE PADDING HERE *
+	
+	/* REMOVE PADDING HERE */
 	switch (paddingFlag) {
 	case 0:
+		printf("\nDecryption Error. No Padding Present");
 		fclose(fp);
-		return 0;
+		return 1;
 	case 1:
 		fclose(fp);
 		return 1;
 	case 2:
-		addPaddingBlock(unsigned char* key, unsigned char subkeyTable[ROUNDS][COLS]);
+		removePadding(plaintextBlock);
+		err = writePlaintext(plaintextBlock);
+		return 0;
 	}
-	*/
+	
+
+	return 0;
+}
+
+
+int removePadding(unsigned char * plaintext)
+{
+	unsigned char padding;
+	int i = 8;
+
+	/* ECB Mode */
+	if (plaintext[8] == 0x0)
+	{
+		while (i >= 0 && plaintext[i] == 0x0)
+		{
+			plaintext[i] = '\0';
+			--i;
+		}
+	}
+
+	/* ANSI X9.23 Mode*/
+	else
+	{
+		padding = plaintext[8];
+		while (i >= 0 && plaintext[i] == padding)
+		{
+			plaintext[i] = '\0';
+			--i;
+		}
+	}
 
 	return 0;
 }
@@ -309,31 +322,13 @@ struct fboxResults F(unsigned int r0, unsigned int r1, int round, unsigned char 
 	gresults.x0 = G(r0, subkeys[0], subkeys[1], subkeys[2], subkeys[3], round);
 	gresults.x1 = G(r1, subkeys[4], subkeys[5], subkeys[6], subkeys[7], round); 
 
-/* DELETE ME */
-if (round == 0)
-{
-	printf("\n\nt0 should be:   (62fd)");	/* DELETE ME */
-	printf("\n\t\t(%02x)", gresults.x0);
-	printf("\nt1 should be:   (1ba0)");	/* DELETE ME */
-	printf("\n\t\t(%02x)", gresults.x1);
-}
+	joinChar(&con1, &subkeys[8], &subkeys[9]);
+	joinChar(&con2, &subkeys[10], &subkeys[11]);
 
-joinChar(&con1, &subkeys[8], &subkeys[9]);
-joinChar(&con2, &subkeys[10], &subkeys[11]);
+	fresults.x0 = (gresults.x0 + (2 * gresults.x1) + con1) % power;
+	fresults.x1 = ((2 * gresults.x0) + gresults.x1 + con2) % power;
 
-fresults.x0 = (gresults.x0 + (2 * gresults.x1) + con1) % power;
-fresults.x1 = ((2 * gresults.x0) + gresults.x1 + con2) % power;
-
-/* DELETE ME */
-if (round == 0)
-{
-	printf("\n\nf0 should be:   (f173)");	/* DELETE ME */
-	printf("\n\t\t(%02x)", fresults.x0);
-	printf("\nf1 should be:   (4034)");	/* DELETE ME */
-	printf("\n\t\t(%02x)", fresults.x1);
-}
-
-return fresults;
+	return fresults;
 }
 
 
@@ -349,28 +344,6 @@ unsigned int G(unsigned int r0, unsigned char k0, unsigned char k1, unsigned cha
 	g4 = ftable((g3 ^ k1)) ^ g2;
 	g5 = ftable((g4 ^ k2)) ^ g3;
 	g6 = ftable((g5 ^ k3)) ^ g4;
-
-	/* DELETE ME */
-	if (round == 0)
-	{
-		printf("\ng1 should be: (d8) or (8c)");	/* DELETE ME */
-		printf("\n\t\t  (%02x)", g1);
-
-		printf("\ng2 should be: (a8) or (74)");	/* DELETE ME */
-		printf("\n\t\t  (%02x)", g2);
-
-		printf("\ng3 should be: (62) or (88)");	/* DELETE ME */
-		printf("\n\t\t  (%02x)", g3);
-
-		printf("\ng4 should be: (24) or (90)");	/* DELETE ME */
-		printf("\n\t\t  (%02x)", g4);
-
-		printf("\ng5 should be: (62) or (1b)");	/* DELETE ME */
-		printf("\n\t\t  (%02x)", g5);
-
-		printf("\ng6 should be: (fd) or (a0)");	/* DELETE ME */
-		printf("\n\t\t  (%02x)", g6);
-	}
 
 	joinChar(&result, &g5, &g6);
 

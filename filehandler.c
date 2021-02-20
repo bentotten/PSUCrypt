@@ -243,10 +243,6 @@ int getCiphertext(FILE* fp, unsigned char* ciphertext)
 	int i;
 	int p = 0;
 
-	printFile(fp);
-	fseek(fp, 0, SEEK_SET);	/* Return to beginning of file */
-
-	printf("\nPrinting Ciphertext");
 
 	/* Read in 64 bits; At EOF, check last digit to see if there is padding. Remove last bytes of padding */
 	for (i = 0; i < 16; ++i) {
@@ -270,7 +266,15 @@ int getCiphertext(FILE* fp, unsigned char* ciphertext)
 		p += 2;
 	}
 
-	return 0;
+	/* If next move of pointer is EOF, then EOF is reached and padding needs to be stripped */
+	c = fgetc(fp);
+	if (feof(fp)) {
+		return 2;
+	}
+	else {
+		fseek(fp, -1, SEEK_CUR);
+		return 0;
+	}
 }
 
 
@@ -284,27 +288,23 @@ int getCipherextPSU (FILE* fp, unsigned char* ciphertext)
 
 int writePlaintext(unsigned char* plaintext)
 {
-	/*
+	
 	FILE* fp;
-	char toWrite[17];
 	int i;
 
-	fp = fopen("ciphertext.txt", "a");
+	fp = fopen("plaintext.txt", "a");
 	if (!fp || fp == 0)
 		return 1;
 
-	sprintf(toWrite, "%02x%02x%02x%02x%02x%02x%02x%02x", ciphertext[0], ciphertext[1], ciphertext[2], ciphertext[3], ciphertext[4], ciphertext[5], ciphertext[6], ciphertext[7]);
-	printf("\nTo Write: %s", toWrite);
+	printf("\nTo Write: %s", plaintext);
 
-	for (i = 0; i < 16; ++i) {
-		fputc(toWrite[i], fp);
+	for (i = 0; i < 8; ++i) {
+		if (plaintext[i] == '\0')
+			break;
+		fputc(plaintext[i], fp);
 	}
 
 	fclose(fp);
-	*/
-
-	printf("\nWrite plaintext goes here \n");
-	printText(plaintext);
 
 	return 0;
 }
