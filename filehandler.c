@@ -98,7 +98,7 @@ int getPlaintext(FILE* fp, unsigned char* plaintext)
 		c = fgetc(fp);
 
 		if (feof(fp)) {
-			if (i == 7)
+			if (i == 7) /*TODO Might not be laying enough padding. May need to pass in i+1*/
 			{
 				paddingSize = padBlock(i, plaintext);
 				plaintext[i] = paddingSize;
@@ -228,7 +228,7 @@ int getCiphertextBlock(FILE * fp, unsigned char* ciphertext)
 	if (PSU == 0)
 		return getCiphertext(fp, ciphertext);
 	if (PSU == 1)
-		return getCipherextPSU(fp, ciphertext);
+		return getCiphertextPSU(fp, ciphertext);
 }
 
 
@@ -249,9 +249,7 @@ int getCiphertext(FILE* fp, unsigned char* ciphertext)
 		c = fgetc(fp);
 
 		if (feof(fp)) {
-			--i;
-			c = fgetc(last);
-			printf("\n%c", c);
+			break;
 		}
 
 		temp[i] = c;
@@ -271,14 +269,14 @@ int getCiphertext(FILE* fp, unsigned char* ciphertext)
 		return 2;
 	}
 	else {
-		fseek(fp, -2, SEEK_CUR);
+		fseek(fp, -1, SEEK_CUR);
 		return 0;
 	}
 }
 
 
 /* PSU Environment: Reads in plaintext 64 bits (8 chars) at a time to be encrypted with off-by-one-error fixed*/
-int getCipherextPSU (FILE* fp, unsigned char* ciphertext)
+int getCiphertextPSU (FILE* fp, unsigned char* ciphertext)
 {
 	FILE* last;
 	unsigned char temp[16];
@@ -294,6 +292,7 @@ int getCipherextPSU (FILE* fp, unsigned char* ciphertext)
 		c = fgetc(fp);
 
 		if (feof(fp)) {
+			--i;
 			c = fgetc(last);
 			printf("\n%c", c);
 		}

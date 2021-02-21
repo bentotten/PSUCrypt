@@ -42,22 +42,12 @@ int blockEncryption(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 	if (!fp || fp == 0)
 		return 1;
 
-	/* TODO: DECRYPT */
 	/* Loop until EOF */
 	do {
 
 		paddingFlag = getPlaintextBlock(fp, plaintextBlock);
 
-		printf("\nPlaintext should be: security");
-		printText(plaintextBlock);	/* DELETE ME */
-
 		whiten(plaintextBlock, inProcess, key);
-
-		printf("\nPost whiten should be: (d8a8)(8c74)(512c)(13f0)\n");
-		for (t = 0; t < 4; ++t)
-		{
-			printf("(%02x)", inProcess[t]);
-		}
 
 		encrypt(inProcess, subkeyTable);
 
@@ -66,19 +56,7 @@ int blockEncryption(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 		ciphertext[2] = inProcess[0];
 		ciphertext[3] = inProcess[1];
 
-		printf("\nLast block swapped should be: \n(d001) (c95b) (1ba2) (32d6)\n");
-		for (t = 0; t < 4; ++t)
-		{
-			printf("(%02x) ", ciphertext[t]);
-		}
-
 		lastWhiten(ciphertext, ciphertextBlock, key);
-
-		printf("\nPost whiten should be: \n(7b) (cc) (26) (5a) (38) (e7) (55) (5f)\n");
-		for (t = 0; t < 8; ++t)
-		{
-			printf("(%02x) ", ciphertextBlock[t]);
-		}
 
 		err = writeCiphertext(ciphertextBlock);
 	} while (fp && !feof(fp));
