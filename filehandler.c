@@ -282,6 +282,9 @@ int getCiphertext(FILE* fp, unsigned char* ciphertext)
 	int i;
 	int p = 0;
 
+	for (i = 0; i < 16; ++i)
+		temp[i] = 0x00;
+
 	/* Read in 64 bits; At EOF, check last digit to see if there is padding. Remove last bytes of padding */
 	for (i = 0; i < 16; ++i) {
 		c = fgetc(fp);
