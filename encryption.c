@@ -28,10 +28,10 @@ static unsigned char FTABLE[16][16] = {
 
 int blockEncryption(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS])
 {
-	unsigned char plaintextBlock[8] = { 0 }; /* 64 bits */
-	unsigned int inProcess[4] = { 0 }; /* 16 bits each element */
-	unsigned int ciphertext[4] = { 0 }; /* 16 bits each element */
-	unsigned char ciphertextBlock[8] = { 0 }; /* 64 bits */
+	unsigned char plaintextBlock[8] = { 0,0,0,0,0,0,0,0 }; /* 64 bits */
+	unsigned int inProcess[4] = { 0,0,0,0 }; /* 16 bits each element */
+	unsigned int ciphertext[4] = { 0,0,0,0 }; /* 16 bits each element */
+	unsigned char ciphertextBlock[8] = { 0,0,0,0,0,0,0,0 }; /* 64 bits */
 	FILE* fp = NULL;
 	int paddingFlag = 0;
 	int t;
