@@ -180,6 +180,7 @@ unsigned int padBlock(int i, unsigned char* plaintext)
 {
 	unsigned char hold;
 	unsigned int paddingSize = 0;
+	int c = i;
 
 	/* ANSI X9.23 MODE */
 	if (PADDING == 49) {
@@ -190,11 +191,12 @@ unsigned int padBlock(int i, unsigned char* plaintext)
 	/* ECB COMPATIBILITY MODE */
 	else if (PADDING == 50)
 	{
-		for (i; i < 8; ++i)
+		for (c; c < 8; ++c)
 		{
-			plaintext[i] = 0x0;
+			plaintext[c] = 0x0;
 			++paddingSize;
 		}
+		return c;
 	}
 
 	else
