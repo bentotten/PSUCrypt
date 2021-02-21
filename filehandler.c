@@ -76,7 +76,7 @@ void readKey(FILE* fp, unsigned char * key)
 }
 
 /* If PSU is set to 0, not in PSU environment */
-int getPlaintextBlock(FILE* fp, unsigned char* plaintext)
+int getPlaintextBlock(FILE* fp, unsigned char plaintext [])
 {
 	if (PSU == 0)
 		return getPlaintext(fp, plaintext);
