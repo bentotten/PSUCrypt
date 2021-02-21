@@ -34,7 +34,6 @@ int blockEncryption(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 	unsigned char ciphertextBlock[8] = { 0,0,0,0,0,0,0,0 }; /* 64 bits */
 	FILE* fp = NULL;
 	int paddingFlag = 0;
-	int t;
 	int err = 0;
 	
 	/* Open File */
@@ -85,7 +84,6 @@ int addPaddingBlock(unsigned char* key, unsigned char subkeyTable[ROUNDS][COLS])
 	unsigned int ciphertext[4] = { 0 }; /* 16 bits each element */
 	unsigned char ciphertextBlock[8] = { 0 }; /* 64 bits */
 
-	int t;
 
 	whiten(block, inProcess, key);
 	encrypt(inProcess, subkeyTable);

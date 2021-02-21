@@ -94,7 +94,7 @@ unsigned char K(unsigned char * key, int x)
 		break;
 	default:
 		printf("Input error in Key Scheduler");
-		return (unsigned char) NULL;
+		return '0';
 	}
 
 leftRotate(key);
