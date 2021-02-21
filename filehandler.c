@@ -199,7 +199,7 @@ void padBlockRecurse(int i, unsigned char paddingSize, unsigned char * test, uns
 }
 
 
-int writeCiphertext(unsigned char* ciphertext)
+int writeCiphertextNoNewline(unsigned char* ciphertext)
 {
 	FILE* fp; 
 	char toWrite[17];
@@ -215,6 +215,31 @@ int writeCiphertext(unsigned char* ciphertext)
 	for (i = 0; i < 16; ++i) {
 		fputc(toWrite[i], fp);
 	}
+
+	fclose(fp);
+
+	return 0;
+}
+
+
+int writeCiphertext(unsigned char* ciphertext)
+{
+	FILE* fp;
+	char toWrite[17];
+	int i;
+
+	fp = fopen("ciphertext.txt", "a");
+	if (!fp || fp == 0)
+		return 1;
+
+	sprintf(toWrite, "%02x%02x%02x%02x%02x%02x%02x%02x", ciphertext[0], ciphertext[1], ciphertext[2], ciphertext[3], ciphertext[4], ciphertext[5], ciphertext[6], ciphertext[7]);
+	printf("\nTo Write: %s", toWrite);
+
+	for (i = 0; i < 16; ++i) {
+		fputc(toWrite[i], fp);
+	}
+
+	fputc('\n', fp);
 
 	fclose(fp);
 
@@ -247,6 +272,10 @@ int getCiphertext(FILE* fp, unsigned char* ciphertext)
 
 		last = fp;
 		c = fgetc(fp);
+
+		/* If a newline, get the next character */
+		if(c == '\n' || c == '\r')
+			c = fgetc(fp);
 
 		if (feof(fp)) {
 			break;
