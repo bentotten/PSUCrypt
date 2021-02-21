@@ -76,7 +76,7 @@ void readKey(FILE* fp, unsigned char * key)
 }
 
 /* If PSU is set to 0, not in PSU environment */
-int getPlaintextBlock(FILE* fp, unsigned char plaintext [])
+int getPlaintextBlock(FILE* fp, unsigned char * plaintext)
 {
 	if (PSU == 0)
 		return getPlaintext(fp, plaintext);
@@ -210,7 +210,7 @@ int writeCiphertextNoNewline(unsigned char* ciphertext)
 		return 1;
 
 	sprintf(toWrite, "%02x%02x%02x%02x%02x%02x%02x%02x", ciphertext[0], ciphertext[1], ciphertext[2], ciphertext[3], ciphertext[4], ciphertext[5], ciphertext[6], ciphertext[7]);
-	printf("\nTo Write: %s", toWrite);
+	/* printf("\nTo Write: %s", toWrite); */
 
 	for (i = 0; i < 16; ++i) {
 		fputc(toWrite[i], fp);
@@ -233,7 +233,7 @@ int writeCiphertext(unsigned char* ciphertext)
 		return 1;
 
 	sprintf(toWrite, "%02x%02x%02x%02x%02x%02x%02x%02x", ciphertext[0], ciphertext[1], ciphertext[2], ciphertext[3], ciphertext[4], ciphertext[5], ciphertext[6], ciphertext[7]);
-	printf("\nTo Write: %s", toWrite);
+	/* printf("\nTo Write: %s", toWrite); */
 
 	for (i = 0; i < 16; ++i) {
 		fputc(toWrite[i], fp);
@@ -358,7 +358,7 @@ int writePlaintext(unsigned char* plaintext)
 	if (!fp || fp == 0)
 		return 1;
 
-	printf("\nTo Write: %s", plaintext);
+	/* printf("\nTo Write: %s", plaintext); */
 
 	for (i = 0; i < 8; ++i) {
 		if (plaintext[i] == '\0')

@@ -86,18 +86,6 @@ int addPaddingBlock(unsigned char* key, unsigned char subkeyTable[ROUNDS][COLS])
 	unsigned char ciphertextBlock[8] = { 0 }; /* 64 bits */
 
 	int t;
-	
-	printf("\n\nPadding Block:");
-	for (t = 0; t < 4; ++t)
-	{
-		printf("(%02x)", block[t]);
-	}
-
-	printf("\nBlock:");
-	for (t = 0; t < 4; ++t)
-	{
-		printf("(%02x)", block[t]);
-	}
 
 	whiten(block, inProcess, key);
 	encrypt(inProcess, subkeyTable);
