@@ -1,14 +1,15 @@
 /*	PSU CRYPT
 	Written by Ben Totten
-	CS585
+	CS585 Cryptography 
+	DES Project
 */
 
 /*
 * Future improvements:
-* Switch out for loops for trees (or recursion, but probably not if the loop has the potential to get huge)
-* Immutable keys? Unneccessary? 
-* Make so accepts 64 bit key and 80 bit key
-* Find better way to access ftable that doesnt involve initializing it every single time
+* Switch out for loops for trees (or recursion, but not for large keys)
+* Add modes for 64 bit key and 80 bit key
+* Make ftable into a struct instead of a global
+* Move arrays that dont need to be looped through into structs
 */
 
 #include "psucrypt.h"
@@ -27,6 +28,9 @@ int main(int argc, char* argv[])
 
 	printf("\nEnter 'e' for encrypt or 'd' to decrypt: ");
 	c = getchar();
+	while ((getchar()) != '\n');	/*Clear Buffer */
+	printf("\nInput 1 for ANSI X9.23 mode or input 2 for ECB Compatibility mode: ");
+	PADDING = getchar();
 
 	/* Get Key and Generate Subkeys*/
 	if (getKey(key, &keysize) != 0) {

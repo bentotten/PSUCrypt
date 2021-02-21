@@ -1,6 +1,7 @@
 /*	PSU CRYPT
 	Written by Ben Totten
-	CS585
+	CS585 Cryptography
+	DES Project
 */
 
 #include "psucrypt.h"
@@ -78,11 +79,27 @@ int blockEncryption(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 
 int addPaddingBlock(unsigned char* key, unsigned char subkeyTable[ROUNDS][COLS])
 {
-	unsigned char block[8] = {0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08}; /* 64 bits */
 	unsigned int inProcess[4] = { 0 }; /* 16 bits each element */
 	unsigned int ciphertext[4] = { 0 }; /* 16 bits each element */
 	unsigned char ciphertextBlock[8] = { 0 }; /* 64 bits */
+	unsigned char block[8];
+	int i;
 
+	if (PADDING == 49)
+	{
+		for (i = 0; i < 8; ++i)
+			block[0] = 0x08;
+	}
+	else if (PADDING == 50)
+	{
+		for (i = 0; i < 8; ++i)
+			block[0] = 0x00;
+	}
+	else
+	{ 
+		printf("Padding error. PADDING flag is not 1 or 2. PADDING: %d", PADDING);
+		return 1;
+	}
 
 	whiten(block, inProcess, key);
 	encrypt(inProcess, subkeyTable);
@@ -214,8 +231,6 @@ int blockDecryption(unsigned char* key, unsigned char subkeyTable[ROUNDS][COLS])
 
 			lastWhiten(plaintext, plaintextBlock, key);
 
-			printText(plaintextBlock);
-
 			if (paddingFlag == 0)
 				err = writePlaintext(plaintextBlock);
 		}
@@ -235,7 +250,6 @@ int blockDecryption(unsigned char* key, unsigned char subkeyTable[ROUNDS][COLS])
 		return 1;
 	case 2:
 		removePadding(plaintextBlock);
-		printText(plaintextBlock);	/*DELETE ME*/
 		err = writePlaintext(plaintextBlock);
 		return 0;
 	}

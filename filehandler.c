@@ -1,6 +1,7 @@
 /*	PSU CRYPT
 	Written by Ben Totten
-	CS585
+	CS585 Cryptography
+	DES Project
 */
 
 #include "psucrypt.h"
@@ -180,9 +181,27 @@ unsigned int padBlock(int i, unsigned char* plaintext)
 	unsigned char hold;
 	unsigned int paddingSize = 0;
 
-	padBlockRecurse(i, paddingSize, plaintext, &hold);
+	/* ANSI X9.23 MODE */
+	if (PADDING == 49) {
+		padBlockRecurse(i, paddingSize, plaintext, &hold);
+		return hold;
+	}
 
-	return hold;
+	/* ECB COMPATIBILITY MODE */
+	else if (PADDING == 50)
+	{
+		for (i; i < 8; ++i)
+		{
+			plaintext[i] = 0x0;
+			++paddingSize;
+		}
+	}
+
+	else
+	{
+		printf("Padding error. PADDING flag is not 1 or 2.");
+		return 1;
+	}
 }
 
 void padBlockRecurse(int i, unsigned char paddingSize, unsigned char * test, unsigned char * hold)
