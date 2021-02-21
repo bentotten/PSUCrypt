@@ -28,4 +28,4 @@ unsigned char ftable(unsigned char);
 void joinChar(unsigned int*, unsigned char*, unsigned char*);
 void splitInt(unsigned int*, unsigned char*, unsigned char*);
 void reverseSubkeys(unsigned char[ROUNDS][COLS]);
-void copyArray(unsigned char[COLS], unsigned char[COLS]);
+void copyArray(unsigned char*, unsigned char[COLS]);

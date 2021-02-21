@@ -246,7 +246,6 @@ int writeCiphertext(unsigned char* ciphertext)
 	return 0;
 }
 
-
 int getCiphertextBlock(FILE * fp, unsigned char* ciphertext)
 {
 	/* If PSU is set to 0, not in PSU environment */
@@ -265,14 +264,15 @@ int getCiphertext(FILE* fp, unsigned char* ciphertext)
 	int i;
 	int p = 0;
 
-
 	/* Read in 64 bits; At EOF, check last digit to see if there is padding. Remove last bytes of padding */
 	for (i = 0; i < 16; ++i) {
 		c = fgetc(fp);
 
 		/* If a newline, get the next character */
-		if(c == '\n' || c == '\r')
-			c = fgetc(fp);
+		
+		if (c == '\n' || c == '\r')
+			return 3;
+
 
 		if (feof(fp)) {
 			break;
@@ -282,14 +282,14 @@ int getCiphertext(FILE* fp, unsigned char* ciphertext)
 	}
 
 	/* Change to hex */
-	for (i = 0; i < 8; ++i)
-	{
+	for (i = 0; i < 8; ++i) {
 		ciphertext[i] = (temp[p] <= '9' ? temp[p] - '0' : toupper(temp[p]) - 'A' + 10) << 4;
 		ciphertext[i] |= (temp[p+1] <= '9' ? temp[p+1] - '0' : toupper(temp[p+1]) - 'A' + 10);
 		p += 2;
 	}
 
 	/* If next move of pointer is EOF, then EOF is reached and padding needs to be stripped */
+	c = fgetc(fp);
 	c = fgetc(fp);
 	if (feof(fp)) {
 		return 2;
@@ -315,21 +315,21 @@ int getCiphertextPSU (FILE* fp, unsigned char* ciphertext)
 		c = fgetc(fp);
 
 		if (feof(fp)) {
-			break;
+			return 3;
 		}
 
 		temp[i] = c;
 	}
 
 	/* Change to hex */
-	for (i = 0; i < 8; ++i)
-	{
+	for (i = 0; i < 8; ++i) {
 		ciphertext[i] = (temp[p] <= '9' ? temp[p] - '0' : toupper(temp[p]) - 'A' + 10) << 4;
 		ciphertext[i] |= (temp[p + 1] <= '9' ? temp[p + 1] - '0' : toupper(temp[p + 1]) - 'A' + 10);
 		p += 2;
 	}
 
-	/* If next move of pointer is EOF, then EOF is reached and padding needs to be stripped */
+	/* If next move of pointer is EOF, then EOF is reached and padding needs to be stripped. Needs two gets because of newlines for grads */
+	c = fgetc(fp);
 	c = fgetc(fp);
 	if (feof(fp)) {
 		return 2;

@@ -94,7 +94,7 @@ int addPaddingBlock(unsigned char* key, unsigned char subkeyTable[ROUNDS][COLS])
 
 	lastWhiten(ciphertext, ciphertextBlock, key);
 
-	return writeCiphertext(ciphertextBlock);
+	return writeCiphertextNoNewline(ciphertextBlock);
 }
 
 
@@ -202,21 +202,23 @@ int blockDecryption(unsigned char* key, unsigned char subkeyTable[ROUNDS][COLS])
 	do { 
 		paddingFlag = getCiphertextBlock(fp, ciphertextBlock);
 
-		whiten(ciphertextBlock, inProcess, key);
-		encrypt(inProcess, subkeyTable);
+		/* If 3, then last line was a newline and should be skipped */
+		if (paddingFlag != 3) {
+			whiten(ciphertextBlock, inProcess, key);
+			encrypt(inProcess, subkeyTable);
 
-		plaintext[0] = inProcess[2];
-		plaintext[1] = inProcess[3];
-		plaintext[2] = inProcess[0];
-		plaintext[3] = inProcess[1];
+			plaintext[0] = inProcess[2];
+			plaintext[1] = inProcess[3];
+			plaintext[2] = inProcess[0];
+			plaintext[3] = inProcess[1];
 
-		lastWhiten(plaintext, plaintextBlock, key);
+			lastWhiten(plaintext, plaintextBlock, key);
 
-		printText(plaintextBlock);
+			printText(plaintextBlock);
 
-		if(paddingFlag == 0)
-			err = writePlaintext(plaintextBlock);
-
+			if (paddingFlag == 0)
+				err = writePlaintext(plaintextBlock);
+		}
 	} while (fp && !feof(fp));
 
 	fclose(fp);
