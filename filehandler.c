@@ -439,5 +439,6 @@ void printText(unsigned char* text)
 		printf("(%02x) ", text[i]);
 	}
 
+	putchar('\n');
 	return;
 }
