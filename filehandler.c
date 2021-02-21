@@ -292,9 +292,7 @@ int getCiphertextPSU (FILE* fp, unsigned char* ciphertext)
 		c = fgetc(fp);
 
 		if (feof(fp)) {
-			--i;
-			c = fgetc(last);
-			printf("\n%c", c);
+			break;
 		}
 
 		temp[i] = c;
