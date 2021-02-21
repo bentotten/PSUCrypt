@@ -60,7 +60,6 @@ int blockEncryption(unsigned char * key, unsigned char subkeyTable[ROUNDS][COLS]
 		err = writeCiphertext(ciphertextBlock);
 	} while (fp && !feof(fp));
 
-	fclose(fp);
 
 	switch (paddingFlag) {
 	case 0:
