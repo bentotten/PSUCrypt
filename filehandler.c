@@ -304,7 +304,6 @@ int getCiphertext(FILE* fp, unsigned char* ciphertext)
 /* PSU Environment: Reads in plaintext 64 bits (8 chars) at a time to be encrypted with off-by-one-error fixed*/
 int getCiphertextPSU (FILE* fp, unsigned char* ciphertext)
 {
-	FILE* last;
 	unsigned char temp[16];
 	unsigned char c;
 	int i;
@@ -313,8 +312,6 @@ int getCiphertextPSU (FILE* fp, unsigned char* ciphertext)
 
 	/* Read in 64 bits; At EOF, check last digit to see if there is padding. Remove last bytes of padding */
 	for (i = 0; i < 16; ++i) {
-
-		last = fp;
 		c = fgetc(fp);
 
 		if (feof(fp)) {

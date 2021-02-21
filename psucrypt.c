@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
 	unsigned char key[KEYLENGTH] = { 0 };	/* Future recast as immutable const? */
 	unsigned char subkeys[ROUNDS][COLS]; /* 20 rounds, 12 subkeys, 1 byte each*/
 	int keysize = 0;
-	char c = argv[1];
+	char * c = argv[1];
 	
 	if (argc > 2) {
 		printf("\nToo many arguments supplied. Please enter -e for encrypt or -d for decrypt\n");
@@ -27,7 +27,7 @@ int main(int argc, char* argv[])
 	else
 	{
 		printf("\nEnter 'e' for encrypt or 'd' to decrypt: ");
-		c = getchar();
+		*c = getchar();
 	}
 
 	/* Get Key and Generate Subkeys*/
@@ -41,7 +41,7 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	switch (c)
+	switch (*c)
 	{
 	case 'e':
 		printf("Starting Encryption...\n");
